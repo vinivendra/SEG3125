@@ -73,7 +73,7 @@ function love.draw()
    view:draw()
 end
 
-function love.mousepressed( x, y, button, istouch )
+function love.mousereleased( x, y, button, istouch )
     view:tap(x, y)
 end
 
