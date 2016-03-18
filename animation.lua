@@ -5,10 +5,24 @@ function interpolate(a, b, t)
     return a + ((b - a) * t)
 end
 
-function smoothInterpolate(a, b, t)
+function smooth(a, b, t)
     start = a
     interval = b - a
     interp = t * t * t * (t * (t * 6 - 15) + 10)
+    return start + interp * interval
+end
+
+function easeIn(a, b, t)
+    start = a
+    interval = b - a
+    interp = t * t
+    return start + interp * interval
+end
+
+function easeOut(a, b, t)
+    start = a
+    interval = b - a
+    interp = 1 - (1 - t) * (1 - t)
     return start + interp * interval
 end
 
@@ -46,7 +60,8 @@ Animation = {
     t = 0,
     subject = {},
     isActive = true,
-    next = nil
+    next = nil,
+    timingFunction = smooth
 }
 
 function Animation:new(o)
@@ -97,8 +112,8 @@ function OriginAnimation:run(dt)
         self.subject.y = self.destinationY
         return false
     else
-        self.x = smoothInterpolate(self.originX, self.destinationX, self.t)
-        self.y = smoothInterpolate(self.originY, self.destinationY, self.t)
+        self.x = self.timingFunction(self.originX, self.destinationX, self.t)
+        self.y = self.timingFunction(self.originY, self.destinationY, self.t)
         self.subject.x = self.x
         self.subject.y = self.y
         return true

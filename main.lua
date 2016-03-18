@@ -59,13 +59,15 @@ function love.load()
     animation1 = OriginAnimation:new({
         subject = player,
         destinationX = 500,
-        destinationY = 0
+        destinationY = 0,
+        timingFunction = easeIn
         })
 
     animation2 = OriginAnimation:new({
         subject = player,
         destinationX = 500,
-        destinationY = 300
+        destinationY = 300,
+        timingFunction = easeOut
         })
 
     animation1:chain(animation2)
