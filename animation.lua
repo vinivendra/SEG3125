@@ -21,9 +21,17 @@ function runAnimations(dt)
 
     for i=1,size do
         animation = animations[i]
+
+        if animation.isActive == false then
+            removeAtIndex(animations, i)
+        end
+
         isRunning = animation:run(dt)
 
         if isRunning == false then
+            if animation.next ~= nil then
+                startAnimation(animation.next)
+            end
             removeAtIndex(animations, i)
         end
     end
@@ -36,7 +44,9 @@ animations = {}
 Animation = {
     duration =  1,
     t = 0,
-    subject = {}
+    subject = {},
+    isActive = true,
+    next = nil
 }
 
 function Animation:new(o)
@@ -71,6 +81,12 @@ function OriginAnimation:new(o)
     self.__index = self
 
     return o
+end
+
+function OriginAnimation:chain(newAnimation)
+    newAnimation.originX = self.destinationX
+    newAnimation.originY = self.destinationY
+    self.next = newAnimation
 end
 
 function OriginAnimation:run(dt)

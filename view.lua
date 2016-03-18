@@ -33,8 +33,33 @@ function View:new(o)
     return o
 end
 
+function View:copy()
+    newCopy = View:new()
+    self:copyTo(newCopy)
+    return newCopy
+end
+
+function View:copyTo(o)
+    o.x = self.x
+    o.y = self.y
+    o.width = self.width
+    o.height = self.height
+    o.name = self.name .. " copy"
+    o.onTap = self.onTap
+
+    for i=1,getSize(self.subviews) do
+        subview = self.subviews[i]
+        subviewCopy = subview:copy()
+        o:addSubview(subviewCopy)
+    end
+
+    if self.superview ~= nil then
+        self.superview:addSubview(o)
+    end
+end
+
 function View:draw()
-    for i=1,table.getn(self.subviews) do
+    for i=1,getSize(self.subviews) do
         subview = self.subviews[i]
         subview:draw()
     end
@@ -87,6 +112,17 @@ function SquareView:new(o)
     return o
 end
 
+function SquareView:copy()
+    newCopy = SquareView:new()
+    self:copyTo(newCopy)
+    return newCopy
+end
+
+function SquareView:copyTo(o)
+    View.copyTo(self, o)
+    o.color = {self.color[1], self.color[2], self.color[3]}
+end
+
 function SquareView:draw()
     color = self.color
     if color == nil then
@@ -106,53 +142,4 @@ function SquareView:draw()
 
     View.draw(self)
 end
-
--- ImageView: View class ---------------------------------------
-
-ImageView = View:new({
-  image = nil,
-  imageName = nil,
-  scaleX = 1,
-  scaleY = 1
-  })
-
-function ImageView:new(o)
-    o = o or {}   -- create object if user does not provide one    
-    setmetatable(o, self)
-    self.__index = self
-
-    if o.imageName ~= nil then
-        o.image = love.graphics.newImage(o.imageName)
-
-        o.scaleX = o.width  / o.image:getWidth()
-        o.scaleY = o.height / o.image:getHeight()
-    end
-
-    o:init()
-
-    return o
-end
-
-function ImageView:draw()
-    if self.image == nil then
-        SquareView.draw(self)
-        return
-    end
-
-    x = self.x
-    y = self.y
-
-    if self.superview ~= nil then
-        x = x + self.superview.x
-        y = y + self.superview.y
-    end
-
-    love.graphics.setColor({255, 255, 255})
-    love.graphics.draw(self.image, x, y, 0, 
-        self.scaleX, self.scaleY, 0, 0, 0, 0)    
-
-    View.draw(self)
-end
-
-
 

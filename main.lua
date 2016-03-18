@@ -1,25 +1,33 @@
 
--- TODO: - Add offset to images
--- TODO: Add margins for taps
-
 require 'array'
 require 'view'
 require 'animation'
+require 'mapView'
+require 'imageView'
+require 'squareView'
 
 ----------------------------------------------------------------
 
 screenWidth = 0
 screenHeight = 0
 
-
+--
 view = nil
 
-square = nil
-otherSquare = nil
+player = nil
+mapView = nil
+
+--
+stateEditing = 0
+stateRunning = 1
+
+state = stateEditing
 
 
 function love.update(dt)
     runAnimations(dt)
+
+
 end
 
 function love.load()
@@ -36,53 +44,33 @@ function love.load()
 
     ----------------------------------
 
-    otherSquare = SquareView:new({
-        name = "otherSquare",
-        color = {100, 0, 0},
-        x = 10,
-        y = 10,
-        width = 30,
-        height = 30,
+    mapView = MapView:new({
         })
+    view:addSubview(mapView)
 
-    --
-    square = SquareView:new({
-        name = "square",
-        x = 100,
-        y = 100
+    player = SquareView:new({
+        width = tileSize,
+        height = tileSize
         })
-
-    square:addSubview(otherSquare)
-
-    view:addSubview(square)
-
-    square.onTap = function (self)
-        print("hueeeeeeee")
-    end
-
-    smileImage = ImageView:new({
-        name = "smile",
-        imageName = "smile.png",
-        x = 400,
-        y = 400
-        })
-
-    view:addSubview(smileImage)
-
-    smileImage.onTap = function (self)
-        print("ieeeeeeeeeeeee")
-    end
+    mapView:addSubview(player)
 
     ----------------------------------
 
-    -- animation = OriginAnimation:new({
-    --     subject = square,
-    --     destinationX = 300,
-    --     destinationY = 200,
-    --     duration = 3
-    --     })
+    animation1 = OriginAnimation:new({
+        subject = player,
+        destinationX = 500,
+        destinationY = 0
+        })
 
-    -- startAnimation(animation)
+    animation2 = OriginAnimation:new({
+        subject = player,
+        destinationX = 500,
+        destinationY = 300
+        })
+
+    animation1:chain(animation2)
+
+    startAnimation(animation1)
 end
  
 function love.draw()
@@ -91,5 +79,9 @@ end
 
 function love.mousereleased( x, y, button, istouch )
     view:tap(x, y)
+end
+
+function changeState(newValue)
+    state = newValue
 end
 
