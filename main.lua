@@ -61,6 +61,19 @@ function love.load()
         print("hueeeeeeee")
     end
 
+    smileImage = ImageView:new({
+        name = "smile",
+        imageName = "smile.png",
+        x = 400,
+        y = 400
+        })
+
+    view:addSubview(smileImage)
+
+    smileImage.onTap = function (self)
+        print("ieeeeeeeeeeeee")
+    end
+
     ----------------------------------
 
     -- animation = OriginAnimation:new({

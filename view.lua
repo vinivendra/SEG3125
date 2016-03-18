@@ -1,10 +1,6 @@
 
 require 'array'
 
-function setColor(color)
-    love.graphics.setColor(color[1], color[2], color[3])
-end
-
 function pointIsInView(x, y, view)
     return x >= view.x and
            y >= view.y and
@@ -23,12 +19,16 @@ View = {
     onTap = nil
 }
 
+function View:init()
+    self.subviews = {}
+end    
+
 function View:new(o)
     o = o or {}   -- create object if user does not provide one
     setmetatable(o, self)
     self.__index = self
 
-    o.subviews = {}
+    o:init()
 
     return o
 end
@@ -82,13 +82,17 @@ function SquareView:new(o)
     setmetatable(o, self)
     self.__index = self
 
-    o.subviews = {}
+    o:init()
 
     return o
 end
 
 function SquareView:draw()
-    setColor(self.color)
+    color = self.color
+    if color == nil then
+        color = {255, 255, 255}
+    end
+    love.graphics.setColor(color)
 
     x = self.x
     y = self.y
@@ -100,9 +104,55 @@ function SquareView:draw()
 
     love.graphics.rectangle("fill", x, y, self.width, self.height)    
 
-    for i=1,table.getn(self.subviews) do
-        self.subviews[i]:draw()
-    end
+    View.draw(self)
 end
+
+-- ImageView: View class ---------------------------------------
+
+ImageView = View:new({
+  image = nil,
+  imageName = nil,
+  scaleX = 1,
+  scaleY = 1
+  })
+
+function ImageView:new(o)
+    o = o or {}   -- create object if user does not provide one    
+    setmetatable(o, self)
+    self.__index = self
+
+    if o.imageName ~= nil then
+        o.image = love.graphics.newImage(o.imageName)
+
+        o.scaleX = o.width  / o.image:getWidth()
+        o.scaleY = o.height / o.image:getHeight()
+    end
+
+    o:init()
+
+    return o
+end
+
+function ImageView:draw()
+    if self.image == nil then
+        SquareView.draw(self)
+        return
+    end
+
+    x = self.x
+    y = self.y
+
+    if self.superview ~= nil then
+        x = x + self.superview.x
+        y = y + self.superview.y
+    end
+
+    love.graphics.setColor({255, 255, 255})
+    love.graphics.draw(self.image, x, y, 0, 
+        self.scaleX, self.scaleY, 0, 0, 0, 0)    
+
+    View.draw(self)
+end
+
 
 
