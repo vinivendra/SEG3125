@@ -1,32 +1,70 @@
 
-local View = require 'view'
+require 'array'
+require 'view'
+require 'animation'
 
-square = View:new()
-otherSquare = View:new()
+----------------------------------------------------------------
+
+screenWidth = 0
+screenHeight = 0
+
+
+view = nil
+
+square = nil
+otherSquare = nil
 
 
 function love.update(dt)
+    runAnimations(dt)
 end
 
 function love.load()
-    square.name = "square"
-    otherSquare.name = "otherSquare"
+    screenWidth  = love.graphics.getWidth()
+    screenHeight = love.graphics.getHeight()
 
-    otherSquare.color = {100, 0, 0}
+    view = View:new({
+        x = 0,
+        y = 0,
+        width = screenWidth,
+        height = screenHeight
+        })
 
-    square.x = 100
-    square.y = 100
+    ----------------------------------
 
-    otherSquare.x = 10
-    otherSquare.y = 10
-    otherSquare.width = 30
-    otherSquare.height = 30
+    otherSquare = SquareView:new({
+        name = "otherSquare",
+        color = {100, 0, 0},
+        x = 10,
+        y = 10,
+        width = 30,
+        height = 30,
+        })
+
+    square = SquareView:new({
+        name = "square",
+        x = 100,
+        y = 100
+        })
 
     square:addSubview(otherSquare)
+
+    view:addSubview(square)
+
+    ----------------------------------
+
+    animation = OriginAnimation:new({
+        subject = square,
+        destinationX = 300,
+        destinationY = 200,
+        duration = 3
+        })
+
+    startAnimation(animation)
 end
  
 function love.draw()
-   square:draw()
+   view:draw()
 end
 
 
