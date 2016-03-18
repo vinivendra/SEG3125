@@ -5,20 +5,38 @@ function setColor(color)
     love.graphics.setColor(color[1], color[2], color[3])
 end
 
+function pointIsInView(x, y, view)
+    return x >= view.x and
+           y >= view.y and
+           x <= view.x + subview.width and
+           y <= view.y + subview.height
+end  
+
 -- View class ---------------------------------------------------
 
 View = {
     x = 0, y = 0,
     width = 100, height = 100,
-    color = {45, 146, 153},
     subviews = {},
     superview = nil,
-    name= ""
+    name = "",
+    onTap = nil
 }
+
+function View:new(o)
+    o = o or {}   -- create object if user does not provide one
+    setmetatable(o, self)
+    self.__index = self
+
+    o.subviews = {}
+
+    return o
+end
 
 function View:draw()
     for i=1,table.getn(self.subviews) do
-      self.subviews[i]:draw()
+        subview = self.subviews[i]
+        subview:draw()
     end
 end
 
@@ -31,19 +49,33 @@ function View:removeFromSuperview()
     removeElement(self.superview.subviews, self)
 end
 
-function View:new(o)
-    o = o or {}   -- create object if user does not provide one
-    setmetatable(o, self)
-    self.__index = self
+function View:tap(x, y)
+    triggered = false
 
-    o.subviews = {}
+    for i=1,table.getn(self.subviews) do
+        subview = self.subviews[i]
 
-    return o
+        if pointIsInView(x, y, subview) then
+            result = subview:tap(x - subview.x, y - subview.y)
+            triggered = triggered or result
+        end
+    end
+
+    if triggered == false then
+        if self.onTap ~= nil then
+            self:onTap()
+            triggered = true
+        end
+    end
+
+    return triggered
 end
 
 -- SquareView: View class ---------------------------------------
 
-SquareView = View:new()
+SquareView = View:new({
+  color = {45, 146, 153}
+  })
 
 function SquareView:new(o)
     o = o or {}   -- create object if user does not provide one    

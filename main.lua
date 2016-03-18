@@ -24,6 +24,7 @@ function love.load()
     screenHeight = love.graphics.getHeight()
 
     view = View:new({
+        name = "view",
         x = 0,
         y = 0,
         width = screenWidth,
@@ -41,6 +42,7 @@ function love.load()
         height = 30,
         })
 
+    --
     square = SquareView:new({
         name = "square",
         x = 100,
@@ -51,20 +53,27 @@ function love.load()
 
     view:addSubview(square)
 
+    square.onTap = function (self)
+        print("hueeeeeeee")
+    end
+
     ----------------------------------
 
-    animation = OriginAnimation:new({
-        subject = square,
-        destinationX = 300,
-        destinationY = 200,
-        duration = 3
-        })
+    -- animation = OriginAnimation:new({
+    --     subject = square,
+    --     destinationX = 300,
+    --     destinationY = 200,
+    --     duration = 3
+    --     })
 
-    startAnimation(animation)
+    -- startAnimation(animation)
 end
  
 function love.draw()
    view:draw()
 end
 
+function love.mousepressed( x, y, button, istouch )
+    view:tap(x, y)
+end
 

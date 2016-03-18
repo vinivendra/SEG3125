@@ -24,7 +24,6 @@ function runAnimations(dt)
         isRunning = animation:run(dt)
 
         if isRunning == false then
-            animation.subject:removeFromSuperview()
             removeAtIndex(animations, i)
         end
     end
