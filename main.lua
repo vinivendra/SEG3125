@@ -1,5 +1,4 @@
 
--- TODO: Image views
 -- TODO: - Add offset to images
 -- TODO: Add margins for taps
 
