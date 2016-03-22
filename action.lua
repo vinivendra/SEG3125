@@ -35,6 +35,19 @@ function startActions()
     animation2:chain(animation3)
     animation3:chain(animation4)
 
+    scaleAnim = ScaleAnimation:new({
+        subject = player,
+        duration = 0.5
+        })
+    animation4:chain(scaleAnim)
+
+    scaleAnim2 = ScaleAnimation:new({
+        subject = player,
+        duration = 0.5,
+        targetScale = 0.5
+        })
+    scaleAnim:chain(scaleAnim2)
+
     push(actionAnimations, animation1)
 end
 
