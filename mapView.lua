@@ -1,8 +1,6 @@
-require 'view'
+require 'squareView'
 
 -- MapView: View class ---------------------------------------
-
-tileSize = 66.6666
 
 mapDictionary = {
     ["#"] = SquareView:new({

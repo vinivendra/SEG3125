@@ -1,43 +1,27 @@
 
+require 'interpolate'
 require 'array'
-
-function interpolate(a, b, t)
-    return a + ((b - a) * t)
-end
-
-function smooth(a, b, t)
-    start = a
-    interval = b - a
-    interp = t * t * t * (t * (t * 6 - 15) + 10)
-    return start + interp * interval
-end
-
-function easeIn(a, b, t)
-    start = a
-    interval = b - a
-    interp = t * t
-    return start + interp * interval
-end
-
-function easeOut(a, b, t)
-    start = a
-    interval = b - a
-    interp = 1 - (1 - t) * (1 - t)
-    return start + interp * interval
-end
 
 function startAnimation(animation)
     push(animations, animation)
 end
 
 function runAnimations(dt)
-    size = getSize(animations)
+    runAnimationsOnArray(animations, dt)
+end
+
+function runActions(dt)
+    runAnimationsOnArray(actionAnimations, dt)
+end
+
+function runAnimationsOnArray(array, dt)
+    size = getSize(array)
 
     for i=1,size do
-        animation = animations[i]
+        animation = array[i]
 
         if animation.isActive == false then
-            removeAtIndex(animations, i)
+            removeAtIndex(array, i)
         end
 
         isRunning = animation:run(dt)
@@ -46,12 +30,15 @@ function runAnimations(dt)
             if animation.next ~= nil then
                 startAnimation(animation.next)
             end
-            removeAtIndex(animations, i)
+            removeAtIndex(array, i)
         end
     end
 end
 
+actionAnimations = {}
 animations = {}
+
+gameAnimation = nil
 
 --- Animation class --------------------------------------------
 
@@ -106,6 +93,55 @@ end
 
 function OriginAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
+
+    if self.t > 1.0 then
+        self.subject.x = self.destinationX
+        self.subject.y = self.destinationY
+        return false
+    else
+        self.x = self.timingFunction(self.originX, self.destinationX, self.t)
+        self.y = self.timingFunction(self.originY, self.destinationY, self.t)
+        self.subject.x = self.x
+        self.subject.y = self.y
+        return true
+    end
+end
+
+--- MoveAnimation: Animation class --------------------------
+
+MoveAnimation = Animation:new({
+    originX = nil,
+    originY = nil,
+    destinationX = nil,
+    destinationY = nil,
+    displacementX = 0,
+    displacementY = 0
+    })
+
+function MoveAnimation:new(o)
+    o = o or {}   -- create object if user does not provide one
+
+    setmetatable(o, self)
+    self.__index = self
+
+    return o
+end
+
+function MoveAnimation:chain(newAnimation)
+    self.next = newAnimation
+end
+
+function MoveAnimation:run(dt)
+    self.t = self.t + (dt / self.duration)
+
+    if self.originX == nil then
+        self.originX = self.subject.x
+        self.destinationX = self.originX + self.displacementX
+    end
+    if self.originY == nil then
+        self.originY = self.subject.y
+        self.destinationY = self.originY + self.displacementY
+    end
 
     if self.t > 1.0 then
         self.subject.x = self.destinationX

@@ -1,13 +1,4 @@
 
-require 'array'
-require 'view'
-require 'animation'
-require 'mapView'
-require 'imageView'
-require 'squareView'
-
-----------------------------------------------------------------
-
 screenWidth = 0
 screenHeight = 0
 
@@ -23,11 +14,27 @@ stateRunning = 1
 
 state = stateEditing
 
+--
+tileSize = 66.6666
+
+----------------------------------------------------------------
+
+require 'array'
+
+require 'view'
+require 'mapView'
+require 'imageView'
+require 'squareView'
+
+require 'animation'
+
+require 'action'
+
+----------------------------------------------------------------
 
 function love.update(dt)
     runAnimations(dt)
-
-
+    runActions(dt)
 end
 
 function love.load()
@@ -44,8 +51,7 @@ function love.load()
 
     ----------------------------------
 
-    mapView = MapView:new({
-        })
+    mapView = MapView:new()
     view:addSubview(mapView)
 
     player = SquareView:new({
@@ -56,23 +62,34 @@ function love.load()
 
     ----------------------------------
 
-    animation1 = OriginAnimation:new({
-        subject = player,
-        destinationX = 500,
-        destinationY = 0,
-        timingFunction = easeIn
+    -- animation1 = MoveAnimation:new({
+    --     subject = player,
+    --     destinationX = 500,
+    --     destinationY = 0,
+    --     timingFunction = easeIn
+    --     })
+
+    -- animation2 = MoveAnimation:new({
+    --     subject = player,
+    --     destinationX = 500,
+    --     destinationY = 300,
+    --     timingFunction = easeOut
+    --     })
+
+    -- animation1:chain(animation2)
+
+    -- startAnimation(animation1)
+
+    action1 = MoveAction:new({
+        direction = moveRight
         })
-
-    animation2 = OriginAnimation:new({
-        subject = player,
-        destinationX = 500,
-        destinationY = 300,
-        timingFunction = easeOut
+    action2 = MoveAction:new({
+        direction = moveDown
         })
+    addAction(action1)
+    addAction(action2)
 
-    animation1:chain(animation2)
-
-    startAnimation(animation1)
+    startActions()
 end
  
 function love.draw()
