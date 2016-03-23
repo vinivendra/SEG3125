@@ -38,23 +38,9 @@ function startActions()
     animation1:chain(animation3)
     animation1:chain(animation4)
 
-    pulseAnim = PulseAnimation:new({
-        subject = player
-        })
-    animation1:chain(pulseAnim)
-
-    -- scaleAnim = ScaleAnimation:new({
-    --     subject = player,
-    --     duration = 0.5
-    --     })
-    -- animation1:chain(scaleAnim)
-
-    -- scaleAnim2 = ScaleAnimation:new({
-    --     subject = player,
-    --     duration = 0.5,
-    --     targetScale = 0.5
-    --     })
-    -- animation1:chain(scaleAnim2)
+    action5 = AttackAction:new()
+    animation5 = action5:getAnimation()
+    animation1:chain(animation5)
 
     push(actionAnimations, animation1)
 end
@@ -128,6 +114,14 @@ function AttackAction:new(o)
     self.__index = self
     return o
 end
+
+function AttackAction:getAnimation()
+    pulseAnimation = PulseAnimation:new({
+        subject = player
+    })
+    return pulseAnimation
+end
+
 
 --- LoopAction: Action class --------------------------
 
