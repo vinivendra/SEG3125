@@ -1,7 +1,10 @@
 
 require 'array'
-require 'animation'
 
+require 'animation'
+require 'scaleAnimation'
+require 'moveAnimation'
+require 'originAnimation'
 
 
 function addAction(action) 
@@ -32,21 +35,26 @@ function startActions()
     animation4 = action4:getAnimation()
 
     animation1:chain(animation2)
-    animation2:chain(animation3)
-    animation3:chain(animation4)
+    animation1:chain(animation3)
+    animation1:chain(animation4)
 
-    scaleAnim = ScaleAnimation:new({
-        subject = player,
-        duration = 0.5
+    pulseAnim = PulseAnimation:new({
+        subject = player
         })
-    animation4:chain(scaleAnim)
+    animation1:chain(pulseAnim)
 
-    scaleAnim2 = ScaleAnimation:new({
-        subject = player,
-        duration = 0.5,
-        targetScale = 0.5
-        })
-    scaleAnim:chain(scaleAnim2)
+    -- scaleAnim = ScaleAnimation:new({
+    --     subject = player,
+    --     duration = 0.5
+    --     })
+    -- animation1:chain(scaleAnim)
+
+    -- scaleAnim2 = ScaleAnimation:new({
+    --     subject = player,
+    --     duration = 0.5,
+    --     targetScale = 0.5
+    --     })
+    -- animation1:chain(scaleAnim2)
 
     push(actionAnimations, animation1)
 end
