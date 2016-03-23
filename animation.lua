@@ -65,3 +65,8 @@ function Animation:chain(newAnimation)
         self.next:chain(newAnimation)
     end
 end
+
+function Animation:run()
+    return false
+end
+
