@@ -47,10 +47,10 @@ end
 
 actions = {}
 
-moveRight = 0
-moveDown = 1
-moveLeft = 2
-moveUp = 3
+moveRight = {1, 0}
+moveDown = {0, 1}
+moveLeft = {-1, 0}
+moveUp = {0, -1}
 
 --- Action class --------------------------------------
 
@@ -79,21 +79,9 @@ function MoveAction:new(o)
 end
 
 function MoveAction:getAnimation()
-    displacementX = 0
-    displacementY = 0
-
-    if self.direction == moveRight then
-        displacementX = tileSize
-    end
-    if self.direction == moveLeft then
-        displacementX = -tileSize
-    end
-    if self.direction == moveUp then
-        displacementY = -tileSize
-    end
-    if self.direction == moveDown then
-        displacementY = tileSize
-    end
+    print(self.direction)
+    displacementX = self.direction[1] * tileSize
+    displacementY = self.direction[2] * tileSize
 
     animation = MoveAnimation:new({
         subject = player,
