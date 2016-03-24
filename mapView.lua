@@ -5,12 +5,12 @@ require 'squareView'
 mapDictionary = {
     ["#"] = SquareView:new({
     name = "wall tile",
-    color = {174, 122, 66},
+    color = {85, 159, 168},
     width = tileSize, height = tileSize
     }),
     ["_"] = SquareView:new({
     name = "floor tile",
-    color = {200, 200, 200},
+    color = {13, 64, 79},
     width = tileSize, height = tileSize
     })
 }
@@ -18,7 +18,6 @@ mapDictionary = {
 map = {"###_########",
        "###_########",
        "____##______",
-       "###_##_#####",
        "###____#####",
        "############"}
 

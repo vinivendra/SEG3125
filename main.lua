@@ -15,7 +15,7 @@ stateRunning = 1
 state = stateEditing
 
 --
-tileSize = 66.6666
+tileSize = 130
 
 ----------------------------------------------------------------
 
@@ -51,43 +51,50 @@ function love.load()
 
     ----------------------------------
 
-    mapView = MapView:new()
-    view:addSubview(mapView)
+    wallWidth = 180
+    wallHeight = 125
+    wallView = SquareView:new({
+        color = {18, 117, 92},
+        width = 1560 + 2 * wallWidth,
+        height = 650 + 2 * wallHeight
+        })
 
-    player = SquareView:new({
+    mapView = MapView:new({
+        x = wallWidth,
+        y = wallHeight,
+        })
+
+    wallView: addSubview(mapView)
+    view:addSubview(wallView)
+
+    --
+    player = ImageView:new({
         width = tileSize,
-        height = tileSize
+        height = tileSize,
+        imageName = "link1.png"
         })
     mapView:addSubview(player)
 
     ----------------------------------
 
-    -- animation1 = MoveAnimation:new({
-    --     subject = player,
-    --     destinationX = 500,
-    --     destinationY = 0,
-    --     timingFunction = easeIn
-    --     })
-
-    -- animation2 = MoveAnimation:new({
-    --     subject = player,
-    --     destinationX = 500,
-    --     destinationY = 300,
-    --     timingFunction = easeOut
-    --     })
-
-    -- animation1:chain(animation2)
-
-    -- startAnimation(animation1)
-
-    action1 = MoveAction:new({
-        direction = moveRight
+    commandBar = SquareView:new({
+        y = 900,
+        width = 1920,
+        height = 180,
+        color = {237, 241, 242}
         })
-    action2 = MoveAction:new({
-        direction = moveDown
-        })
-    addAction(action1)
-    addAction(action2)
+    view:addSubview(commandBar)
+
+    ----------------------------------
+
+    -- action1 = MoveAction:new({
+    --     direction = moveRight
+    --     })
+    -- action2 = MoveAction:new({
+    --     direction = moveDown
+    --     })
+    -- addAction(action1)
+    -- addAction(action2)
 
     startActions()
 end
