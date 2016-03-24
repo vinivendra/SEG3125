@@ -12,43 +12,34 @@ function addAction(action)
 end
 
 function startActions()
-    actionAnimations = {}
 
     action1 = MoveAction:new({
         direction = moveRight
         })
-    -- animation1 = action1:getAnimation()
-
-    -- action2 = MoveAction:new({
-    --     direction = moveDown
-    --     })
-    -- animation2 = action2:getAnimation()
-
-    -- action3 = MoveAction:new({
-    --     direction = moveLeft
-    --     })
-    -- animation3 = action3:getAnimation()
-
-    -- action4 = MoveAction:new({
-    --     direction = moveUp
-    --     })
-    -- animation4 = action4:getAnimation()
-
-    -- animation1:chain(animation2)
-    -- animation1:chain(animation3)
-    -- animation1:chain(animation4)
-
-    -- action5 = AttackAction:new()
-    -- animation5 = action5:getAnimation()
-    -- animation1:chain(animation5)
+    action2 = MoveAction:new({
+        direction = moveDown
+        })
 
     loop = LoopAction:new()
     loop:addSubaction(action1)
-    loop.iterations = 5
+    -- loop:addSubaction(action2)
+    loop.iterations = 2
 
-    loopAnimation = loop:getAnimation()
+    addAction(loop)
 
-    push(actionAnimations, loopAnimation)
+    --
+
+    actionAnimations = {}
+
+    firstAnimation = Animation:new()
+
+    for i=1,getSize(actions) do
+        action = actions[i]
+        animation = action:getAnimation()
+        firstAnimation:chain(animation)
+    end
+
+    push(actionAnimations, firstAnimation)
 end
 
 actions = {}
