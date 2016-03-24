@@ -85,7 +85,6 @@ function MoveAction:new(o)
 end
 
 function MoveAction:getAnimation()
-    print(self.direction)
     displacementX = self.direction[1] * tileSize
     displacementY = self.direction[2] * tileSize
 
