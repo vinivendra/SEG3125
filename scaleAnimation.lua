@@ -23,26 +23,31 @@ end
 function ScaleAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
-    ratio = (self.targetScale / self.originScale)
+    if self.state == AnimationReady then
+        ratio = (self.targetScale / self.originScale)
 
-    if self.originWidth == nil then
-        self.originWidth = self.subject.width
-        self.destinationWidth = self.originWidth * ratio
-    end
-    if self.originHeight == nil then
-        self.originHeight = self.subject.height
-        self.destinationHeight = self.originHeight * ratio
+        if self.originWidth == nil then
+            self.originWidth = self.subject.width
+            self.destinationWidth = self.originWidth * ratio
+        end
+        if self.originHeight == nil then
+            self.originHeight = self.subject.height
+            self.destinationHeight = self.originHeight * ratio
+        end
     end
 
     if self.t > 1.0 then
+        self.state = AnimationEnded
+
         self.subject.width = self.destinationWidth
         self.subject.height = self.destinationHeight
-        return false
     else
-        self.width = self.timingFunction(self.originWidth, self.destinationWidth, self.t)
-        self.height = self.timingFunction(self.originHeight, self.destinationHeight, self.t)
-        self.subject.width = self.width
-        self.subject.height = self.height
+        self.state = AnimationRunning
+
+        local width = self.timingFunction(self.originWidth, self.destinationWidth, self.t)
+        local height = self.timingFunction(self.originHeight, self.destinationHeight, self.t)
+        self.subject.width = width
+        self.subject.height = height
         return true
     end
 end
@@ -73,6 +78,14 @@ function PulseAnimation:new(o)
     return o
 end
 
+function PulseAnimation:run(dt)
+    if self.state == AnimationReady then
+        if self.action ~= nil then
+            self.action:animationWillStart(self)
+        end
+    end
 
+    ScaleAnimation.run(self, dt)
+end
 
 
