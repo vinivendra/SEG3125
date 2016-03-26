@@ -72,21 +72,26 @@ end
 
 function View:removeFromSuperview()
     removeElement(self.superview.subviews, self)
+    self.superview = nil
 end
 
 function View:tap(x, y)
-    triggered = false
+    local triggered = false
 
     for i=1,table.getn(self.subviews) do
-        subview = self.subviews[i]
+        local subview = self.subviews[i]
 
-        if pointIsInView(x, y, subview) then
-            result = subview:tap(x - subview.x, y - subview.y)
-            triggered = triggered or result
+        if subview ~= nil then
+            if pointIsInView(x, y, subview) then
+                local result = subview:tap(x - subview.x, y - subview.y)
+                triggered = triggered or result
+            end
         end
     end
 
+    print("onTap1", self.onTap)
     if triggered == false then
+        print("onTap2", self.onTap)
         if self.onTap ~= nil then
             self:onTap()
             triggered = true

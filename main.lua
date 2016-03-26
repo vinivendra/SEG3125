@@ -17,6 +17,11 @@ state = stateEditing
 --
 tileSize = 130
 
+commandBar = nil
+commandMenu = nil
+
+selectedAction = nil
+
 ----------------------------------------------------------------
 
 require 'array'
@@ -29,6 +34,8 @@ require 'squareView'
 require 'animation'
 
 require 'action'
+
+require 'tapFunctions'
 
 ----------------------------------------------------------------
 
@@ -71,7 +78,7 @@ function love.load()
     player = ImageView:new({
         width = tileSize,
         height = tileSize,
-        imageName = "link1.png"
+        imageName = "linkRight.png",
         })
     mapView:addSubview(player)
 
@@ -85,18 +92,34 @@ function love.load()
         })
     view:addSubview(commandBar)
 
+    commandMenu = SquareView:new({
+        width = 1200,
+        height = 180,
+        color = {237, 241, 242},
+        y = 700,
+        x = 20
+        })
+
+    local menuView1 = SquareView:new({
+        width = 140,
+        height = 140,
+        x = 20,
+        y = 20,
+        onTap = addMoveAction
+        })
+    commandMenu:addSubview(menuView1)
+
     ----------------------------------
 
-    -- action1 = MoveAction:new({
-    --     direction = moveRight
-    --     })
-    -- action2 = MoveAction:new({
-    --     direction = moveDown
-    --     })
-    -- addAction(action1)
-    -- addAction(action2)
+    commandAdd = AddCommandAction:new()
+    actions = {commandAdd}
+    commandBar:addSubview(commandAdd.view)
+    commandAdd.view.onTap = toggleCommandMenu
 
-    startActions()
+    ----------------------------------
+
+    -- temp
+    -- startActions()
 end
  
 function love.draw()
@@ -110,4 +133,7 @@ end
 function changeState(newValue)
     state = newValue
 end
+
+
+
 

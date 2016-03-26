@@ -7,6 +7,13 @@ function push(array, element)
     array[size + 1] = element
 end
 
+function pushAction(array, newAction)
+    local size = getSize(array)
+    local addAction = array[size]
+    array[size] = newAction
+    array[size+1] = addAction
+end 
+
 function removeElement(array, element)
     size = getSize(array)
 

@@ -24,9 +24,9 @@ function runAnimationsOnArray(array, dt)
             removeAtIndex(array, i)
         end
 
-        isRunning = animation:run(dt)
+        animation:run(dt)
 
-        if isRunning == false then
+        if animation.state == AnimationEnded then
             if animation.next ~= nil then
                 startAnimation(animation.next)
             end
@@ -42,7 +42,12 @@ gameAnimation = nil
 
 --- Animation class --------------------------------------------
 
+AnimationReady = 0
+AnimationRunning = 1
+AnimationEnded = 2
+
 Animation = {
+    state = AnimationReady,
     duration =  1,
     t = 0,
     subject = {},
@@ -67,6 +72,6 @@ function Animation:chain(newAnimation)
 end
 
 function Animation:run()
-    return false
+    self.state = AnimationEnded
 end
 

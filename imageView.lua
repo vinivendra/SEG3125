@@ -16,14 +16,18 @@ function ImageView:new(o)
 
     o:init()
 
-    if o.imageName ~= nil then
-        o.image = love.graphics.newImage(o.imageName)
-
-        o.scaleX = o.width  / o.image:getWidth()
-        o.scaleY = o.height / o.image:getHeight()
-    end
+    o:updateImage()
 
     return o
+end
+
+function ImageView:updateImage()
+    if self.imageName ~= nil then
+        self.image = love.graphics.newImage(self.imageName)
+
+        self.scaleX = self.width  / self.image:getWidth()
+        self.scaleY = self.height / self.image:getHeight()
+    end
 end
 
 function ImageView:copy()

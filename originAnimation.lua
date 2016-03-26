@@ -38,10 +38,13 @@ function OriginAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
     if self.t > 1.0 then
+        self.state = AnimationEnded
+
         self.subject.x = self.destinationX
         self.subject.y = self.destinationY
-        return false
     else
+        self.state = AnimationRunning
+
         self.x = self.timingFunction(self.originX, self.destinationX, self.t)
         self.y = self.timingFunction(self.originY, self.destinationY, self.t)
         self.subject.x = self.x

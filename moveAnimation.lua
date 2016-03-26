@@ -1,8 +1,14 @@
 require 'animation'
 
+--- ActionAnimation: Animation class ------------------------
+
+ActionAnimation = Animation:new({
+    action = nil
+    })
+
 --- MoveAnimation: Animation class --------------------------
 
-MoveAnimation = Animation:new({
+MoveAnimation = ActionAnimation:new({
     originX = nil,
     originY = nil,
     destinationX = nil,
@@ -23,25 +29,33 @@ end
 function MoveAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
-    if self.originX == nil then
-        self.originX = self.subject.x
-        self.destinationX = self.originX + self.displacementX
-    end
-    if self.originY == nil then
-        self.originY = self.subject.y
-        self.destinationY = self.originY + self.displacementY
+    if self.state == AnimationReady then
+        if self.action ~= nil then
+            self.action:animationWillStart(self)
+        end
+
+        if self.originX == nil then
+            self.originX = self.subject.x
+            self.destinationX = self.originX + self.displacementX
+        end
+        if self.originY == nil then
+            self.originY = self.subject.y
+            self.destinationY = self.originY + self.displacementY
+        end
     end
 
     if self.t > 1.0 then
+        self.state = AnimationEnded
+
         self.subject.x = self.destinationX
         self.subject.y = self.destinationY
-        return false
     else
+        self.state = AnimationRunning
+
         self.x = self.timingFunction(self.originX, self.destinationX, self.t)
         self.y = self.timingFunction(self.originY, self.destinationY, self.t)
         self.subject.x = self.x
         self.subject.y = self.y
-        return true
     end
 end
 
