@@ -46,8 +46,8 @@ function StopAnimation:run(dt)
         if self.action ~= nil then
             self.action:animationWillStart(self)
         end
-        print("stop", self.subject)
-        self.subject.imageName = "linkStop.png"
+
+        self.subject.imageName = "individuals/linkStop.png"
         self.subject:updateImage()
     end
 

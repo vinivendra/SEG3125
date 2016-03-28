@@ -23,7 +23,7 @@ end
 
 function ImageView:updateImage()
     if self.imageName ~= nil then
-        self.image = love.graphics.newImage("img/" .. self.imageName)
+        self.image = love.graphics.newImage("resources/img/" .. self.imageName)
 
         self.scaleX = self.width  / self.image:getWidth()
         self.scaleY = self.height / self.image:getHeight()

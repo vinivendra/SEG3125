@@ -38,11 +38,10 @@ function MapState:move(direction)
     local x = self.playerPosition[1] + direction[2]
     local y = self.playerPosition[2] + direction[1]
 
-    print("current position", self.playerPosition[1], self.playerPosition[2])
-    print("direction", direction[2], direction[1])
-    print("new position", x, y)
-
-    local canMove = (self.map[x][y] == '_')
+    local canMove = false
+    if self.map[x] ~= nil then
+        canMove = (self.map[x][y] == '_')
+    end
 
     if canMove then
         self.playerPosition[1] = x

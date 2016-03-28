@@ -65,10 +65,10 @@ end
 
 actions = {}
 
-moveRight = {1, 0, "linkRight.png", "arrowRight.png"}
-moveDown = {0, 1, "linkDown.png", "arrowDown.png"}
-moveLeft = {-1, 0, "linkLeft.png", "arrowLeft.png"}
-moveUp = {0, -1, "linkUp.png", "arrowUp.png"}
+moveRight = {1, 0, "individuals/linkRight.png", "interface/arrowRight.png"}
+moveDown = {0, 1, "individuals/linkDown.png", "interface/arrowDown.png"}
+moveLeft = {-1, 0, "individuals/linkLeft.png", "interface/arrowLeft.png"}
+moveUp = {0, -1, "individuals/linkUp.png", "interface/arrowUp.png"}
 
 --- Action class --------------------------------------
 
@@ -108,7 +108,7 @@ function AddCommandAction:createView()
         y = 20,
         width = 140,
         height = 140,
-        imageName = "emptyBlock.png"
+        imageName = "interface/emptyBlock.png"
         })
 end
 
@@ -201,14 +201,14 @@ function AttackAction:createView()
         y = 20,
         width = 140,
         height = 140,
-        imageName = "sword.png",
+        imageName = "interface/sword.png",
         action = self,
         onTap = toggleCommandMenu
         })
 end
 
 function AttackAction:animationWillStart(animation)
-    animation.subject.imageName = "linkRightAttack.png"
+    animation.subject.imageName = "individuals/linkRightAttack.png"
     animation.subject:updateImage()
 end
 

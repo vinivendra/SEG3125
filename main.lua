@@ -94,7 +94,7 @@ function love.load()
     player = ImageView:new({
         width = tileSize,
         height = tileSize,
-        imageName = "linkRight.png",
+        imageName = "individuals/linkRight.png",
         })
     mapView:addSubview(player)
 
@@ -162,7 +162,7 @@ function love.load()
 
     goButton = ImageView:new({
         name = "go button",
-        imageName = "go.png",
+        imageName = "interface/go.png",
         x = 1920 - 180,
         height = 180,
         width = 180,
