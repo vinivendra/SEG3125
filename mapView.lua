@@ -21,7 +21,9 @@ map = {"###_########",
        "###____#####",
        "############"}
 
-MapView = View:new({})
+MapView = View:new({
+    name = "map"
+    })
 
 function MapView:new(o)
     o = o or {}   -- create object if user does not provide one    

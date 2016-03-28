@@ -1,11 +1,5 @@
 require 'animation'
 
---- ActionAnimation: Animation class ------------------------
-
-ActionAnimation = Animation:new({
-    action = nil
-    })
-
 --- MoveAnimation: Animation class --------------------------
 
 MoveAnimation = ActionAnimation:new({
@@ -34,12 +28,13 @@ function MoveAnimation:run(dt)
             self.action:animationWillStart(self)
         end
 
-        if self.originX == nil then
-            self.originX = self.subject.x
+        self.originX = self.subject.x
+        self.originY = self.subject.y
+
+        if self.destinationX == nil then
             self.destinationX = self.originX + self.displacementX
         end
-        if self.originY == nil then
-            self.originY = self.subject.y
+        if self.destinationY == nil then
             self.destinationY = self.originY + self.displacementY
         end
     end

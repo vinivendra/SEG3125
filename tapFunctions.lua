@@ -1,8 +1,11 @@
 
+function dismissCommandMenu(sender)
+    commandMenu:removeFromSuperview()
+end
+
 function toggleCommandMenu(commandView)
-    print("toggleCommandMenu")
     if commandMenu.superview == view then
-        commandMenu:removeFromSuperview()
+        dismissCommandMenu(commandView)    
     else
         view:addSubview(commandMenu)
     end
@@ -10,8 +13,37 @@ function toggleCommandMenu(commandView)
     return true
 end
 
-function addMoveAction(commandView)
+function addMoveRightAction(commandView)
     local moveAction = MoveAction:new()
     addAction(moveAction)
-    toggleCommandMenu()
 end
+
+function addMoveLeftAction(commandView)
+    local moveAction = MoveAction:new({
+        direction = moveLeft
+        })
+    addAction(moveAction)
+end
+
+function addMoveUpAction(commandView)
+    local moveAction = MoveAction:new({
+        direction = moveUp
+        })
+    addAction(moveAction)
+end
+
+function addMoveDownAction(commandView)
+    local moveAction = MoveAction:new({
+        direction = moveDown
+        })
+    addAction(moveAction)
+end
+
+function addAttackAction(commandView)
+    local attackAction = AttackAction:new()
+    addAction(attackAction)
+end
+
+
+
+

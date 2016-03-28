@@ -27,10 +27,10 @@ function runAnimationsOnArray(array, dt)
         animation:run(dt)
 
         if animation.state == AnimationEnded then
+            removeAtIndex(array, i)
             if animation.next ~= nil then
                 startAnimation(animation.next)
             end
-            removeAtIndex(array, i)
         end
     end
 end
@@ -74,4 +74,11 @@ end
 function Animation:run()
     self.state = AnimationEnded
 end
+
+--- ActionAnimation: Animation class ------------------------
+
+ActionAnimation = Animation:new({
+    action = nil
+    })
+
 

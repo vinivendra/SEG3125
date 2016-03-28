@@ -4,8 +4,8 @@ require 'array'
 function pointIsInView(x, y, view)
     return x >= view.x and
            y >= view.y and
-           x <= view.x + subview.width and
-           y <= view.y + subview.height
+           x <= view.x + view.width and
+           y <= view.y + view.height
 end  
 
 -- View class ---------------------------------------------------
@@ -71,14 +71,18 @@ function View:addSubview(subview)
 end
 
 function View:removeFromSuperview()
-    removeElement(self.superview.subviews, self)
-    self.superview = nil
+    if self.superview ~= nil then
+        removeElement(self.superview.subviews, self)
+        self.superview = nil
+    end
 end
 
 function View:tap(x, y)
+    print("tap", self.name)
+
     local triggered = false
 
-    for i=1,table.getn(self.subviews) do
+    for i=getSize(self.subviews),1,-1 do
         local subview = self.subviews[i]
 
         if subview ~= nil then
@@ -89,10 +93,11 @@ function View:tap(x, y)
         end
     end
 
-    print("onTap1", self.onTap)
     if triggered == false then
-        print("onTap2", self.onTap)
+        print("trigger!", self.name)        
+        print("onTap =", self.onTap)
         if self.onTap ~= nil then
+            print("run!")
             self:onTap()
             triggered = true
         end

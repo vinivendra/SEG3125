@@ -5,6 +5,7 @@ require 'animation'
 require 'scaleAnimation'
 require 'moveAnimation'
 require 'originAnimation'
+require 'delayAnimation'
 
 function xForCommandAtIndex(index)
     return 180 * (index - 1) + 20
@@ -25,7 +26,17 @@ end
 function startActions()
     actionAnimations = {}
 
-    firstAnimation = Animation:new()
+    local firstAnimation = nil
+
+    if player.x ~= 0 or player.y ~= 0 then
+        firstAnimation = OriginAnimation:new({
+            destinationX = 0,
+            destinationY = 0,
+            subject = player
+            })
+    else
+        firstAnimation = Animation:new()
+    end
 
     for i=1,getSize(actions) do
         action = actions[i]
@@ -38,10 +49,10 @@ end
 
 actions = {}
 
-moveRight = {1, 0, "linkRight.png"}
-moveDown = {0, 1, "linkDown.png"}
-moveLeft = {-1, 0, "linkLeft.png"}
-moveUp = {0, -1, "linkUp.png"}
+moveRight = {1, 0, "linkRight.png", "arrowRight.png"}
+moveDown = {0, 1, "linkDown.png", "arrowDown.png"}
+moveLeft = {-1, 0, "linkLeft.png", "arrowLeft.png"}
+moveUp = {0, -1, "linkUp.png", "arrowUp.png"}
 
 --- Action class --------------------------------------
 
@@ -68,16 +79,21 @@ function AddCommandAction:new(o)
     self.__index = self
 
     if o.view == nil then
-        o.view = SquareView:new({
+        o.view = o:createView()
+    end
+
+    return o
+end
+
+function AddCommandAction:createView()
+    return ImageView:new({
+        name = "add command",
         x = 20,
         y = 20,
         width = 140,
         height = 140,
-        color = {200, 200, 200}
+        imageName = "emptyBlock.png"
         })
-    end
-
-    return o
 end
 
 function AddCommandAction:animationWillStart(animation)
@@ -99,15 +115,21 @@ function MoveAction:new(o)
     self.__index = self
 
     if o.view == nil then
-        o.view = SquareView:new({
-        x = 20,
-        y = 20,
-        width = 140,
-        height = 140
-        })
+        o.view = o:createView()
     end
 
     return o
+end
+
+function MoveAction:createView()
+    return ImageView:new({
+        name = "move action",
+        x = 20,
+        y = 20,
+        width = 140,
+        height = 140,
+        imageName = self.direction[4]
+        })
 end
 
 function MoveAction:animationWillStart(animation)
@@ -137,7 +159,23 @@ function AttackAction:new(o)
     o = o or {}   -- create object if user does not provide one
     setmetatable(o, self)
     self.__index = self
+
+    if o.view == nil then
+        o.view = o:createView()
+    end
+
     return o
+end
+
+function AttackAction:createView()
+    return ImageView:new({
+        name = "attack action",
+        x = 20,
+        y = 20,
+        width = 140,
+        height = 140,
+        imageName = "sword.png"
+        })
 end
 
 function AttackAction:animationWillStart(animation)
@@ -146,7 +184,7 @@ function AttackAction:animationWillStart(animation)
 end
 
 function AttackAction:getAnimation()
-    pulseAnimation = PulseAnimation:new({
+    pulseAnimation = DelayAnimation:new({
         subject = player,
         action = self
     })

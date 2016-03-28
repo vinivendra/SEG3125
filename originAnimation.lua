@@ -42,7 +42,7 @@ function OriginAnimation:run(dt)
 
         self.subject.x = self.destinationX
         self.subject.y = self.destinationY
-    else
+    else 
         self.state = AnimationRunning
 
         self.x = self.timingFunction(self.originX, self.destinationX, self.t)

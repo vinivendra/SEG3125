@@ -20,8 +20,8 @@ function ScaleAnimation:new(o)
     return o
 end
 
-function ScaleAnimation:run(dt)
-    self.t = self.t + (dt / self.duration)
+function ScaleAnlimation:run(dt)
+    self.t = sef.t + (dt / self.duration)
 
     if self.state == AnimationReady then
         ratio = (self.targetScale / self.originScale)
@@ -48,7 +48,6 @@ function ScaleAnimation:run(dt)
         local height = self.timingFunction(self.originHeight, self.destinationHeight, self.t)
         self.subject.width = width
         self.subject.height = height
-        return true
     end
 end
 
