@@ -1,4 +1,8 @@
+
 require 'squareView'
+
+require 'mapState'
+
 
 -- MapView: View class ---------------------------------------
 
@@ -15,12 +19,6 @@ mapDictionary = {
     })
 }
 
-map = {"###_########",
-       "###_########",
-       "____##______",
-       "###____#####",
-       "############"}
-
 MapView = View:new({
     name = "map"
     })
@@ -32,8 +30,8 @@ function MapView:new(o)
 
     o:init()
 
-    for i=1,getSize(map) do
-        line = map[i]
+    for i=1,getSize(currentMapState.map) do
+        line = currentMapState.map[i]
         for j = 1,#line do
             char = line:sub(j,j)
             tile = mapDictionary[char]:copy()

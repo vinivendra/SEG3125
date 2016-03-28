@@ -1,3 +1,12 @@
+
+getmetatable('').__index = function(str,i)
+  if type(i) == 'number' then
+    return string.sub(str,i,i)
+  else
+    return string[i]
+  end
+end
+
 function getSize(array)
     return table.getn(array)
 end
@@ -19,20 +28,13 @@ function removeElement(array, element)
 
     for i=1,size do
         if array[i] == element then
-            print("found", i, element.name)
-
             for j=i,(size - 1) do
-                print("moving", j+1, array[j + 1].name)
                 array[j] = array[j + 1]
             end
-
-            print("end", size, array[size].name)
 
             array[size] = nil
             
             return true
-        else
-            print("diff", i, element.name)
         end
     end
 

@@ -7,6 +7,10 @@ require 'moveAnimation'
 require 'originAnimation'
 require 'delayAnimation'
 
+require 'mapState'
+
+
+
 function xForCommandAtIndex(index)
     return 180 * (index - 1) + 20
 end
@@ -44,9 +48,11 @@ function startActions()
             destinationY = 0,
             subject = player
             })
-    else
+    else 
         firstAnimation = Animation:new()
     end
+
+    --
 
     for i=1,getSize(actions) do
         action = actions[i]
@@ -150,16 +156,25 @@ function MoveAction:animationWillStart(animation)
 end
 
 function MoveAction:getAnimation()
-    displacementX = self.direction[1] * tileSize
-    displacementY = self.direction[2] * tileSize
+    local canMove = currentMapState:move(self.direction)
 
-    animation = MoveAnimation:new({
-        action = self,
-        subject = player,
-        displacementX = displacementX,
-        displacementY = displacementY
-        })
-    return animation
+    if canMove then
+        local displacementX = self.direction[1] * tileSize
+        local displacementY = self.direction[2] * tileSize
+
+        animation = MoveAnimation:new({
+            action = self,
+            subject = player,
+            displacementX = displacementX,
+            displacementY = displacementY
+            })
+        return animation
+    else
+        animation = StopAnimation:new({
+            subject = player
+            })
+        return animation
+    end
 end
 
 --- AttackAction: Action class --------------------------

@@ -45,6 +45,8 @@ require 'action'
 
 require 'tapFunctions'
 
+require 'mapState'
+
 ----------------------------------------------------------------
 
 function love.update(dt)
@@ -64,6 +66,10 @@ function love.load()
         height = screenHeight
         })
     view.onTap = dismissCommandMenu
+
+    ----------------------------------
+
+    currentMapState = MapState:new()
 
     ----------------------------------
 
