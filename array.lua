@@ -19,13 +19,20 @@ function removeElement(array, element)
 
     for i=1,size do
         if array[i] == element then
+            print("found", i, element.name)
+
             for j=i,(size - 1) do
-                array[i] = array[i + 1]
+                print("moving", j+1, array[j + 1].name)
+                array[j] = array[j + 1]
             end
+
+            print("end", size, array[size].name)
 
             array[size] = nil
             
             return true
+        else
+            print("diff", i, element.name)
         end
     end
 
@@ -41,3 +48,27 @@ function removeAtIndex(array, index)
 
     array[size] = nil
 end
+
+function indexOf(array, element)
+    size = getSize(array)
+
+    for i=1,size do
+        if array[i] == element then
+            return i
+        end
+    end
+
+    return -1
+end
+
+
+
+
+
+
+
+
+
+
+
+

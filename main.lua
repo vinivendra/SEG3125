@@ -22,7 +22,12 @@ commandMenu = nil
 
 goButton = nil
 
+--
 selectedAction = nil
+
+commandStateAdd = 0
+commandStateChange = 1
+commandState = commandStateAdd
 
 
 ----------------------------------------------------------------
@@ -108,33 +113,37 @@ function love.load()
         })
 
     local menuView1 = MoveAction:new():createView()
-    menuView1.onTap = addMoveRightAction
+    menuView1.onTap = commandMoveRightAction
     commandMenu:addSubview(menuView1)
 
     local menuView2 = MoveAction:new({
         direction = moveLeft
         }):createView()
-    menuView2.onTap = addMoveLeftAction
+    menuView2.action = nil
+    menuView2.onTap = commandMoveLeftAction
     menuView2.x = 190
     commandMenu:addSubview(menuView2)
 
     local menuView3 = MoveAction:new({
         direction = moveUp
         }):createView()
-    menuView3.onTap = addMoveUpAction
+    menuView3.action = nil
+    menuView3.onTap = commandMoveUpAction
     menuView3.x = 380
     commandMenu:addSubview(menuView3)
 
     local menuView4 = MoveAction:new({
         direction = moveDown
         }):createView()
-    menuView4.onTap = addMoveDownAction
+    menuView4.action = nil
+    menuView4.onTap = commandMoveDownAction
     menuView4.x = 570
     commandMenu:addSubview(menuView4)
 
     local menuView5 = AttackAction:new({
         }):createView()
-    menuView5.onTap = addAttackAction
+    menuView5.action = nil
+    menuView5.onTap = commandAttackAction
     menuView5.x = 760
     commandMenu:addSubview(menuView5)
 
@@ -143,7 +152,7 @@ function love.load()
     commandAdd = AddCommandAction:new()
     actions = {commandAdd}
     commandBar:addSubview(commandAdd.view)
-    commandAdd.view.onTap = toggleCommandMenu
+    commandAdd.view.onTap = toggleAddCommandMenu
 
     goButton = ImageView:new({
         name = "go button",

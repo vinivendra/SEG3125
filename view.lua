@@ -78,8 +78,6 @@ function View:removeFromSuperview()
 end
 
 function View:tap(x, y)
-    print("tap", self.name)
-
     local triggered = false
 
     for i=getSize(self.subviews),1,-1 do
@@ -94,10 +92,7 @@ function View:tap(x, y)
     end
 
     if triggered == false then
-        print("trigger!", self.name)        
-        print("onTap =", self.onTap)
         if self.onTap ~= nil then
-            print("run!")
             self:onTap()
             triggered = true
         end

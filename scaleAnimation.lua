@@ -20,7 +20,7 @@ function ScaleAnimation:new(o)
     return o
 end
 
-function ScaleAnlimation:run(dt)
+function ScaleAnimation:run(dt)
     self.t = sef.t + (dt / self.duration)
 
     if self.state == AnimationReady then

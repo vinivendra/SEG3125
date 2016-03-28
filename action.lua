@@ -23,6 +23,16 @@ function addAction(action)
     pushAction(actions, action)
 end
 
+function changeAction(oldAction, newAction) 
+    local newView = newAction.view
+
+    index = indexOf(actions, oldAction)
+    actions[index] = newAction
+    oldAction.view:removeFromSuperview()
+    newView.x = xForCommandAtIndex(index)
+    commandBar:addSubview(newView)
+end
+
 function startActions()
     actionAnimations = {}
 
@@ -128,7 +138,9 @@ function MoveAction:createView()
         y = 20,
         width = 140,
         height = 140,
-        imageName = self.direction[4]
+        imageName = self.direction[4],
+        action = self,
+        onTap = toggleCommandMenu
         })
 end
 
@@ -174,7 +186,9 @@ function AttackAction:createView()
         y = 20,
         width = 140,
         height = 140,
-        imageName = "sword.png"
+        imageName = "sword.png",
+        action = self,
+        onTap = toggleCommandMenu
         })
 end
 

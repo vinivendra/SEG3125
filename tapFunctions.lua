@@ -8,40 +8,81 @@ function toggleCommandMenu(commandView)
         dismissCommandMenu(commandView)    
     else
         view:addSubview(commandMenu)
+
+        selectedAction = commandView.action
     end
+
+    commandState = commandStateChange
 
     return true
 end
 
-function addMoveRightAction(commandView)
-    local moveAction = MoveAction:new()
-    addAction(moveAction)
+function toggleAddCommandMenu(sender)
+    toggleCommandMenu(sender)
+    commandState = commandStateAdd
+
+    return true
 end
 
-function addMoveLeftAction(commandView)
+function commandMoveRightAction(commandView)
+    local moveAction = MoveAction:new()
+
+    if commandState == commandStateAdd then
+        addAction(moveAction)
+    elseif commandState == commandStateChange then
+        changeAction(selectedAction, moveAction)
+        selectedAction = moveAction
+    end
+end
+
+function commandMoveLeftAction(commandView)
     local moveAction = MoveAction:new({
         direction = moveLeft
         })
-    addAction(moveAction)
+    
+    if commandState == commandStateAdd then
+        addAction(moveAction)
+    elseif commandState == commandStateChange then
+        changeAction(selectedAction, moveAction)
+        selectedAction = moveAction
+    end
 end
 
-function addMoveUpAction(commandView)
+function commandMoveUpAction(commandView)
     local moveAction = MoveAction:new({
         direction = moveUp
         })
-    addAction(moveAction)
+    
+    if commandState == commandStateAdd then
+        addAction(moveAction)
+    elseif commandState == commandStateChange then
+        changeAction(selectedAction, moveAction)
+        selectedAction = moveAction
+    end
 end
 
-function addMoveDownAction(commandView)
+function commandMoveDownAction(commandView)
     local moveAction = MoveAction:new({
         direction = moveDown
         })
-    addAction(moveAction)
+    
+    if commandState == commandStateAdd then
+        addAction(moveAction)
+    elseif commandState == commandStateChange then
+        changeAction(selectedAction, moveAction)
+        selectedAction = moveAction
+    end
 end
 
-function addAttackAction(commandView)
+function commandAttackAction(commandView)
     local attackAction = AttackAction:new()
-    addAction(attackAction)
+    
+    if commandState == commandStateAdd then
+        addAction(attackAction)
+    elseif commandState == commandStateChange then
+        changeAction(selectedAction, attackAction)
+        selectedAction = attackAction
+    end
 end
 
 
