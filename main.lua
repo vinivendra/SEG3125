@@ -12,7 +12,7 @@ mapView = nil
 stateEditing = 0
 stateRunning = 1
 
-state = stateEditing
+appState = stateEditing
 
 --
 tileSize = 130
@@ -196,7 +196,7 @@ function love.load()
         x = 1920 - 180,
         height = 180,
         width = 180,
-        onTap = startActions
+        onTap = goButtonPressed
         })
     commandBar:addSubview(goButton)
 
@@ -213,11 +213,6 @@ end
 function love.mousereleased( x, y, button, istouch )
     view:tap(x, y)
 end
-
-function changeState(newValue)
-    state = newValue
-end
-
 
 
 

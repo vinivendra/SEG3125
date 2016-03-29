@@ -18,15 +18,12 @@ function xForCommandAtIndex(index)
 end
 
 function layoutCommandViews()
-    print("--")
     for i = 1,getSize(actions) do
         local x = xForCommandAtIndex(i)
         local action = actions[i]
         local view = action.view
         view.x = x
-        print("    laying out", i, view.name)
     end
-    print("--")
 end
 
 maxCommandSize = 11
@@ -64,38 +61,29 @@ end
 
 function deleteAction(action)
     if commandState == commandStateAdd then
-        print("=========")
-        print("trying to delete from add!")
-        print("---------")
         return
     end
-    print("=========")
-    print("not trying to delete from add.")
 
     if action == nil then
-        print("No action.")
         action = selectedAction 
     end
 
     local currentActionsSize = getSize(actions)
     if currentActionsSize <= maxCommandSize then
-        print("size < max size, adding addCommand")
         local addCommandAction = actions[currentActionsSize]
         local addCommandView = addCommandAction.view
         addCommandView.color = {255, 255, 255, 255}
     end
 
-    print("Removing action", indexOf(actions, action), action.view.name)
     removeElement(actions, action)
     action.view:removeFromSuperview()
 
-    print("Laying out views")
     layoutCommandViews()
-    print("------------")
 end
 
 function startActions()
     actionAnimations = {}
+    currentMapState:reset()
 
     local firstAnimation = nil
 
@@ -117,7 +105,18 @@ function startActions()
         firstAnimation:chain(animation)
     end
 
+    local lastAnimation = Animation:new({
+        completion = finishActions
+        })
+    firstAnimation:chain(lastAnimation)
+
     push(actionAnimations, firstAnimation)
+end
+
+function finishActions()
+    appState = stateEditing
+    goButton.imageName = "interface/go.png"
+    goButton:updateImage()
 end
 
 actions = {}

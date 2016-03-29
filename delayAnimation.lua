@@ -40,6 +40,7 @@ function StopAnimation:new(o)
 end
 
 function StopAnimation:run(dt)
+    print("RUNNING STOOOOOOOOOOOOP")
     self.t = self.t + (dt / self.duration)
 
     if self.state == AnimationReady then

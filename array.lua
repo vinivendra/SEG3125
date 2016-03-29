@@ -63,7 +63,22 @@ function indexOf(array, element)
     return -1
 end
 
+function printArray(array, name)
+    print("==", name)
 
+    size = getSize(array)
+
+    for i=1,size do
+        print("  ", array[i])
+        element = array[i].next
+        while element ~= nil do
+            print("          ", element)
+            element = element.next
+        end
+    end
+
+    print("--")
+end
 
 
 

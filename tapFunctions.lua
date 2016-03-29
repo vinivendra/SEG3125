@@ -89,4 +89,20 @@ function deleteCommand(deleteView)
     deleteAction(selectedAction)
 end
 
+function goButtonPressed(sender)
+    if appState == stateEditing then
+        appState = stateRunning
+
+        startActions()
+
+        goButton.imageName = "interface/stop.png"
+        goButton:updateImage()
+    else
+        appState = stateEditing
+        actionAnimations = {}
+
+        goButton.imageName = "interface/go.png"
+        goButton:updateImage()
+    end
+end
 
