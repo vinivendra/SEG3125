@@ -6,7 +6,8 @@ ImageView = View:new({
   image = nil,
   imageName = nil,
   scaleX = 1,
-  scaleY = 1
+  scaleY = 1,
+  color = {255, 255, 255}
   })
 
 function ImageView:new(o)
@@ -52,7 +53,7 @@ function ImageView:draw()
         y = y + self.superview.y
     end
 
-    love.graphics.setColor({255, 255, 255})
+    love.graphics.setColor(self.color)
     love.graphics.draw(self.image, x, y, 0, 
         self.scaleX, self.scaleY, 0, 0, 0, 0)    
 

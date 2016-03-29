@@ -12,19 +12,43 @@ require 'mapState'
 
 
 function xForCommandAtIndex(index)
-    return 180 * (index - 1) + 20
+    local spacing = 11
+    local size = 160
+    return (size + spacing) * (index - 1) + 20
 end
+
+function layoutCommandViews()
+    print("--")
+    for i = 1,getSize(actions) do
+        local x = xForCommandAtIndex(i)
+        local action = actions[i]
+        local view = action.view
+        view.x = x
+        print("    laying out", i, view.name)
+    end
+    print("--")
+end
+
+maxCommandSize = 11
 
 function addAction(action) 
     local newView = action.view
-    newView.x = xForCommandAtIndex(getSize(actions))
-    commandBar:addSubview(newView)
 
-    local addCommandAction = actions[getSize(actions)]
+    local currentActionsSize = getSize(actions)
+
+    local addCommandAction = actions[currentActionsSize]
     local addCommandView = addCommandAction.view
-    addCommandView.x = xForCommandAtIndex(getSize(actions) + 1)
 
+    if currentActionsSize == maxCommandSize - 1 then
+        addCommandView.color = {255, 255, 255, 0}
+    elseif currentActionsSize == maxCommandSize then
+        return
+    end
+
+    commandBar:addSubview(newView)
     pushAction(actions, action)
+
+    layoutCommandViews()
 end
 
 function changeAction(oldAction, newAction) 
@@ -33,8 +57,41 @@ function changeAction(oldAction, newAction)
     index = indexOf(actions, oldAction)
     actions[index] = newAction
     oldAction.view:removeFromSuperview()
-    newView.x = xForCommandAtIndex(index)
     commandBar:addSubview(newView)
+
+    layoutCommandViews()
+end
+
+function deleteAction(action)
+    if commandState == commandStateAdd then
+        print("=========")
+        print("trying to delete from add!")
+        print("---------")
+        return
+    end
+    print("=========")
+    print("not trying to delete from add.")
+
+    if action == nil then
+        print("No action.")
+        action = selectedAction 
+    end
+
+    local currentActionsSize = getSize(actions)
+    if currentActionsSize <= maxCommandSize then
+        print("size < max size, adding addCommand")
+        local addCommandAction = actions[currentActionsSize]
+        local addCommandView = addCommandAction.view
+        addCommandView.color = {255, 255, 255, 255}
+    end
+
+    print("Removing action", indexOf(actions, action), action.view.name)
+    removeElement(actions, action)
+    action.view:removeFromSuperview()
+
+    print("Laying out views")
+    layoutCommandViews()
+    print("------------")
 end
 
 function startActions()

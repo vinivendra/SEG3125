@@ -118,8 +118,38 @@ function love.load()
         x = 20
         })
 
+    local deleteWidth = 180
+    local deleteBorder = 30
+    local commandWidth = 180
+
+    local separator = SquareView:new({
+        width = 2,
+        height = commandBar.height,
+        x = deleteWidth - deleteBorder
+        })
+    commandMenu:addSubview(separator)
+
+    local deleteButton = SquareView:new({
+        width = deleteWidth,
+        height = 180,
+        onTap = deleteCommand,
+        color = {0, 0, 100, 0}
+        })
+    commandMenu:addSubview(deleteButton)
+
+    local deleteImage = ImageView:new({
+        width = 60,
+        height = 75,
+        x = (deleteWidth - deleteBorder) / 2 - 30,
+        y = 90 - 75/2,
+        imageName = "interface/delete.png"
+        })
+    commandMenu:addSubview(deleteImage)
+
+    --
     local menuView1 = MoveAction:new():createView()
     menuView1.onTap = commandMoveRightAction
+    menuView1.x = deleteWidth
     commandMenu:addSubview(menuView1)
 
     local menuView2 = MoveAction:new({
@@ -127,7 +157,7 @@ function love.load()
         }):createView()
     menuView2.action = nil
     menuView2.onTap = commandMoveLeftAction
-    menuView2.x = 190
+    menuView2.x = deleteWidth + commandWidth * 1
     commandMenu:addSubview(menuView2)
 
     local menuView3 = MoveAction:new({
@@ -135,7 +165,7 @@ function love.load()
         }):createView()
     menuView3.action = nil
     menuView3.onTap = commandMoveUpAction
-    menuView3.x = 380
+    menuView3.x = deleteWidth + commandWidth * 2
     commandMenu:addSubview(menuView3)
 
     local menuView4 = MoveAction:new({
@@ -143,14 +173,14 @@ function love.load()
         }):createView()
     menuView4.action = nil
     menuView4.onTap = commandMoveDownAction
-    menuView4.x = 570
+    menuView4.x = deleteWidth + commandWidth * 3
     commandMenu:addSubview(menuView4)
 
     local menuView5 = AttackAction:new({
         }):createView()
     menuView5.action = nil
     menuView5.onTap = commandAttackAction
-    menuView5.x = 760
+    menuView5.x = deleteWidth + commandWidth * 4
     commandMenu:addSubview(menuView5)
 
     ----------------------------------

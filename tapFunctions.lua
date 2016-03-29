@@ -85,6 +85,8 @@ function commandAttackAction(commandView)
     end
 end
 
-
+function deleteCommand(deleteView)
+    deleteAction(selectedAction)
+end
 
 
