@@ -17,10 +17,18 @@ function DelayAnimation:run(dt)
         if self.willStart ~= nil then
             self:willStart()
         end
+
+        if self.action ~= nil then
+            self.action:colorView()
+        end
     end
 
     if self.t > 1.0 then
         self.state = AnimationEnded
+
+        if self.action ~= nil then
+            self.action:bwView()
+        end
     else
         self.state = AnimationRunning
     end
@@ -48,12 +56,20 @@ function StopAnimation:run(dt)
             self:willStart()
         end
 
+        if self.action ~= nil then
+            self.action:colorView()
+        end
+
         self.subject.imageName = self.imageName
         self.subject:updateImage()
     end
 
     if self.t > 1.0 then
         self.state = AnimationEnded
+
+        if self.action ~= nil then
+            self.action:bwView()
+        end
     else
         self.state = AnimationRunning
     end

@@ -28,6 +28,10 @@ function MoveAnimation:run(dt)
             self:willStart()
         end
 
+        if self.action ~= nil then
+            self.action:colorView()
+        end
+
         self.originX = self.subject.x
         self.originY = self.subject.y
 
@@ -44,6 +48,10 @@ function MoveAnimation:run(dt)
 
         self.subject.x = self.destinationX
         self.subject.y = self.destinationY
+
+        if self.action ~= nil then
+            self.action:bwView()
+        end
     else
         self.state = AnimationRunning
 

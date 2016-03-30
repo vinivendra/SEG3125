@@ -121,20 +121,33 @@ function startActions()
     firstAnimation:chain(lastAnimation)
 
     push(actionAnimations, firstAnimation)
+
+    -- Make views BW
+    for i=1,getSize(actions) do
+        local action = actions[i]
+        action:bwView()
+    end
+
 end
 
 function finishActions()
     appState = stateEditing
     goButton.imageName = "interface/go.png"
     goButton:updateImage()
+
+    -- Make views colored
+    for i=1,getSize(actions) do
+        local action = actions[i]
+        action:colorView()
+    end
 end
 
 actions = {}
 
-moveRight = {1, 0, moveRightSpriteFunction, "interface/arrowRight.png"}
-moveDown = {0, 1, moveDownSpriteFunction, "interface/arrowDown.png"}
-moveLeft = {-1, 0, moveLeftSpriteFunction, "interface/arrowLeft.png"}
-moveUp = {0, -1, moveUpSpriteFunction, "interface/arrowUp.png"}
+moveRight = {1, 0, moveRightSpriteFunction, "interface/arrowRight.png", "interface/arrowRightBW.png"}
+moveDown = {0, 1, moveDownSpriteFunction, "interface/arrowDown.png", "interface/arrowDownBW.png"}
+moveLeft = {-1, 0, moveLeftSpriteFunction, "interface/arrowLeft.png", "interface/arrowLeftBW.png"}
+moveUp = {0, -1, moveUpSpriteFunction, "interface/arrowUp.png", "interface/arrowUpBW.png"}
 
 --- Action class --------------------------------------
 
@@ -168,7 +181,7 @@ function AddCommandAction:new(o)
 end
 
 function AddCommandAction:createView()
-    return ImageView:new({
+    self.view = ImageView:new({
         name = "add command",
         x = 20,
         y = 20,
@@ -176,6 +189,17 @@ function AddCommandAction:createView()
         height = 140,
         imageName = "interface/emptyBlock.png"
         })
+    return self.view
+end
+
+function AddCommandAction:colorView()
+    self.view.imageName = "interface/emptyBlock.png"
+    self.view:updateImage()
+end
+
+function AddCommandAction:bwView()
+    self.view.imageName = "interface/emptyBlockBW.png"
+    self.view:updateImage()
 end
 
 function AddCommandAction:getAnimation()
@@ -201,7 +225,7 @@ function MoveAction:new(o)
 end
 
 function MoveAction:createView()
-    return ImageView:new({
+    self.view = ImageView:new({
         name = "move action",
         x = 20,
         y = 20,
@@ -211,6 +235,17 @@ function MoveAction:createView()
         action = self,
         onTap = toggleCommandMenu
         })
+    return self.view
+end
+
+function MoveAction:colorView()
+    self.view.imageName = self.direction[4]
+    self.view:updateImage()
+end
+
+function MoveAction:bwView()
+    self.view.imageName = self.direction[5]
+    self.view:updateImage()
 end
 
 function MoveAction:getAnimation()
@@ -230,6 +265,7 @@ function MoveAction:getAnimation()
         return animation
     else
         animation = StopAnimation:new({
+            action = self,
             subject = player
             })
         return animation
@@ -254,7 +290,7 @@ function AttackAction:new(o)
 end
 
 function AttackAction:createView()
-    return ImageView:new({
+    self.view = ImageView:new({
         name = "attack action",
         x = 20,
         y = 20,
@@ -265,14 +301,26 @@ function AttackAction:createView()
         onTap = toggleCommandMenu,
         willStart = attackSpriteFunction
         })
+    return self.view
+end
+
+function AttackAction:colorView()
+    self.view.imageName = "interface/sword.png"
+    self.view:updateImage()
+end
+
+function AttackAction:bwView()
+    self.view.imageName = "interface/swordBW.png"
+    self.view:updateImage()
 end
 
 function AttackAction:getAnimation()
-    pulseAnimation = DelayAnimation:new({
+    animation = StopAnimation:new({
+        imageName = "individuals/linkRightAttack.png",
         subject = player,
         action = self
     })
-    return pulseAnimation
+    return animation
 end
 
 
