@@ -7,6 +7,14 @@ getmetatable('').__index = function(str,i)
   end
 end
 
+function getName(object)
+    if object ~= nil and object.name ~= nil then
+        return object.name
+    else
+        return object
+    end
+end
+
 function getSize(array)
     return table.getn(array)
 end
@@ -63,9 +71,34 @@ function indexOf(array, element)
     return -1
 end
 
+function printArray(array, name)
+    print("==", name)
 
+    size = getSize(array)
 
+    for i=1,size do
+        -- Print element
+        if array[i].name ~= nil then
+            print("- ", array[i].name)
+        else
+            print("- ", array[i])
+        end
 
+        -- Print sub-elements
+        element = array[i].next
+        while element ~= nil do
+            if element.name ~= nil then
+                print("        - ", element.name)
+            else
+                print("        - ", element)
+            end
+            element = element.next
+        end
+
+    end
+
+    print("--")
+end
 
 
 

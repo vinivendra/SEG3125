@@ -6,25 +6,52 @@ require 'scaleAnimation'
 require 'moveAnimation'
 require 'originAnimation'
 require 'delayAnimation'
+require 'alphaAnimation'
+
+require 'spriteFunctions'
 
 require 'mapState'
 
 
 
 function xForCommandAtIndex(index)
-    return 180 * (index - 1) + 20
+    local spacing = 11
+    local size = 160
+    return (size + spacing) * (index - 1) + 20
 end
+
+function layoutCommandViews()
+    for i = 1,getSize(actions) do
+        local x = xForCommandAtIndex(i)
+        local action = actions[i]
+        local view = action.view
+        view.x = x
+    end
+end
+
+maxCommandSize = 11
 
 function addAction(action) 
     local newView = action.view
-    newView.x = xForCommandAtIndex(getSize(actions))
-    commandBar:addSubview(newView)
 
-    local addCommandAction = actions[getSize(actions)]
+    local currentActionsSize = getSize(actions)
+
+    local addCommandAction = actions[currentActionsSize]
     local addCommandView = addCommandAction.view
-    addCommandView.x = xForCommandAtIndex(getSize(actions) + 1)
 
+    if currentActionsSize == maxCommandSize - 1 then
+        addCommandView.color = {255, 255, 255, 0}
+        dismissCommandMenu()
+    elseif currentActionsSize == maxCommandSize then
+        return
+    end
+
+    commandBar:addSubview(newView)
     pushAction(actions, action)
+
+    layoutCommandViews()
+
+    moveIndicatorToView(addCommandView)
 end
 
 function changeAction(oldAction, newAction) 
@@ -33,19 +60,46 @@ function changeAction(oldAction, newAction)
     index = indexOf(actions, oldAction)
     actions[index] = newAction
     oldAction.view:removeFromSuperview()
-    newView.x = xForCommandAtIndex(index)
     commandBar:addSubview(newView)
+
+    layoutCommandViews()
+
+    previousMenuSender = newView
+end
+
+function deleteAction(action)
+    if commandState == commandStateAdd then
+        return
+    end
+
+    if action == nil then
+        action = selectedAction 
+    end
+
+    local currentActionsSize = getSize(actions)
+    if currentActionsSize <= maxCommandSize then
+        local addCommandAction = actions[currentActionsSize]
+        local addCommandView = addCommandAction.view
+        addCommandView.color = {255, 255, 255, 255}
+    end
+
+    removeElement(actions, action)
+    action.view:removeFromSuperview()
+
+    layoutCommandViews()
 end
 
 function startActions()
     actionAnimations = {}
+    currentMapState:reset()
 
     local firstAnimation = nil
 
-    if player.x ~= 0 or player.y ~= 0 then
+    if player.x ~= currentMapState.playerOffset[1] or
+       player.y ~= currentMapState.playerOffset[2] then
         firstAnimation = OriginAnimation:new({
-            destinationX = 0,
-            destinationY = 0,
+            destinationX = currentMapState.playerOffset[1],
+            destinationY = currentMapState.playerOffset[2],
             subject = player
             })
     else 
@@ -54,21 +108,76 @@ function startActions()
 
     --
 
+    local hasFinished = false
+
     for i=1,getSize(actions) do
-        action = actions[i]
-        animation = action:getAnimation()
+        local action = actions[i]
+        local animation = action:getAnimation()
         firstAnimation:chain(animation)
+
+        if currentMapState:hasFinished() then
+            hasFinished = true
+            local endingAnimation = currentMapState:getEndingAnimation()
+            firstAnimation:chain(endingAnimation)
+            break
+        end
     end
 
+    local lastAnimation
+
+    if hasFinished then
+        lastAnimation = Animation:new({
+            completion = finishActions
+            })
+    else
+        lastAnimation = StopAnimation:new({
+            action = self,
+            subject = player
+            })
+        returnAnimation = OriginAnimation:new({
+            destinationX = currentMapState.playerOffset[1],
+            destinationY = currentMapState.playerOffset[2],
+            subject = player,
+            completion = finishActions
+            })
+        lastAnimation:chain(returnAnimation)
+    end
+
+    firstAnimation:chain(lastAnimation)
+
     push(actionAnimations, firstAnimation)
+
+    -- Make views BW
+    for i=1,getSize(actions) do
+        local action = actions[i]
+        action:bwView()
+    end
+
+end
+
+function finishActions()
+    appState = stateEditing
+
+    -- Restore UI
+    player.imageName = "individuals/linkRight.png"
+    player:updateImage()
+
+    goButton.imageName = "interface/go.png"
+    goButton:updateImage()
+
+    ---- Make views colored
+    for i=1,getSize(actions) do
+        local action = actions[i]
+        action:colorView()
+    end
 end
 
 actions = {}
 
-moveRight = {1, 0, "individuals/linkRight.png", "interface/arrowRight.png"}
-moveDown = {0, 1, "individuals/linkDown.png", "interface/arrowDown.png"}
-moveLeft = {-1, 0, "individuals/linkLeft.png", "interface/arrowLeft.png"}
-moveUp = {0, -1, "individuals/linkUp.png", "interface/arrowUp.png"}
+moveRight = {1, 0, moveRightSpriteFunction, "interface/arrowRight.png", "interface/arrowRightBW.png"}
+moveDown = {0, 1, moveDownSpriteFunction, "interface/arrowDown.png", "interface/arrowDownBW.png"}
+moveLeft = {-1, 0, moveLeftSpriteFunction, "interface/arrowLeft.png", "interface/arrowLeftBW.png"}
+moveUp = {0, -1, moveUpSpriteFunction, "interface/arrowUp.png", "interface/arrowUpBW.png"}
 
 --- Action class --------------------------------------
 
@@ -102,7 +211,7 @@ function AddCommandAction:new(o)
 end
 
 function AddCommandAction:createView()
-    return ImageView:new({
+    self.view = ImageView:new({
         name = "add command",
         x = 20,
         y = 20,
@@ -110,9 +219,17 @@ function AddCommandAction:createView()
         height = 140,
         imageName = "interface/emptyBlock.png"
         })
+    return self.view
 end
 
-function AddCommandAction:animationWillStart(animation)
+function AddCommandAction:colorView()
+    self.view.imageName = "interface/emptyBlock.png"
+    self.view:updateImage()
+end
+
+function AddCommandAction:bwView()
+    self.view.imageName = "interface/emptyBlockBW.png"
+    self.view:updateImage()
 end
 
 function AddCommandAction:getAnimation()
@@ -138,7 +255,7 @@ function MoveAction:new(o)
 end
 
 function MoveAction:createView()
-    return ImageView:new({
+    self.view = ImageView:new({
         name = "move action",
         x = 20,
         y = 20,
@@ -148,11 +265,17 @@ function MoveAction:createView()
         action = self,
         onTap = toggleCommandMenu
         })
+    return self.view
 end
 
-function MoveAction:animationWillStart(animation)
-    animation.subject.imageName = self.direction[3]
-    animation.subject:updateImage()
+function MoveAction:colorView()
+    self.view.imageName = self.direction[4]
+    self.view:updateImage()
+end
+
+function MoveAction:bwView()
+    self.view.imageName = self.direction[5]
+    self.view:updateImage()
 end
 
 function MoveAction:getAnimation()
@@ -166,11 +289,13 @@ function MoveAction:getAnimation()
             action = self,
             subject = player,
             displacementX = displacementX,
-            displacementY = displacementY
+            displacementY = displacementY,
+            willStart = self.direction[3]
             })
         return animation
     else
         animation = StopAnimation:new({
+            action = self,
             subject = player
             })
         return animation
@@ -195,7 +320,7 @@ function AttackAction:new(o)
 end
 
 function AttackAction:createView()
-    return ImageView:new({
+    self.view = ImageView:new({
         name = "attack action",
         x = 20,
         y = 20,
@@ -203,21 +328,29 @@ function AttackAction:createView()
         height = 140,
         imageName = "interface/sword.png",
         action = self,
-        onTap = toggleCommandMenu
+        onTap = toggleCommandMenu,
+        willStart = attackSpriteFunction
         })
+    return self.view
 end
 
-function AttackAction:animationWillStart(animation)
-    animation.subject.imageName = "individuals/linkRightAttack.png"
-    animation.subject:updateImage()
+function AttackAction:colorView()
+    self.view.imageName = "interface/sword.png"
+    self.view:updateImage()
+end
+
+function AttackAction:bwView()
+    self.view.imageName = "interface/swordBW.png"
+    self.view:updateImage()
 end
 
 function AttackAction:getAnimation()
-    pulseAnimation = DelayAnimation:new({
+    animation = StopAnimation:new({
+        imageName = "individuals/linkRightAttack.png",
         subject = player,
         action = self
     })
-    return pulseAnimation
+    return animation
 end
 
 

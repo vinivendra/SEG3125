@@ -12,13 +12,14 @@ mapView = nil
 stateEditing = 0
 stateRunning = 1
 
-state = stateEditing
+appState = stateEditing
 
 --
-tileSize = 130
+tileSize = 200
 
 commandBar = nil
 commandMenu = nil
+commandMenuIndicator = nil
 
 goButton = nil
 
@@ -73,27 +74,37 @@ function love.load()
 
     ----------------------------------
 
-    wallWidth = 180
-    wallHeight = 125
-    wallView = SquareView:new({
-        name = "map container",
-        color = {18, 117, 92},
-        width = 1560 + 2 * wallWidth,
-        height = 650 + 2 * wallHeight
-        })
+    -- wallWidth = 180
+    -- wallHeight = 125
+    -- wallView = SquareView:new({
+    --     name = "map container",
+    --     color = {18, 117, 92},
+    --     width = 1560 + 2 * wallWidth,
+    --     height = 650 + 2 * wallHeight
+    --     })
 
-    mapView = MapView:new({
-        x = wallWidth,
-        y = wallHeight,
-        })
+    -- mapView = MapView:new({
+    --     x = wallWidth,
+    --     y = wallHeight
+    --     })
 
-    wallView: addSubview(mapView)
-    view:addSubview(wallView)
+    -- wallView: addSubview(mapView)
+    -- view:addSubview(wallView)
+
+    mapView = ImageView:new({
+        name = "map view",
+        width = 1920,
+        height = 900,
+        imageName = currentMapState.imageName
+        })
+    view:addSubview(mapView)
 
     --
     player = ImageView:new({
         width = tileSize,
         height = tileSize,
+        x = currentMapState.playerOffset[1],
+        y = currentMapState.playerOffset[2],
         imageName = "individuals/linkRight.png",
         })
     mapView:addSubview(player)
@@ -109,17 +120,59 @@ function love.load()
         })
     view:addSubview(commandBar)
 
+    local indicatorHeight = 40
+
     commandMenu = SquareView:new({
         name = "command menu",
         width = 1200,
         height = 180,
         color = {237, 241, 242},
-        y = 700,
+        y = 720 - indicatorHeight,
         x = 20
         })
 
+    commandMenuIndicator = SquareView:new({
+        name = "commandMenuIndicator",
+        width = indicatorHeight,
+        height = indicatorHeight,
+        color = commandMenu.color,
+        y = commandMenu.height,
+        x = 100
+        })
+    commandMenu:addSubview(commandMenuIndicator)
+
+    local deleteWidth = 180
+    local deleteBorder = 30
+    local commandWidth = 180
+
+    local separator = SquareView:new({
+        width = 2,
+        height = commandBar.height,
+        x = deleteWidth - deleteBorder
+        })
+    commandMenu:addSubview(separator)
+
+    local deleteButton = SquareView:new({
+        width = deleteWidth,
+        height = 180,
+        onTap = deleteCommand,
+        color = {0, 0, 100, 0}
+        })
+    commandMenu:addSubview(deleteButton)
+
+    local deleteImage = ImageView:new({
+        width = 60,
+        height = 75,
+        x = (deleteWidth - deleteBorder) / 2 - 30,
+        y = 90 - 75/2,
+        imageName = "interface/delete.png"
+        })
+    commandMenu:addSubview(deleteImage)
+
+    --
     local menuView1 = MoveAction:new():createView()
     menuView1.onTap = commandMoveRightAction
+    menuView1.x = deleteWidth
     commandMenu:addSubview(menuView1)
 
     local menuView2 = MoveAction:new({
@@ -127,7 +180,7 @@ function love.load()
         }):createView()
     menuView2.action = nil
     menuView2.onTap = commandMoveLeftAction
-    menuView2.x = 190
+    menuView2.x = deleteWidth + commandWidth * 1
     commandMenu:addSubview(menuView2)
 
     local menuView3 = MoveAction:new({
@@ -135,7 +188,7 @@ function love.load()
         }):createView()
     menuView3.action = nil
     menuView3.onTap = commandMoveUpAction
-    menuView3.x = 380
+    menuView3.x = deleteWidth + commandWidth * 2
     commandMenu:addSubview(menuView3)
 
     local menuView4 = MoveAction:new({
@@ -143,14 +196,14 @@ function love.load()
         }):createView()
     menuView4.action = nil
     menuView4.onTap = commandMoveDownAction
-    menuView4.x = 570
+    menuView4.x = deleteWidth + commandWidth * 3
     commandMenu:addSubview(menuView4)
 
     local menuView5 = AttackAction:new({
         }):createView()
     menuView5.action = nil
     menuView5.onTap = commandAttackAction
-    menuView5.x = 760
+    menuView5.x = deleteWidth + commandWidth * 4
     commandMenu:addSubview(menuView5)
 
     ----------------------------------
@@ -166,7 +219,7 @@ function love.load()
         x = 1920 - 180,
         height = 180,
         width = 180,
-        onTap = startActions
+        onTap = goButtonPressed
         })
     commandBar:addSubview(goButton)
 
@@ -183,11 +236,6 @@ end
 function love.mousereleased( x, y, button, istouch )
     view:tap(x, y)
 end
-
-function changeState(newValue)
-    state = newValue
-end
-
 
 
 

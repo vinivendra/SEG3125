@@ -1,4 +1,4 @@
---- DelayAnimation: Animation class --------------------------
+--- DelayAnimation: ActionAnimation class --------------------------
 
 DelayAnimation = ActionAnimation:new({
     })
@@ -14,22 +14,31 @@ function DelayAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
     if self.state == AnimationReady then
+        if self.willStart ~= nil then
+            self:willStart()
+        end
+
         if self.action ~= nil then
-            self.action:animationWillStart(self)
+            self.action:colorView()
         end
     end
 
     if self.t > 1.0 then
         self.state = AnimationEnded
+
+        if self.action ~= nil then
+            self.action:bwView()
+        end
     else
         self.state = AnimationRunning
     end
 end
 
 
---- StopAnimation: Animation class ---------------------------
+--- StopAnimation: DelayAnimation class ---------------------------
 
 StopAnimation = DelayAnimation:new({
+    imageName = "individuals/linkStop.png"
     })
 
 function StopAnimation:new(o)
@@ -43,16 +52,24 @@ function StopAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
     if self.state == AnimationReady then
-        if self.action ~= nil then
-            self.action:animationWillStart(self)
+        if self.willStart ~= nil then
+            self:willStart()
         end
 
-        self.subject.imageName = "individuals/linkStop.png"
+        if self.action ~= nil then
+            self.action:colorView()
+        end
+
+        self.subject.imageName = self.imageName
         self.subject:updateImage()
     end
 
     if self.t > 1.0 then
         self.state = AnimationEnded
+
+        if self.action ~= nil then
+            self.action:bwView()
+        end
     else
         self.state = AnimationRunning
     end

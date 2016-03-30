@@ -1,6 +1,9 @@
 
 require 'array'
 
+require 'moveAnimation'
+require 'alphaAnimation'
+
 
 currentMapState = nil
 
@@ -10,14 +13,14 @@ function copyPosition(position)
 end
 
 MapState = {
-    map = {"____########",
-           "###_########",
-           "###_##______",
-           "###____#####",
-           "############"},
-    startingPosition = {1, 1},
-    goalPosition = {3, 12},
-    playerPosition = nil
+    map = {"#########",
+           "#_______#",
+           "#########"},
+    imageName = "stages/stage1-1.png",
+    startingPosition = {2, 2},
+    goalPosition = {2, 8},
+    playerPosition = nil,
+    playerOffset = {415 - 17, 350 - 25}
 }
 
 function MapState:new(o)
@@ -32,6 +35,36 @@ end
 
 function MapState:reset()
     self.playerPosition = copyPosition(self.startingPosition)
+end
+
+function MapState:hasFinished()
+    return self.playerPosition[1] == self.goalPosition[1] and
+           self.playerPosition[2] == self.goalPosition[2]
+end
+
+function MapState:getEndingAnimation()
+    local displacementX = moveRight[1] * tileSize
+    local displacementY = moveRight[2] * tileSize
+
+    animation0 = StopAnimation:new({
+        subject = player,
+        imageName = "individuals/linkSuccess.png"
+        })
+
+    animation1 = MoveAnimation:new({
+        subject = player,
+        displacementX = displacementX,
+        displacementY = displacementY,
+        willStart = moveRightSpriteFunction
+        })
+    animation0:chain(animation1)
+
+    animation2 = AlphaAnimation:new({
+        subject = player,
+        duration = 0.5
+        })
+    animation1.with = animation2
+    return animation0
 end
 
 function MapState:move(direction)

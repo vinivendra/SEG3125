@@ -52,7 +52,7 @@ function ScaleAnimation:run(dt)
 end
 
 
---- PulseAnimation: Animation class --------------------------
+--- PulseAnimation: ScaleAnimation class --------------------------
 
 PulseAnimation = ScaleAnimation:new({
     timingFunction = easeIn
@@ -79,8 +79,8 @@ end
 
 function PulseAnimation:run(dt)
     if self.state == AnimationReady then
-        if self.action ~= nil then
-            self.action:animationWillStart(self)
+        if self.willStart ~= nil then
+            self:willStart()
         end
     end
 

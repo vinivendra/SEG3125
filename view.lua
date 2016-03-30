@@ -21,7 +21,7 @@ View = {
 
 function View:init()
     self.subviews = {}
-end    
+end
 
 function View:new(o)
     o = o or {}   -- create object if user does not provide one
@@ -75,6 +75,11 @@ function View:removeFromSuperview()
         removeElement(self.superview.subviews, self)
         self.superview = nil
     end
+end
+
+function View:center()
+    self.x = self.superview.width / 2 - self.width / 2
+    self.y = self.superview.height / 2 - self.height / 2
 end
 
 function View:tap(x, y)

@@ -1,6 +1,6 @@
 require 'animation'
 
---- MoveAnimation: Animation class --------------------------
+--- MoveAnimation: ActionAnimation class --------------------------
 
 MoveAnimation = ActionAnimation:new({
     originX = nil,
@@ -24,8 +24,12 @@ function MoveAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
     if self.state == AnimationReady then
+        if self.willStart ~= nil then
+            self:willStart()
+        end
+
         if self.action ~= nil then
-            self.action:animationWillStart(self)
+            self.action:colorView()
         end
 
         self.originX = self.subject.x
@@ -44,6 +48,10 @@ function MoveAnimation:run(dt)
 
         self.subject.x = self.destinationX
         self.subject.y = self.destinationY
+
+        if self.action ~= nil then
+            self.action:bwView()
+        end
     else
         self.state = AnimationRunning
 

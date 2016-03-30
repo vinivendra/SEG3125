@@ -15,22 +15,48 @@ function runActions(dt)
 end
 
 function runAnimationsOnArray(array, dt)
-    size = getSize(array)
+    if array == nil or appState == stateEditing then
+        return
+    end
+
+    local size = getSize(array)
 
     for i=1,size do
-        animation = array[i]
+        local animation = array[i]
 
-        if animation.isActive == false then
-            removeAtIndex(array, i)
-        end
-
+        -- Run animations
         animation:run(dt)
 
+        local withAnimation = animation.with
+        while withAnimation ~= nil do
+            withAnimation:run(dt)
+            withAnimation = withAnimation.with
+        end
+
+        -- Finish animations
         if animation.state == AnimationEnded then
-            removeAtIndex(array, i)
-            if animation.next ~= nil then
-                startAnimation(animation.next)
+
+            -- Completion Handlers
+            if animation.completion ~= nil then
+                animation.completion()
             end
+
+            local withAnimation = animation.with
+            while withAnimation ~= nil do
+                if withAnimation.completion ~= nil then
+                    withAnimation.completion()
+                end
+                withAnimation = withAnimation.with
+            end
+
+            -- Clean up and move to next animation
+            removeAtIndex(array, i)
+
+            if animation.next ~= nil then
+                push(array, animation.next)
+            end
+
+            break
         end
     end
 end
@@ -51,9 +77,11 @@ Animation = {
     duration =  1,
     t = 0,
     subject = {},
-    isActive = true,
     next = nil,
-    timingFunction = smooth
+    with = nil,
+    timingFunction = smooth,
+    willStart = nil,
+    completion = nil
 }
 
 function Animation:new(o)

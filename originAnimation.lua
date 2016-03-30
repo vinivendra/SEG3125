@@ -27,17 +27,27 @@ function OriginAnimation:new(o)
     return o
 end
 
-function OriginAnimation:chain(newAnimation)
-    newAnimation.originX = self.destinationX
-    newAnimation.originY = self.destinationY
-
-    Animation.chain(self, newAnimation)
-end
-
 function OriginAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
+    if self.state == AnimationReady then
+        if self.willStart ~= nil then
+            self:willStart()
+        end
+
+        if self.action ~= nil then
+            self.action:colorView()
+        end
+
+        self.originX = self.subject.x
+        self.originY = self.subject.y
+    end
+
     if self.t > 1.0 then
+        if self.action ~= nil then
+            self.action:bwView()
+        end
+
         self.state = AnimationEnded
 
         self.subject.x = self.destinationX
