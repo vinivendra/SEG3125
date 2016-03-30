@@ -224,6 +224,7 @@ end
 function AddCommandAction:createView()
     self.view = ImageView:new({
         name = "add command",
+        action = self,
         x = 20,
         y = 20,
         width = 140,
@@ -371,6 +372,10 @@ LoopAction = Action:new({
     name = "loopAction",
     iterations = 3,
     size = 0,
+    view = nil,
+    backgroundView = nil,
+    backgroundEnd = nil,
+    commandAddView = nil,
     subactions = {}
     })
 
@@ -415,7 +420,7 @@ end
 
 function LoopAction:createView()
 
-    local head = ImageView:new({
+    self.view = ImageView:new({
         name = "loop head",
         x = 20,
         y = 0,
@@ -427,32 +432,50 @@ function LoopAction:createView()
         -- willStart = attackSpriteFunction
         })
 
-    local backgroundView = SquareView:new({
+    self.backgroundView = SquareView:new({
         name = "loop background",
         color = {194, 226, 228},
         x = 90,
         width = 140 + 40,
         height = 180
         })
-    head:addSubview(backgroundView)
+    self.view:addSubview(self.backgroundView)
 
-    local backgroundEnd = ImageView:new({
+    self.backgroundEnd = ImageView:new({
         name = "loop background end",
         imageName = "interface/commandTailBG.png",
-        x = backgroundView.x + backgroundView.width,
+        x = self.backgroundView.x + self.backgroundView.width,
         width = 3,
         height = 180
         })
-    head:addSubview(backgroundEnd)
+    self.view:addSubview(self.backgroundEnd)
 
-    local commandAddView = AddCommandAction:new().view
-    commandAddView.name = "loop add"
-    commandAddView.onTap = toggleAddCommandMenu
-    commandAddView.x = 110
-    commandAddView.y = 20
-    head:addSubview(commandAddView)
+    self.commandAddView = AddCommandAction:new().view
+    self.commandAddView.name = "loop add"
+    self.commandAddView.onTap = toggleAddCommandMenu
+    self.commandAddView.x = 110
+    self.commandAddView.y = 20
+    self.view:addSubview(self.commandAddView)
 
-    return head
+    return self.view
+end
+
+function LoopAction:colorView()
+    self.view.imageName = "interface/commandHeadBG.png"
+    self.view:updateImage()
+    self.backgroundView.color = {194, 226, 228}
+    self.backgroundEnd.imageName = "interface/commandTailBG.png"
+    self.backgroundEnd:updateImage()
+    self.commandAddView.action:colorView()
+end
+
+function LoopAction:bwView()
+   self.view.imageName = "interface/commandHeadBGBW.png"
+    self.view:updateImage()
+    self.backgroundView.color = {187, 187, 187}
+    self.backgroundEnd.imageName = "interface/commandTailBGBW.png"
+    self.backgroundEnd:updateImage()
+    self.commandAddView.action:bwView()
 end
 
 function LoopAction:getAnimation() 
