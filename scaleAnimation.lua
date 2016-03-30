@@ -52,7 +52,7 @@ function ScaleAnimation:run(dt)
 end
 
 
---- PulseAnimation: Animation class --------------------------
+--- PulseAnimation: ScaleAnimation class --------------------------
 
 PulseAnimation = ScaleAnimation:new({
     timingFunction = easeIn

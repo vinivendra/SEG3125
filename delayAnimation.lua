@@ -1,4 +1,4 @@
---- DelayAnimation: Animation class --------------------------
+--- DelayAnimation: ActionAnimation class --------------------------
 
 DelayAnimation = ActionAnimation:new({
     })
@@ -27,7 +27,7 @@ function DelayAnimation:run(dt)
 end
 
 
---- StopAnimation: Animation class ---------------------------
+--- StopAnimation: DelayAnimation class ---------------------------
 
 StopAnimation = DelayAnimation:new({
     })
@@ -40,7 +40,6 @@ function StopAnimation:new(o)
 end
 
 function StopAnimation:run(dt)
-    print("RUNNING STOOOOOOOOOOOOP")
     self.t = self.t + (dt / self.duration)
 
     if self.state == AnimationReady then

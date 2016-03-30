@@ -10,14 +10,14 @@ function copyPosition(position)
 end
 
 MapState = {
-    map = {"____########",
-           "###_########",
-           "###_##______",
-           "###____#####",
-           "############"},
-    startingPosition = {1, 1},
-    goalPosition = {3, 12},
-    playerPosition = nil
+    map = {"#########",
+           "#_______#",
+           "#########"},
+    imageName = "stages/stage1-1.png",
+    startingPosition = {2, 2},
+    goalPosition = {2, 8},
+    playerPosition = nil,
+    playerOffset = {415 - 17, 350 - 25}
 }
 
 function MapState:new(o)

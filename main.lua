@@ -15,7 +15,7 @@ stateRunning = 1
 appState = stateEditing
 
 --
-tileSize = 130
+tileSize = 200
 
 commandBar = nil
 commandMenu = nil
@@ -73,27 +73,37 @@ function love.load()
 
     ----------------------------------
 
-    wallWidth = 180
-    wallHeight = 125
-    wallView = SquareView:new({
-        name = "map container",
-        color = {18, 117, 92},
-        width = 1560 + 2 * wallWidth,
-        height = 650 + 2 * wallHeight
-        })
+    -- wallWidth = 180
+    -- wallHeight = 125
+    -- wallView = SquareView:new({
+    --     name = "map container",
+    --     color = {18, 117, 92},
+    --     width = 1560 + 2 * wallWidth,
+    --     height = 650 + 2 * wallHeight
+    --     })
 
-    mapView = MapView:new({
-        x = wallWidth,
-        y = wallHeight,
-        })
+    -- mapView = MapView:new({
+    --     x = wallWidth,
+    --     y = wallHeight
+    --     })
 
-    wallView: addSubview(mapView)
-    view:addSubview(wallView)
+    -- wallView: addSubview(mapView)
+    -- view:addSubview(wallView)
+
+    mapView = ImageView:new({
+        name = "map view",
+        width = 1920,
+        height = 900,
+        imageName = currentMapState.imageName
+        })
+    view:addSubview(mapView)
 
     --
     player = ImageView:new({
         width = tileSize,
         height = tileSize,
+        x = currentMapState.playerOffset[1],
+        y = currentMapState.playerOffset[2],
         imageName = "individuals/linkRight.png",
         })
     mapView:addSubview(player)

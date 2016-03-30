@@ -24,23 +24,24 @@ function runAnimationsOnArray(array, dt)
     for i=1,size do
         local animation = array[i]
 
-        if animation.isActive == false then
-            removeAtIndex(array, i)
-        end
-
         animation:run(dt)
 
         if animation.state == AnimationEnded then
+
             if animation.completion ~= nil then
                 animation.completion()
             end
-            
+
             removeAtIndex(array, i)
+
             if animation.next ~= nil then
                 push(array, animation.next)
             end
+
+            break
         end
     end
+    
 end
 
 actionAnimations = {}
@@ -59,7 +60,6 @@ Animation = {
     duration =  1,
     t = 0,
     subject = {},
-    isActive = true,
     next = nil,
     timingFunction = smooth,
     completion = nil

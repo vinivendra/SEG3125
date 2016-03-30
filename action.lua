@@ -6,6 +6,7 @@ require 'scaleAnimation'
 require 'moveAnimation'
 require 'originAnimation'
 require 'delayAnimation'
+require 'alphaAnimation'
 
 require 'mapState'
 
@@ -87,10 +88,11 @@ function startActions()
 
     local firstAnimation = nil
 
-    if player.x ~= 0 or player.y ~= 0 then
+    if player.x ~= currentMapState.playerOffset[1] or
+       player.y ~= currentMapState.playerOffset[2] then
         firstAnimation = OriginAnimation:new({
-            destinationX = 0,
-            destinationY = 0,
+            destinationX = currentMapState.playerOffset[1],
+            destinationY = currentMapState.playerOffset[2],
             subject = player
             })
     else 
@@ -111,6 +113,11 @@ function startActions()
     firstAnimation:chain(lastAnimation)
 
     push(actionAnimations, firstAnimation)
+
+    local alphaAnimation = AlphaAnimation:new({
+        subject = player
+        })
+    push(actionAnimations, alphaAnimation)
 end
 
 function finishActions()

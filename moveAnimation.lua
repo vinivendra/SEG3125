@@ -1,6 +1,6 @@
 require 'animation'
 
---- MoveAnimation: Animation class --------------------------
+--- MoveAnimation: ActionAnimation class --------------------------
 
 MoveAnimation = ActionAnimation:new({
     originX = nil,
