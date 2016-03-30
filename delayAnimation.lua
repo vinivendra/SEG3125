@@ -30,6 +30,7 @@ end
 --- StopAnimation: DelayAnimation class ---------------------------
 
 StopAnimation = DelayAnimation:new({
+    imageName = "individuals/linkStop.png"
     })
 
 function StopAnimation:new(o)
@@ -47,7 +48,7 @@ function StopAnimation:run(dt)
             self.action:animationWillStart(self)
         end
 
-        self.subject.imageName = "individuals/linkStop.png"
+        self.subject.imageName = self.imageName
         self.subject:updateImage()
     end
 

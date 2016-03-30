@@ -102,9 +102,16 @@ function startActions()
     --
 
     for i=1,getSize(actions) do
-        action = actions[i]
-        animation = action:getAnimation()
+        local action = actions[i]
+        local animation = action:getAnimation()
         firstAnimation:chain(animation)
+
+        if currentMapState:hasFinished() then
+            print("Ended!")
+            local endingAnimation = currentMapState:getEndingAnimation()
+            firstAnimation:chain(endingAnimation)
+            break
+        end
     end
 
     local lastAnimation = Animation:new({
@@ -113,11 +120,6 @@ function startActions()
     firstAnimation:chain(lastAnimation)
 
     push(actionAnimations, firstAnimation)
-
-    local alphaAnimation = AlphaAnimation:new({
-        subject = player
-        })
-    push(actionAnimations, alphaAnimation)
 end
 
 function finishActions()

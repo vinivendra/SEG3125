@@ -1,6 +1,9 @@
 
 require 'array'
 
+require 'moveAnimation'
+require 'alphaAnimation'
+
 
 currentMapState = nil
 
@@ -32,6 +35,28 @@ end
 
 function MapState:reset()
     self.playerPosition = copyPosition(self.startingPosition)
+end
+
+function MapState:hasFinished()
+    return self.playerPosition[1] == self.goalPosition[1] and
+           self.playerPosition[2] == self.goalPosition[2]
+end
+
+function MapState:getEndingAnimation()
+    local displacementX = moveRight[1] * tileSize
+    local displacementY = moveRight[2] * tileSize
+
+    animation1 = MoveAnimation:new({
+        subject = player,
+        displacementX = displacementX,
+        displacementY = displacementY
+        })
+
+    animation2 = AlphaAnimation:new({
+        subject = player
+        })
+    animation1:chain(animation2)
+    return animation1
 end
 
 function MapState:move(direction)
