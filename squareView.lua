@@ -34,15 +34,9 @@ function SquareView:draw()
     end
     love.graphics.setColor(color)
 
-    x = self.x
-    y = self.y
+    self:updateRelativeCoordinates()
 
-    if self.superview ~= nil then
-        x = x + self.superview.x
-        y = y + self.superview.y
-    end
-
-    love.graphics.rectangle("fill", x, y, self.width, self.height)    
+    love.graphics.rectangle("fill", self.relativeX, self.relativeY, self.width, self.height)    
 
     View.draw(self)
 end

@@ -101,6 +101,18 @@ function commandAttackAction(commandView)
     end
 end
 
+function commandLoopAction(commandView)
+    local loopAction = LoopAction:new()
+    
+    if commandState == commandStateAdd then
+        addAction(loopAction)
+    end
+    -- elseif commandState == commandStateChange then
+    --     changeAction(selectedAction, loopAction)
+    --     selectedAction = loopAction
+    -- end
+end
+
 function deleteCommand(deleteView)
     deleteAction(selectedAction)
 end

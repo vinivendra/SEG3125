@@ -124,7 +124,7 @@ function love.load()
 
     commandMenu = SquareView:new({
         name = "command menu",
-        width = 1200,
+        width = 1500,
         height = 180,
         color = {237, 241, 242},
         y = 720 - indicatorHeight,
@@ -205,6 +205,17 @@ function love.load()
     menuView5.onTap = commandAttackAction
     menuView5.x = deleteWidth + commandWidth * 4
     commandMenu:addSubview(menuView5)
+
+    local menuView6 = ImageView:new({
+        imageName = "interface/repeatBig.png",
+        width = 140,
+        height = 140,
+        y = 20
+        })
+    menuView6.action = nil
+    menuView6.onTap = commandLoopAction
+    menuView6.x = deleteWidth + commandWidth * 5
+    commandMenu:addSubview(menuView6)
 
     ----------------------------------
 

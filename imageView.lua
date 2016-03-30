@@ -45,16 +45,10 @@ function ImageView:draw()
         return
     end
 
-    x = self.x
-    y = self.y
-
-    if self.superview ~= nil then
-        x = x + self.superview.x
-        y = y + self.superview.y
-    end
+    self:updateRelativeCoordinates()
 
     love.graphics.setColor(self.color)
-    love.graphics.draw(self.image, x, y, 0, 
+    love.graphics.draw(self.image, self.relativeX, self.relativeY, 0, 
         self.scaleX, self.scaleY, 0, 0, 0, 0)    
 
     View.draw(self)

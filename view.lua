@@ -12,6 +12,7 @@ end
 
 View = {
     x = 0, y = 0,
+    relativeX = 0, relativeY = 0,
     width = 100, height = 100,
     subviews = {},
     superview = nil,
@@ -59,9 +60,21 @@ function View:copyTo(o)
 end
 
 function View:draw()
+    self:updateRelativeCoordinates()
+
     for i=1,getSize(self.subviews) do
         subview = self.subviews[i]
         subview:draw()
+    end
+end
+
+function View:updateRelativeCoordinates()
+    if self.superview ~= nil then
+        self.relativeX = self.superview.relativeX + self.x
+        self.relativeY = self.superview.relativeY + self.y
+    else
+        self.relativeX = self.x
+        self.relativeY = self.y
     end
 end
 

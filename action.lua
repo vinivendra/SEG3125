@@ -16,8 +16,15 @@ require 'mapState'
 
 function xForCommandAtIndex(index)
     local spacing = 11
-    local size = 160
-    return (size + spacing) * (index - 1) + 20
+
+    local sum = 0
+    for i=1,(index - 1) do
+        local action = actions[i]
+        local width = action:width()
+        sum = sum + width + spacing
+    end
+
+    return 20 + sum
 end
 
 function layoutCommandViews()
@@ -193,6 +200,10 @@ function Action:new(o)
     return o
 end
 
+function Action:width()
+    return 160
+end
+
 --- AddCommandAction: Action class ---------------------
 
 AddCommandAction = Action:new({
@@ -357,8 +368,9 @@ end
 --- LoopAction: Action class --------------------------
 
 LoopAction = Action:new({
+    name = "loopAction",
     iterations = 3,
-    size = 1,
+    size = 0,
     subactions = {}
     })
 
@@ -366,6 +378,11 @@ function LoopAction:new(o)
     o = o or {}   -- create object if user does not provide one
     setmetatable(o, self)
     self.__index = self
+
+    if o.view == nil then
+        o.view = o:createView()
+    end
+
     return o
 end
 
@@ -386,6 +403,56 @@ end
 function LoopAction:removeActionAtIndex(index)
     removeAtIndex(self.subactions, index)
     self:validateSize()
+end
+
+function LoopAction:width()
+    local size = 1
+    if self.size > 0 then
+        size = self.size
+    end
+    return 90 + 20 + 140 * size + 20 + 20
+end
+
+function LoopAction:createView()
+
+    local head = ImageView:new({
+        name = "loop head",
+        x = 20,
+        y = 0,
+        width = 90,
+        height = 180,
+        imageName = "interface/commandHeadBG.png",
+        action = self,
+        -- onTap = toggleCommandMenu,
+        -- willStart = attackSpriteFunction
+        })
+
+    local backgroundView = SquareView:new({
+        name = "loop background",
+        color = {194, 226, 228},
+        x = 90,
+        width = 140 + 40,
+        height = 180
+        })
+    head:addSubview(backgroundView)
+
+    local backgroundEnd = ImageView:new({
+        name = "loop background end",
+        imageName = "interface/commandTailBG.png",
+        x = backgroundView.x + backgroundView.width,
+        width = 3,
+        height = 180
+        })
+    head:addSubview(backgroundEnd)
+
+    local commandAddView = AddCommandAction:new().view
+    commandAddView.name = "loop add"
+    commandAddView.onTap = toggleAddCommandMenu
+    commandAddView.x = 110
+    commandAddView.y = 20
+    head:addSubview(commandAddView)
+
+    return head
 end
 
 function LoopAction:getAnimation() 
