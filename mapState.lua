@@ -46,11 +46,17 @@ function MapState:getEndingAnimation()
     local displacementX = moveRight[1] * tileSize
     local displacementY = moveRight[2] * tileSize
 
+    animation0 = StopAnimation:new({
+        subject = player,
+        imageName = "individuals/linkSuccess.png"
+        })
+
     animation1 = MoveAnimation:new({
         subject = player,
         displacementX = displacementX,
         displacementY = displacementY
         })
+    animation0:chain(animation1)
 
     animation2 = AlphaAnimation:new({
         subject = player
