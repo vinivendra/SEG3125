@@ -24,14 +24,32 @@ function runAnimationsOnArray(array, dt)
     for i=1,size do
         local animation = array[i]
 
+        -- Run animations
         animation:run(dt)
 
+        local withAnimation = animation.with
+        while withAnimation ~= nil do
+            withAnimation:run(dt)
+            withAnimation = withAnimation.with
+        end
+
+        -- Finish animations
         if animation.state == AnimationEnded then
 
+            -- Completion Handlers
             if animation.completion ~= nil then
                 animation.completion()
             end
 
+            local withAnimation = animation.with
+            while withAnimation ~= nil do
+                if withAnimation.completion ~= nil then
+                    withAnimation.completion()
+                end
+                withAnimation = withAnimation.with
+            end
+
+            -- Clean up and move to next animation
             removeAtIndex(array, i)
 
             if animation.next ~= nil then
@@ -41,7 +59,6 @@ function runAnimationsOnArray(array, dt)
             break
         end
     end
-    
 end
 
 actionAnimations = {}
@@ -61,7 +78,9 @@ Animation = {
     t = 0,
     subject = {},
     next = nil,
+    with = nil,
     timingFunction = smooth,
+    willStart = nil,
     completion = nil
 }
 

@@ -14,8 +14,8 @@ function DelayAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
     if self.state == AnimationReady then
-        if self.action ~= nil then
-            self.action:animationWillStart(self)
+        if self.willStart ~= nil then
+            self:willStart()
         end
     end
 
@@ -44,8 +44,8 @@ function StopAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
     if self.state == AnimationReady then
-        if self.action ~= nil then
-            self.action:animationWillStart(self)
+        if self.willStart ~= nil then
+            self:willStart()
         end
 
         self.subject.imageName = self.imageName

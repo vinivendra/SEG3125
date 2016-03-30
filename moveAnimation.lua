@@ -24,8 +24,8 @@ function MoveAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
     if self.state == AnimationReady then
-        if self.action ~= nil then
-            self.action:animationWillStart(self)
+        if self.willStart ~= nil then
+            self:willStart()
         end
 
         self.originX = self.subject.x

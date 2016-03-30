@@ -8,6 +8,8 @@ require 'originAnimation'
 require 'delayAnimation'
 require 'alphaAnimation'
 
+require 'spriteFunctions'
+
 require 'mapState'
 
 
@@ -107,7 +109,6 @@ function startActions()
         firstAnimation:chain(animation)
 
         if currentMapState:hasFinished() then
-            print("Ended!")
             local endingAnimation = currentMapState:getEndingAnimation()
             firstAnimation:chain(endingAnimation)
             break
@@ -130,10 +131,10 @@ end
 
 actions = {}
 
-moveRight = {1, 0, "individuals/linkRight.png", "interface/arrowRight.png"}
-moveDown = {0, 1, "individuals/linkDown.png", "interface/arrowDown.png"}
-moveLeft = {-1, 0, "individuals/linkLeft.png", "interface/arrowLeft.png"}
-moveUp = {0, -1, "individuals/linkUp.png", "interface/arrowUp.png"}
+moveRight = {1, 0, moveRightSpriteFunction, "interface/arrowRight.png"}
+moveDown = {0, 1, moveDownSpriteFunction, "interface/arrowDown.png"}
+moveLeft = {-1, 0, moveLeftSpriteFunction, "interface/arrowLeft.png"}
+moveUp = {0, -1, moveUpSpriteFunction, "interface/arrowUp.png"}
 
 --- Action class --------------------------------------
 
@@ -177,9 +178,6 @@ function AddCommandAction:createView()
         })
 end
 
-function AddCommandAction:animationWillStart(animation)
-end
-
 function AddCommandAction:getAnimation()
     return Animation:new()
 end
@@ -215,11 +213,6 @@ function MoveAction:createView()
         })
 end
 
-function MoveAction:animationWillStart(animation)
-    animation.subject.imageName = self.direction[3]
-    animation.subject:updateImage()
-end
-
 function MoveAction:getAnimation()
     local canMove = currentMapState:move(self.direction)
 
@@ -231,7 +224,8 @@ function MoveAction:getAnimation()
             action = self,
             subject = player,
             displacementX = displacementX,
-            displacementY = displacementY
+            displacementY = displacementY,
+            willStart = self.direction[3]
             })
         return animation
     else
@@ -268,13 +262,9 @@ function AttackAction:createView()
         height = 140,
         imageName = "interface/sword.png",
         action = self,
-        onTap = toggleCommandMenu
+        onTap = toggleCommandMenu,
+        willStart = attackSpriteFunction
         })
-end
-
-function AttackAction:animationWillStart(animation)
-    animation.subject.imageName = "individuals/linkRightAttack.png"
-    animation.subject:updateImage()
 end
 
 function AttackAction:getAnimation()
