@@ -103,21 +103,41 @@ function startActions()
 
     --
 
+    local hasFinished = false
+
     for i=1,getSize(actions) do
         local action = actions[i]
         local animation = action:getAnimation()
         firstAnimation:chain(animation)
 
         if currentMapState:hasFinished() then
+            hasFinished = true
             local endingAnimation = currentMapState:getEndingAnimation()
             firstAnimation:chain(endingAnimation)
             break
         end
     end
 
-    local lastAnimation = Animation:new({
-        completion = finishActions
-        })
+    local lastAnimation
+
+    if hasFinished then
+        lastAnimation = Animation:new({
+            completion = finishActions
+            })
+    else
+        lastAnimation = StopAnimation:new({
+            action = self,
+            subject = player
+            })
+        returnAnimation = OriginAnimation:new({
+            destinationX = currentMapState.playerOffset[1],
+            destinationY = currentMapState.playerOffset[2],
+            subject = player,
+            completion = finishActions
+            })
+        lastAnimation:chain(returnAnimation)
+    end
+
     firstAnimation:chain(lastAnimation)
 
     push(actionAnimations, firstAnimation)
@@ -132,10 +152,15 @@ end
 
 function finishActions()
     appState = stateEditing
+
+    -- Restore UI
+    player.imageName = "individuals/linkRight.png"
+    player:updateImage()
+
     goButton.imageName = "interface/go.png"
     goButton:updateImage()
 
-    -- Make views colored
+    ---- Make views colored
     for i=1,getSize(actions) do
         local action = actions[i]
         action:colorView()
