@@ -19,6 +19,7 @@ tileSize = 200
 
 commandBar = nil
 commandMenu = nil
+commandMenuIndicator = nil
 
 goButton = nil
 
@@ -119,14 +120,26 @@ function love.load()
         })
     view:addSubview(commandBar)
 
+    local indicatorHeight = 40
+
     commandMenu = SquareView:new({
         name = "command menu",
         width = 1200,
         height = 180,
         color = {237, 241, 242},
-        y = 700,
+        y = 720 - indicatorHeight,
         x = 20
         })
+
+    commandMenuIndicator = SquareView:new({
+        name = "commandMenuIndicator",
+        width = indicatorHeight,
+        height = indicatorHeight,
+        color = commandMenu.color,
+        y = commandMenu.height,
+        x = 100
+        })
+    commandMenu:addSubview(commandMenuIndicator)
 
     local deleteWidth = 180
     local deleteBorder = 30

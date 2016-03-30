@@ -41,6 +41,7 @@ function addAction(action)
 
     if currentActionsSize == maxCommandSize - 1 then
         addCommandView.color = {255, 255, 255, 0}
+        dismissCommandMenu()
     elseif currentActionsSize == maxCommandSize then
         return
     end
@@ -49,6 +50,8 @@ function addAction(action)
     pushAction(actions, action)
 
     layoutCommandViews()
+
+    moveIndicatorToView(addCommandView)
 end
 
 function changeAction(oldAction, newAction) 
@@ -60,6 +63,8 @@ function changeAction(oldAction, newAction)
     commandBar:addSubview(newView)
 
     layoutCommandViews()
+
+    previousMenuSender = newView
 end
 
 function deleteAction(action)

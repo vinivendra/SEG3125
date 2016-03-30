@@ -1,18 +1,30 @@
 
+previousMenuSender = nil
+
 function dismissCommandMenu(sender)
     commandMenu:removeFromSuperview()
+    return true
 end
 
 function toggleCommandMenu(commandView)
-    if commandMenu.superview == view then
-        dismissCommandMenu(commandView)    
+
+    if previousMenuSender == commandView then
+        dismissCommandMenu(commandView)
+        previousMenuSender = nil
     else
-        view:addSubview(commandMenu)
+
+        if commandMenu.superview ~= view then
+            view:addSubview(commandMenu)
+        end
+
+        moveIndicatorToView(commandView)
 
         selectedAction = commandView.action
-    end
 
-    commandState = commandStateChange
+        commandState = commandStateChange
+
+        previousMenuSender = commandView
+    end
 
     return true
 end
@@ -22,6 +34,10 @@ function toggleAddCommandMenu(sender)
     commandState = commandStateAdd
 
     return true
+end
+
+function moveIndicatorToView(view)
+    commandMenuIndicator.x = view.x
 end
 
 function commandMoveRightAction(commandView)
