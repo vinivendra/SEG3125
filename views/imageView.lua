@@ -1,5 +1,5 @@
 
-require 'view'
+require 'views/view'
 
 -- ImageView: View class ---------------------------------------
 

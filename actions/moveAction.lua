@@ -1,5 +1,5 @@
 
-require 'action'
+require 'actions/action'
 
 --- MoveAction: Action class --------------------------
 

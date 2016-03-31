@@ -1,5 +1,5 @@
 
-require 'animation'
+require 'animations/animation'
 
 --- AlphaAnimation: Animation class --------------------------
 

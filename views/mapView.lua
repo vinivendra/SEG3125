@@ -1,6 +1,6 @@
 
-require 'view'
-require 'squareView'
+require 'views/view'
+require 'views/squareView'
 
 require 'mapState'
 

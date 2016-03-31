@@ -1,5 +1,5 @@
 
-require 'view'
+require 'views/view'
 
 -- SquareView: View class ---------------------------------------
 
