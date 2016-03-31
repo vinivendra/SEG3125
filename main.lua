@@ -15,7 +15,7 @@ stateRunning = 1
 appState = stateEditing
 
 --
-tileSize = 200
+tileSize = 180
 
 commandBar = nil
 commandMenu = nil
