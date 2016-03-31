@@ -582,7 +582,7 @@ end
 function LoopAction:bwView()
     self.head.imageName = "interface/commandHeadBGBW.png"
     self.head:updateImage()
-    self.backgroundView.color = {187, 187, 187}
+    self.backgroundView.color = {210, 210, 210}
     self.backgroundEnd.imageName = "interface/commandTailBGBW.png"
     self.backgroundEnd:updateImage()
     self.commandAddView.action:bwView()
@@ -596,7 +596,7 @@ end
 function LoopAction:backgroundBwView()
     self.head.imageName = "interface/commandHeadBGBW.png"
     self.head:updateImage()
-    self.backgroundView.color = {187, 187, 187}
+    self.backgroundView.color = {225, 225, 225}
     self.backgroundEnd.imageName = "interface/commandTailBGBW.png"
     self.backgroundEnd:updateImage()
     self.commandAddView.action:bwView()
