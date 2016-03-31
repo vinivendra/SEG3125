@@ -1,5 +1,10 @@
 
+function hue(sender)
+    print("hue", getName(sender))
+end
+
 previousMenuSender = nil
+currentSuperaction = nil
 
 function dismissCommandMenu(sender)
     commandMenu:removeFromSuperview()
@@ -12,6 +17,13 @@ function toggleCommandMenu(commandView)
         dismissCommandMenu(commandView)
         previousMenuSender = nil
     else
+
+        if commandView.action ~= nil and
+            commandView.action.superaction ~= nil then
+            currentSuperaction = commandView.action.superaction
+        else
+            currentSuperaction = nil
+        end
 
         if commandMenu.superview ~= view then
             view:addSubview(commandMenu)
@@ -37,7 +49,7 @@ function toggleAddCommandMenu(sender)
 end
 
 function moveIndicatorToView(view)
-    commandMenuIndicator.x = view.x
+    commandMenuIndicator.x = view.relativeX
 end
 
 function commandMoveRightAction(commandView)

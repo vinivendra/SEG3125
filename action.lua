@@ -39,26 +39,48 @@ end
 maxCommandSize = 11
 
 function addAction(action) 
-    local newView = action.view
 
-    local currentActionsSize = getSize(actions)
+    if currentSuperaction == nil then
+        local newView = action.view
 
-    local addCommandAction = actions[currentActionsSize]
-    local addCommandView = addCommandAction.view
+        local currentActionsSize = getSize(actions)
 
-    if currentActionsSize == maxCommandSize - 1 then
-        addCommandView.color = {255, 255, 255, 0}
-        dismissCommandMenu()
-    elseif currentActionsSize == maxCommandSize then
-        return
+        local addCommandAction = actions[currentActionsSize]
+        local addCommandView = addCommandAction.view
+
+        if currentActionsSize == maxCommandSize - 1 then
+            addCommandView.color = {255, 255, 255, 0}
+            dismissCommandMenu()
+        elseif currentActionsSize == maxCommandSize then
+            return
+        end
+
+        commandBar:addSubview(newView)
+        pushAction(actions, action)
+
+        layoutCommandViews()
+
+        moveIndicatorToView(addCommandView)
+    else
+        local currentActionsSize = getSize(currentSuperaction.subactions)
+
+        local addCommandAction = currentSuperaction.subactions[currentActionsSize]
+        local addCommandView = addCommandAction.view
+
+        if currentActionsSize == currentSuperaction.size then
+            addCommandView.color = {255, 255, 255, 0}
+            addCommandView.onTap = nil
+            dismissCommandMenu()
+        elseif currentActionsSize > currentSuperaction.size then
+            return
+        end
+
+        currentSuperaction:addSubaction(action)
+
+        layoutCommandViews()
+
+        moveIndicatorToView(addCommandView)
     end
-
-    commandBar:addSubview(newView)
-    pushAction(actions, action)
-
-    layoutCommandViews()
-
-    moveIndicatorToView(addCommandView)
 end
 
 function changeAction(oldAction, newAction) 
@@ -189,6 +211,7 @@ moveUp = {0, -1, moveUpSpriteFunction, "interface/arrowUp.png", "interface/arrow
 --- Action class --------------------------------------
 
 Action = {
+    superaction = nil,
     subactions = nil,
     view = nil
 }
@@ -371,8 +394,9 @@ end
 LoopAction = Action:new({
     name = "loopAction",
     iterations = 3,
-    size = 0,
+    size = 1,
     view = nil,
+    head = nil,
     backgroundView = nil,
     backgroundEnd = nil,
     commandAddView = nil,
@@ -391,23 +415,14 @@ function LoopAction:new(o)
     return o
 end
 
-function LoopAction:validateSize(o)
-    size = getSize(self.subactions)
-    if self.size > size + 1 then
-        self.size = size + 1
-    elseif self.size < size then
-        self.size = size
-    end
-end
-
 function LoopAction:addSubaction(newAction)
-    push(self.subactions, newAction)
-    self:validateSize()
+    pushAction(self.subactions, newAction)
+    self:layoutSubviews()
 end
 
 function LoopAction:removeActionAtIndex(index)
     removeAtIndex(self.subactions, index)
-    self:validateSize()
+    self:layoutSubviews()
 end
 
 function LoopAction:width()
@@ -418,9 +433,29 @@ function LoopAction:width()
     return 90 + 20 + 140 * size + 20 + 20
 end
 
+function LoopAction:layoutSubviews()
+    local actionSize = 160
+
+    self.backgroundView.width = 20 + actionSize * self.size
+
+    self.backgroundEnd.x = self.backgroundView.x + self.backgroundView.width
+
+    for i=1,getSize(self.subactions) do
+        local action = self.subactions[i]
+        self.view:addSubview(action.view)
+        action.view.x = self.backgroundView.x + 20 + (i-1) * actionSize
+    end
+end
+
 function LoopAction:createView()
 
-    self.view = ImageView:new({
+    self.view = SquareView:new({
+        color = {0, 0, 0, 0},
+        width = self:width(),
+        height = 180
+        })
+
+    self.head = ImageView:new({
         name = "loop head",
         x = 20,
         y = 0,
@@ -431,6 +466,7 @@ function LoopAction:createView()
         -- onTap = toggleCommandMenu,
         -- willStart = attackSpriteFunction
         })
+    self.view:addSubview(self.head)
 
     self.backgroundView = SquareView:new({
         name = "loop background",
@@ -450,11 +486,17 @@ function LoopAction:createView()
         })
     self.view:addSubview(self.backgroundEnd)
 
-    self.commandAddView = AddCommandAction:new().view
-    self.commandAddView.name = "loop add"
-    self.commandAddView.onTap = toggleAddCommandMenu
-    self.commandAddView.x = 110
-    self.commandAddView.y = 20
+    local addCommandAction = AddCommandAction:new({
+        superaction = self
+        })
+    self.subactions = {addCommandAction}
+
+    local commandAddView = addCommandAction.view
+    self.commandAddView = commandAddView
+    commandAddView.name = "loop add"
+    commandAddView.onTap = toggleAddCommandMenu
+    commandAddView.x = 110
+    commandAddView.y = 20
     self.view:addSubview(self.commandAddView)
 
     return self.view
