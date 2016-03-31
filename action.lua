@@ -33,6 +33,10 @@ function layoutCommandViews()
         local action = actions[i]
         local view = action.view
         view.x = x
+
+        if action.layoutSubviews ~= nil then
+            action:layoutSubviews()
+        end
     end
 end
 
@@ -84,16 +88,28 @@ function addAction(action)
 end
 
 function changeAction(oldAction, newAction) 
-    local newView = newAction.view
+    if currentSuperaction == nil then
+        local newView = newAction.view
 
-    index = indexOf(actions, oldAction)
-    actions[index] = newAction
-    oldAction.view:removeFromSuperview()
-    commandBar:addSubview(newView)
+        index = indexOf(actions, oldAction)
+        actions[index] = newAction
+        oldAction.view:removeFromSuperview()
+        commandBar:addSubview(newView)
 
-    layoutCommandViews()
+        layoutCommandViews()
 
-    previousMenuSender = newView
+        previousMenuSender = newView
+    else
+        local newView = newAction.view
+
+        index = indexOf(currentSuperaction.subactions, oldAction)
+        currentSuperaction.subactions[index] = newAction
+        oldAction.view:removeFromSuperview()
+
+        layoutCommandViews()
+
+        previousMenuSender = newView
+    end
 end
 
 function deleteAction(action)
@@ -394,7 +410,7 @@ end
 LoopAction = Action:new({
     name = "loopAction",
     iterations = 3,
-    size = 2,
+    size = 1,
     view = nil,
     head = nil,
     backgroundView = nil,
@@ -416,11 +432,13 @@ function LoopAction:new(o)
 end
 
 function LoopAction:addSubaction(newAction)
+    newAction.superaction = self
     pushAction(self.subactions, newAction)
     self:layoutSubviews()
 end
 
 function LoopAction:removeActionAtIndex(index)
+    newAction.superaction = nil
     removeAtIndex(self.subactions, index)
     self:layoutSubviews()
 end
