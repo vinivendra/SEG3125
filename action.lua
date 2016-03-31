@@ -117,19 +117,36 @@ function deleteAction(action)
         return
     end
 
-    if action == nil then
-        action = selectedAction 
-    end
+    if currentSuperaction == nil then
+        if action == nil then
+            action = selectedAction 
+        end
 
-    local currentActionsSize = getSize(actions)
-    if currentActionsSize <= maxCommandSize then
-        local addCommandAction = actions[currentActionsSize]
-        local addCommandView = addCommandAction.view
-        addCommandView.color = {255, 255, 255, 255}
-    end
+        local currentActionsSize = getSize(actions)
+        if currentActionsSize <= maxCommandSize then
+            local addCommandAction = actions[currentActionsSize]
+            local addCommandView = addCommandAction.view
+            addCommandView.color = {255, 255, 255, 255}
+        end
 
-    removeElement(actions, action)
-    action.view:removeFromSuperview()
+        removeElement(actions, action)
+        action.view:removeFromSuperview()
+    else
+        if action == nil then
+            action = selectedAction 
+        end
+
+        local currentActionsSize = getSize(currentSuperaction.subactions)
+        if currentActionsSize <= maxCommandSize then
+            local addCommandAction = currentSuperaction.subactions[currentActionsSize]
+            local addCommandView = addCommandAction.view
+            addCommandView.color = {255, 255, 255, 255}
+            addCommandView.onTap = toggleAddCommandMenu
+        end
+
+        removeElement(currentSuperaction.subactions, action)
+        action.view:removeFromSuperview()
+    end
 
     layoutCommandViews()
 end
@@ -322,11 +339,19 @@ end
 function MoveAction:colorView()
     self.view.imageName = self.direction[4]
     self.view:updateImage()
+
+    if self.superaction ~= nil then
+        self.superaction:backgroundColorView()
+    end
 end
 
 function MoveAction:bwView()
     self.view.imageName = self.direction[5]
     self.view:updateImage()
+
+    if self.superaction ~= nil then
+        self.superaction:backgroundBwView()
+    end
 end
 
 function MoveAction:getAnimation()
@@ -388,11 +413,19 @@ end
 function AttackAction:colorView()
     self.view.imageName = "interface/sword.png"
     self.view:updateImage()
+
+    if self.superaction ~= nil then
+        self.superaction:backgroundColorView()
+    end
 end
 
 function AttackAction:bwView()
     self.view.imageName = "interface/swordBW.png"
     self.view:updateImage()
+
+    if self.superaction ~= nil then
+        self.superaction:backgroundBwView()
+    end
 end
 
 function AttackAction:getAnimation()
@@ -409,8 +442,8 @@ end
 
 LoopAction = Action:new({
     name = "loopAction",
-    iterations = 3,
-    size = 1,
+    iterations = 2,
+    size = 2,
     view = nil,
     head = nil,
     backgroundView = nil,
@@ -524,8 +557,22 @@ function LoopAction:createView()
 end
 
 function LoopAction:colorView()
-    self.view.imageName = "interface/commandHeadBG.png"
-    self.view:updateImage()
+    self.head.imageName = "interface/commandHeadBG.png"
+    self.head:updateImage()
+    self.backgroundView.color = {194, 226, 228}
+    self.backgroundEnd.imageName = "interface/commandTailBG.png"
+    self.backgroundEnd:updateImage()
+    self.commandAddView.action:colorView()
+
+    for i = 1,getSize(self.subactions) do
+        local action = self.subactions[i]
+        action:colorView()
+    end
+end
+
+function LoopAction:backgroundColorView()
+    self.head.imageName = "interface/commandHeadBG.png"
+    self.head:updateImage()
     self.backgroundView.color = {194, 226, 228}
     self.backgroundEnd.imageName = "interface/commandTailBG.png"
     self.backgroundEnd:updateImage()
@@ -533,8 +580,22 @@ function LoopAction:colorView()
 end
 
 function LoopAction:bwView()
-   self.view.imageName = "interface/commandHeadBGBW.png"
-    self.view:updateImage()
+    self.head.imageName = "interface/commandHeadBGBW.png"
+    self.head:updateImage()
+    self.backgroundView.color = {187, 187, 187}
+    self.backgroundEnd.imageName = "interface/commandTailBGBW.png"
+    self.backgroundEnd:updateImage()
+    self.commandAddView.action:bwView()
+
+    for i = 1,getSize(self.subactions) do
+        local action = self.subactions[i]
+        action:bwView()
+    end
+end
+
+function LoopAction:backgroundBwView()
+    self.head.imageName = "interface/commandHeadBGBW.png"
+    self.head:updateImage()
     self.backgroundView.color = {187, 187, 187}
     self.backgroundEnd.imageName = "interface/commandTailBGBW.png"
     self.backgroundEnd:updateImage()
