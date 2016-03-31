@@ -79,8 +79,10 @@ function View:updateRelativeCoordinates()
 end
 
 function View:addSubview(subview)
-    push(self.subviews, subview)
-    subview.superview = self
+    if subview.superview ~= self then
+        push(self.subviews, subview)
+        subview.superview = self
+    end
 end
 
 function View:removeFromSuperview()
@@ -98,6 +100,8 @@ end
 function View:tap(x, y)
     local triggered = false
 
+    -- print("tap", getName(self))
+
     for i=getSize(self.subviews),1,-1 do
         local subview = self.subviews[i]
 
@@ -111,6 +115,7 @@ function View:tap(x, y)
 
     if triggered == false then
         if self.onTap ~= nil then
+            -- print("-- onTap!", getName(self))
             self:onTap()
             triggered = true
         end

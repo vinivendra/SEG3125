@@ -394,7 +394,7 @@ end
 LoopAction = Action:new({
     name = "loopAction",
     iterations = 3,
-    size = 1,
+    size = 2,
     view = nil,
     head = nil,
     backgroundView = nil,
@@ -430,7 +430,7 @@ function LoopAction:width()
     if self.size > 0 then
         size = self.size
     end
-    return 90 + 20 + 140 * size + 20 + 20
+    return 90 + 20 + 160 * size + 20
 end
 
 function LoopAction:layoutSubviews()
@@ -498,6 +498,9 @@ function LoopAction:createView()
     commandAddView.x = 110
     commandAddView.y = 20
     self.view:addSubview(self.commandAddView)
+
+    --
+    self:layoutSubviews()
 
     return self.view
 end
