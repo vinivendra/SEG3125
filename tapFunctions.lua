@@ -49,6 +49,7 @@ function toggleAddCommandMenu(sender)
 end
 
 function moveIndicatorToView(view)
+    view:updateRelativeCoordinates()
     commandMenuIndicator.x = view.relativeX
 end
 
@@ -118,6 +119,12 @@ function commandLoopAction(commandView)
     
     if commandState == commandStateAdd then
         addAction(loopAction)
+
+        local firstAction = loopAction.subactions[1] 
+        selectedAction = firstAction
+        moveIndicatorToView(firstAction.view)
+
+        currentSuperaction = loopAction
     end
     -- elseif commandState == commandStateChange then
     --     changeAction(selectedAction, loopAction)

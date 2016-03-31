@@ -70,6 +70,7 @@ end
 
 function View:updateRelativeCoordinates()
     if self.superview ~= nil then
+        -- superview:updateRelativeCoordinates()
         self.relativeX = self.superview.relativeX + self.x
         self.relativeY = self.superview.relativeY + self.y
     else

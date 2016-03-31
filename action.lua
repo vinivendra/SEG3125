@@ -74,16 +74,30 @@ function addAction(action)
         if currentActionsSize == currentSuperaction.size then
             addCommandView.color = {255, 255, 255, 0}
             addCommandView.onTap = nil
-            dismissCommandMenu()
+
+            currentSuperaction:addSubaction(action)
+
+            local globalAddCommand = actions[getSize(actions)]
+            local addCommandAlpha = globalAddCommand.view.color[4]
+            if addCommandAlpha == nil or
+               addCommandAlpha > 0 then
+                previousMenuSender = globalAddCommand
+                currentSuperaction = nil
+            end
+
+            layoutCommandViews()
+
+            moveIndicatorToView(globalAddCommand.view)
+
         elseif currentActionsSize > currentSuperaction.size then
             return
+        else
+            currentSuperaction:addSubaction(action)
+
+            layoutCommandViews()
+
+            moveIndicatorToView(addCommandView)
         end
-
-        currentSuperaction:addSubaction(action)
-
-        layoutCommandViews()
-
-        moveIndicatorToView(addCommandView)
     end
 end
 
