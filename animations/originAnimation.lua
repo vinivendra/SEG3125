@@ -1,18 +1,26 @@
+
 require 'animation'
 
---- MoveAnimation: ActionAnimation class --------------------------
+--- OriginAnimation: Animation class --------------------------
 
-MoveAnimation = ActionAnimation:new({
-    originX = nil,
-    originY = nil,
-    destinationX = nil,
-    destinationY = nil,
-    displacementX = 0,
-    displacementY = 0
+OriginAnimation = Animation:new({
+    originX = 0,
+    originY = 0,
+    destinationX = 0,
+    destinationY = 0
     })
 
-function MoveAnimation:new(o)
+function OriginAnimation:new(o)
     o = o or {}   -- create object if user does not provide one
+
+    if o.subject ~= nil then
+        if o.originX == nil then
+            o.originX = o.subject.x
+        end
+        if o.originY == nil then
+            o.originY = o.subject.y
+        end
+    end
 
     setmetatable(o, self)
     self.__index = self
@@ -20,7 +28,7 @@ function MoveAnimation:new(o)
     return o
 end
 
-function MoveAnimation:run(dt)
+function OriginAnimation:run(dt)
     self.t = self.t + (dt / self.duration)
 
     if self.state == AnimationReady then
@@ -34,31 +42,25 @@ function MoveAnimation:run(dt)
 
         self.originX = self.subject.x
         self.originY = self.subject.y
-
-        if self.destinationX == nil then
-            self.destinationX = self.originX + self.displacementX
-        end
-        if self.destinationY == nil then
-            self.destinationY = self.originY + self.displacementY
-        end
     end
 
     if self.t > 1.0 then
+        if self.action ~= nil then
+            self.action:bwView()
+        end
+
         self.state = AnimationEnded
 
         self.subject.x = self.destinationX
         self.subject.y = self.destinationY
-
-        if self.action ~= nil then
-            self.action:bwView()
-        end
-    else
+    else 
         self.state = AnimationRunning
 
         self.x = self.timingFunction(self.originX, self.destinationX, self.t)
         self.y = self.timingFunction(self.originY, self.destinationY, self.t)
         self.subject.x = self.x
         self.subject.y = self.y
+        return true
     end
 end
 

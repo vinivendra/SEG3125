@@ -1,3 +1,6 @@
+
+require 'animation'
+
 --- DelayAnimation: ActionAnimation class --------------------------
 
 DelayAnimation = ActionAnimation:new({

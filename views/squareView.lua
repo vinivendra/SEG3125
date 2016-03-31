@@ -1,3 +1,4 @@
+
 require 'view'
 
 -- SquareView: View class ---------------------------------------

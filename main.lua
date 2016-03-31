@@ -35,14 +35,11 @@ commandState = commandStateAdd
 
 require 'array'
 
-require 'view'
-require 'mapView'
-require 'imageView'
-require 'squareView'
+require 'views'
 
-require 'animation'
+require 'animations'
 
-require 'action'
+require 'actions'
 
 require 'tapFunctions'
 

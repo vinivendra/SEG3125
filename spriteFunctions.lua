@@ -1,5 +1,5 @@
 
-require 'animation'
+require 'animations'
 
 function moveRightSpriteFunction(animation)
     animation.subject.imageName = "individuals/linkRight.png"

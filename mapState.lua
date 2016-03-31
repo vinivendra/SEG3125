@@ -1,8 +1,7 @@
 
 require 'array'
 
-require 'moveAnimation'
-require 'alphaAnimation'
+require 'animations'
 
 
 currentMapState = nil

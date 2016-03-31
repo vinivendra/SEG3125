@@ -1,3 +1,4 @@
+
 require 'animation'
 
 --- ScaleAnimation: Animation class --------------------------

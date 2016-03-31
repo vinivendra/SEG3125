@@ -1,4 +1,5 @@
 
+require 'view'
 require 'squareView'
 
 require 'mapState'
