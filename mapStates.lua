@@ -1,5 +1,6 @@
 
 require 'mapState'
+require 'mapAnimations'
 
 mapState1 = MapState:new({
     map = {"########",
@@ -12,7 +13,8 @@ mapState1 = MapState:new({
     playerOffset = {540, 360},
     attackEnabled = false,
     loopEnabled = false,
-    conditionEnabled = false
+    conditionEnabled = false,
+    getEndingAnimation = fadeRight
     })
 
 mapState2 = MapState:new({
@@ -27,7 +29,8 @@ mapState2 = MapState:new({
     playerOffset = {540, 360}, --{545, 340},
     attackEnabled = false,
     loopEnabled = false,
-    conditionEnabled = false
+    conditionEnabled = false,
+    getEndingAnimation = fadeRight
     })
 
 mapState3 = MapState:new({
@@ -41,5 +44,6 @@ mapState3 = MapState:new({
     playerOffset = {180, 180},
     attackEnabled = false,
     loopEnabled = false,
-    conditionEnabled = false
+    conditionEnabled = false,
+    getEndingAnimation = fadeRight
     })
