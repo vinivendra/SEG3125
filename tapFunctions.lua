@@ -26,11 +26,9 @@ end
 
 function toggleCommandMenu(commandView)
     if previousMenuSender == commandView then
-        print("dismissing", getName(commandView))
         dismissCommandMenu(commandView)
         previousMenuSender = nil
     else
-        print("presenting", getName(commandView))
         dismissSuperCommandMenu(commandView)
 
         if commandView.action ~= nil and
