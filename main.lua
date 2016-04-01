@@ -52,6 +52,7 @@ require 'actions'
 require 'tapFunctions'
 
 require 'mapState'
+require 'mapStates'
 
 ----------------------------------------------------------------
 
@@ -75,7 +76,7 @@ function love.load()
 
     ----------------------------------
 
-    currentMapState = MapState:new()
+    currentMapState = mapState2
 
     ----------------------------------
 
