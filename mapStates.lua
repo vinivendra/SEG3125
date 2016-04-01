@@ -14,7 +14,8 @@ mapState1 = MapState:new({
     attackEnabled = false,
     loopEnabled = false,
     conditionEnabled = false,
-    getEndingAnimation = fadeRight
+    getEndingAnimation = fadeRight,
+    begginingAnimation = fadeInRight
     })
 
 mapState2 = MapState:new({
@@ -30,7 +31,8 @@ mapState2 = MapState:new({
     attackEnabled = false,
     loopEnabled = false,
     conditionEnabled = false,
-    getEndingAnimation = fadeRight
+    getEndingAnimation = fadeRight,
+    begginingAnimation = fadeInRight
     })
 
 mapState3 = MapState:new({
@@ -45,5 +47,6 @@ mapState3 = MapState:new({
     attackEnabled = false,
     loopEnabled = false,
     conditionEnabled = false,
-    getEndingAnimation = fadeRight
+    getEndingAnimation = fadeRight,
+    begginingAnimation = fadeInRight
     })

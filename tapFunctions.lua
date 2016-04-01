@@ -191,6 +191,9 @@ function goButtonPressed(sender)
 
         goButton.imageName = "interface/stop.png"
         goButton:updateImage()
+
+        dismissCommandMenu()
+        dismissSuperCommandMenu()
     else
         finishActions()
 

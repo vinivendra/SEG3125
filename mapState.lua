@@ -34,10 +34,6 @@ function MapState:hasFinished()
            self.playerPosition[2] == self.goalPosition[2]
 end
 
-function MapState:getEndingAnimation()
-    return self.particularEndingAnimation(self)
-end
-
 function MapState:move(direction)
     local x = self.playerPosition[1] + direction[2]
     local y = self.playerPosition[2] + direction[1]
