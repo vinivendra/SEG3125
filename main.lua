@@ -137,7 +137,7 @@ function love.load()
         color = {237, 241, 242},
         y = 720 - indicatorHeight,
         x = 20,
-        cornerRadius = 3
+        cornerRadius = 20
         })
 
     commandMenuIndicator = ImageView:new({
