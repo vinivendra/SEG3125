@@ -1,4 +1,8 @@
 
+function doNothing(sender)
+    return true
+end
+
 function hue(sender)
     print("hue", getName(sender))
 end
