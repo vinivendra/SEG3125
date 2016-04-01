@@ -100,7 +100,8 @@ function love.load()
         name = "map view",
         width = 1920,
         height = 900,
-        imageName = currentMapState.imageName
+        imageName = currentMapState.imageName,
+        shouldAnimateTap = false
         })
     view:addSubview(mapView)
 
@@ -111,6 +112,7 @@ function love.load()
         x = currentMapState.playerOffset[1],
         y = currentMapState.playerOffset[2],
         imageName = "individuals/linkRight.png",
+        shouldAnimateTap = false
         })
     mapView:addSubview(player)
 
@@ -279,6 +281,10 @@ end
  
 function love.draw()
    view:draw()
+end
+
+function love.mousepressed( x, y, button, istouch )
+    view:tapBegan(x, y)
 end
 
 function love.mousereleased( x, y, button, istouch )

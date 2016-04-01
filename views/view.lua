@@ -17,7 +17,9 @@ View = {
     subviews = {},
     superview = nil,
     name = "",
-    onTap = nil
+    onTap = nil,
+    isAnimatingTap = false,
+    shouldAnimateTap = true
 }
 
 function View:init()
@@ -126,6 +128,45 @@ function View:tap(x, y)
         end
     end
 
+    if self.deAnimateTap ~= nil then
+        self:deAnimateTap()
+    end
+
     return triggered
 end
+
+function View:tapBegan(x, y)
+    local triggered = false
+
+    -- print("tapBegan", getName(self))
+
+    for i=getSize(self.subviews),1,-1 do
+        local subview = self.subviews[i]
+
+        if subview ~= nil and triggered == false then
+            if pointIsInView(x, y, subview) then
+                local result = subview:tapBegan(x - subview.x, y - subview.y)
+                triggered = triggered or result
+                if result == true then
+                    break
+                end
+            end
+        end
+    end
+
+    if triggered == false then
+        if self.animateTap ~= nil then
+            -- print("-- animateTap!", getName(self))
+            self:animateTap()
+            triggered = true
+        end
+    end
+
+    return triggered
+end
+
+
+
+
+
 

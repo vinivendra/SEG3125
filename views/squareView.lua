@@ -46,3 +46,30 @@ function SquareView:draw()
     View.draw(self)
 end
 
+function SquareView:animateTap()
+    if self.shouldAnimateTap == false then
+        return
+    end
+
+    if self.color[3] ~= nil then
+        self.color[1] = self.color[1] * 0.8
+        self.color[2] = self.color[2] * 0.8
+        self.color[3] = self.color[3] * 0.8
+    end
+
+    self.isAnimatingTap = true
+end
+
+function SquareView:deAnimateTap()
+    if self.isAnimatingTap == false then
+        return
+    end
+
+    if self.color[3] ~= nil then
+        self.color[1] = self.color[1] / 0.8
+        self.color[2] = self.color[2] / 0.8
+        self.color[3] = self.color[3] / 0.8
+    end
+end
+
+
