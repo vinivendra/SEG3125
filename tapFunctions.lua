@@ -190,11 +190,9 @@ function goButtonPressed(sender)
         goButton.imageName = "interface/stop.png"
         goButton:updateImage()
     else
-        appState = stateEditing
-        actionAnimations = {}
+        finishActions()
 
-        goButton.imageName = "interface/go.png"
-        goButton:updateImage()
+        actionAnimations = {}
     end
 end
 
