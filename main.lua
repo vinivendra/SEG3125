@@ -25,6 +25,10 @@ superactionMenu = nil
 
 goButton = nil
 
+attackMenuAction = nil
+loopMenuAction = nil
+conditionMenuAction = nil
+
 --
 selectedAction = nil
 
@@ -210,23 +214,23 @@ function love.load()
     menuView4.x = deleteWidth + commandWidth * 3
     commandMenu:addSubview(menuView4)
 
-    local menuView5 = AttackAction:new({
+    attackMenuAction = AttackAction:new({
         }):createView()
-    menuView5.action = nil
-    menuView5.onTap = commandAttackAction
-    menuView5.x = deleteWidth + commandWidth * 4
-    commandMenu:addSubview(menuView5)
+    attackMenuAction.action = nil
+    attackMenuAction.onTap = commandAttackAction
+    attackMenuAction.x = deleteWidth + commandWidth * 4
+    commandMenu:addSubview(attackMenuAction)
 
-    local menuView6 = ImageView:new({
+    loopMenuAction = ImageView:new({
         imageName = "interface/repeatBig.png",
         width = 140,
         height = 140,
         y = 20
         })
-    menuView6.action = nil
-    menuView6.onTap = commandLoopAction
-    menuView6.x = deleteWidth + commandWidth * 5
-    commandMenu:addSubview(menuView6)
+    loopMenuAction.action = nil
+    loopMenuAction.onTap = commandLoopAction
+    loopMenuAction.x = deleteWidth + commandWidth * 5
+    commandMenu:addSubview(loopMenuAction)
 
     ----------------------------------
 
