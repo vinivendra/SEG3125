@@ -128,14 +128,14 @@ function love.load()
         })
     view:addSubview(commandBar)
 
-    local indicatorHeight = 63
+    local indicatorHeight = 28
 
     commandMenu = SquareView:new({
         name = "command menu",
         width = 1500,
         height = 180,
         color = {237, 241, 242},
-        y = 720 - indicatorHeight,
+        y = 900 - 180 - indicatorHeight,
         x = 20,
         cornerRadius = 20
         })
@@ -145,7 +145,7 @@ function love.load()
         imageName = "interface/triangleMenu.png",
         color = {255, 255, 255},
         width = 63,
-        height = 28,
+        height = indicatorHeight,
         y = commandMenu.height,
         x = 100
         })
