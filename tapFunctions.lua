@@ -3,20 +3,33 @@ function hue(sender)
     print("hue", getName(sender))
 end
 
+previousSuperMenuSender = nil
 previousMenuSender = nil
 currentSuperaction = nil
 
+function dismissUI(sender)
+    dismissCommandMenu(sender)
+    dismissSuperCommandMenu(sender)
+end
+
 function dismissCommandMenu(sender)
+    previousMenuSender = nil
     commandMenu:removeFromSuperview()
     return true
 end
 
-function toggleCommandMenu(commandView)
+function dismissSuperCommandMenu(sender)
+    previousSuperMenuSender = nil
+    superactionMenu:removeFromSuperview()
+    return true
+end
 
+function toggleCommandMenu(commandView)
     if previousMenuSender == commandView then
         dismissCommandMenu(commandView)
         previousMenuSender = nil
     else
+        dismissSuperCommandMenu(commandView)
 
         if commandView.action ~= nil and
             commandView.action.superaction ~= nil then
@@ -44,6 +57,27 @@ end
 function toggleAddCommandMenu(sender)
     toggleCommandMenu(sender)
     commandState = commandStateAdd
+
+    return true
+end
+
+function toggleSuperactionMenu(commandView)
+    if previousSuperMenuSender == commandView then
+        dismissSuperCommandMenu(commandView)
+        previousSuperMenuSender = nil
+    else
+        dismissCommandMenu(commandView)
+
+        if superactionMenu.superview ~= view then
+            view:addSubview(superactionMenu)
+        end
+
+        superactionMenu.x = commandView.relativeX
+
+        commandState = commandStateEdit
+
+        previousSuperMenuSender = commandView
+    end
 
     return true
 end

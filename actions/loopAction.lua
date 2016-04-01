@@ -77,8 +77,7 @@ function LoopAction:createView()
         height = 180,
         imageName = "interface/commandHeadBG.png",
         action = self,
-        -- onTap = toggleCommandMenu,
-        -- willStart = attackSpriteFunction
+        onTap = toggleSuperactionMenu
         })
     self.view:addSubview(self.head)
 

@@ -21,6 +21,8 @@ commandBar = nil
 commandMenu = nil
 commandMenuIndicator = nil
 
+superactionMenu = nil
+
 goButton = nil
 
 --
@@ -28,6 +30,7 @@ selectedAction = nil
 
 commandStateAdd = 0
 commandStateChange = 1
+commandStateEdit = 2
 commandState = commandStateAdd
 
 
@@ -63,7 +66,7 @@ function love.load()
         width = screenWidth,
         height = screenHeight
         })
-    view.onTap = dismissCommandMenu
+    view.onTap = dismissUI
 
     ----------------------------------
 
@@ -107,6 +110,14 @@ function love.load()
     mapView:addSubview(player)
 
     ----------------------------------
+
+    superactionMenu = ImageView:new({
+        name = "superactionMenu",
+        imageName = "interface/menuCommandBG.png",
+        width = 363,
+        height = 524,
+        y = 900 - 524
+        })
 
     commandBar = SquareView:new({
         name = "command bar",
