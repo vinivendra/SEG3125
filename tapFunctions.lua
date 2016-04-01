@@ -82,10 +82,11 @@ function toggleSuperactionMenu(commandView)
     return true
 end
 
-function moveIndicatorToView(view)
-    previousMenuSender = view
-    view:updateRelativeCoordinates()
-    commandMenuIndicator.x = view.relativeX
+function moveIndicatorToView(commandView)
+    previousMenuSender = commandView
+    commandView:updateRelativeCoordinates()
+    -- commandMenuIndicator.x = commandView.relativeX
+    commandMenuIndicator:centerXInView(commandView)
 end
 
 function commandMoveRightAction(commandView)
