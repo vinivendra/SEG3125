@@ -85,7 +85,6 @@ end
 function moveIndicatorToView(commandView)
     previousMenuSender = commandView
     commandView:updateRelativeCoordinates()
-    -- commandMenuIndicator.x = commandView.relativeX
     commandMenuIndicator:centerXInView(commandView)
 end
 

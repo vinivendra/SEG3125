@@ -98,6 +98,10 @@ function View:center()
     self.y = self.superview.height / 2 - self.height / 2
 end
 
+function View:centerXInView(otherView)
+    self.x = otherView.relativeX + otherView.width / 2 - self.width / 2 - self.superview.x
+end
+
 function View:tap(x, y)
     local triggered = false
 
