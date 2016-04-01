@@ -6,6 +6,7 @@ require 'views/view'
 SquareView = View:new({
   color = {45, 146, 153},
   cornerRadius = 0,
+  shouldAnimateTap = false
   })
 
 function SquareView:new(o)

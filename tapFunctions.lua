@@ -36,6 +36,7 @@ function toggleCommandMenu(commandView)
         dismissSuperCommandMenu(commandView)
 
         deleteMenuAction.imageName = "interface/delete.png"
+        deleteMenuAction.shouldAnimateTap = true
         deleteMenuAction:updateImage()
 
         if commandView.action ~= nil and
@@ -66,6 +67,7 @@ function toggleAddCommandMenu(sender)
     commandState = commandStateAdd
 
     deleteMenuAction.imageName = "interface/deleteBW.png"
+    deleteMenuAction.shouldAnimateTap = false
     deleteMenuAction:updateImage()
 
     return true
