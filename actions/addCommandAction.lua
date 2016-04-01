@@ -4,6 +4,7 @@ require 'actions/action'
 --- AddCommandAction: Action class ---------------------
 
 AddCommandAction = Action:new({
+    imageView = nil
     })
 
 function AddCommandAction:new(o)
@@ -30,7 +31,7 @@ function AddCommandAction:createView()
         shouldAnimateTap = true
         })
 
-    local image = ImageView:new({
+    self.imageView = ImageView:new({
         name = "add command",
         action = self,
         width = 140,
@@ -39,19 +40,19 @@ function AddCommandAction:createView()
         shouldAnimateTap = false
         })
 
-    self.view:addSubview(image)
+    self.view:addSubview(self.imageView)
 
     return self.view
 end
 
 function AddCommandAction:colorView()
-    self.view.imageName = "interface/emptyBlock.png"
-    self.view:updateImage()
+    self.imageView.imageName = "interface/emptyBlock.png"
+    self.imageView:updateImage()
 end
 
 function AddCommandAction:bwView()
-    self.view.imageName = "interface/emptyBlockBW.png"
-    self.view:updateImage()
+    self.imageView.imageName = "interface/emptyBlockBW.png"
+    self.imageView:updateImage()
 end
 
 function AddCommandAction:getAnimation()
