@@ -35,6 +35,9 @@ function toggleCommandMenu(commandView)
     else
         dismissSuperCommandMenu(commandView)
 
+        deleteMenuAction.imageName = "interface/delete.png"
+        deleteMenuAction:updateImage()
+
         if commandView.action ~= nil and
             commandView.action.superaction ~= nil then
             currentSuperaction = commandView.action.superaction
@@ -61,6 +64,9 @@ end
 function toggleAddCommandMenu(sender)
     toggleCommandMenu(sender)
     commandState = commandStateAdd
+
+    deleteMenuAction.imageName = "interface/deleteBW.png"
+    deleteMenuAction:updateImage()
 
     return true
 end

@@ -25,6 +25,7 @@ superactionMenu = nil
 
 goButton = nil
 
+deleteMenuAction = nil
 attackMenuAction = nil
 loopMenuAction = nil
 conditionMenuAction = nil
@@ -176,14 +177,14 @@ function love.load()
         })
     commandMenu:addSubview(deleteButton)
 
-    local deleteImage = ImageView:new({
+    deleteMenuAction = ImageView:new({
         width = 60,
         height = 75,
         x = (deleteWidth - deleteBorder) / 2 - 30,
         y = 90 - 75/2,
         imageName = "interface/delete.png"
         })
-    commandMenu:addSubview(deleteImage)
+    commandMenu:addSubview(deleteMenuAction)
 
     --
     local menuView1 = MoveAction:new():createView()
