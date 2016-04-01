@@ -4,7 +4,8 @@ require 'views/view'
 -- SquareView: View class ---------------------------------------
 
 SquareView = View:new({
-  color = {45, 146, 153}
+  color = {45, 146, 153},
+  cornerRadius = 0,
   })
 
 function SquareView:new(o)
@@ -37,7 +38,10 @@ function SquareView:draw()
 
     self:updateRelativeCoordinates()
 
-    love.graphics.rectangle("fill", self.relativeX, self.relativeY, self.width, self.height)    
+    love.graphics.rectangle("fill",
+        self.relativeX, self.relativeY,
+        self.width, self.height,
+        self.cornerRadius, self.cornerRadius)
 
     View.draw(self)
 end
