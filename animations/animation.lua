@@ -11,11 +11,14 @@ function runAnimations(dt)
 end
 
 function runActions(dt)
+    if appState == stateEditing then
+        return
+    end
     runAnimationsOnArray(actionAnimations, dt)
 end
 
 function runAnimationsOnArray(array, dt)
-    if array == nil or appState == stateEditing then
+    if array == nil then
         return
     end
 
