@@ -130,13 +130,14 @@ function love.load()
 
     local indicatorHeight = 28
 
+    local commandMenuMargin = 20
     commandMenu = SquareView:new({
         name = "command menu",
-        width = 1500,
+        width = 1920 - 2 * commandMenuMargin,
         height = 180,
         color = {237, 241, 242},
         y = 900 - 180 - indicatorHeight,
-        x = 20,
+        x = commandMenuMargin,
         cornerRadius = 20
         })
 
