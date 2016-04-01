@@ -19,15 +19,28 @@ function AddCommandAction:new(o)
 end
 
 function AddCommandAction:createView()
-    self.view = ImageView:new({
-        name = "add command",
+    self.view = SquareView:new({
+        color = {237, 241, 242},
+        name = "add command bg",
         action = self,
         x = 20,
         y = 20,
         width = 140,
         height = 140,
-        imageName = "interface/emptyBlock.png"
+        shouldAnimateTap = true
         })
+
+    local image = ImageView:new({
+        name = "add command",
+        action = self,
+        width = 140,
+        height = 140,
+        imageName = "interface/emptyBlock.png",
+        shouldAnimateTap = false
+        })
+
+    self.view:addSubview(image)
+
     return self.view
 end
 

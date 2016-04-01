@@ -155,7 +155,7 @@ function View:tapBegan(x, y)
     end
 
     if triggered == false then
-        if self.animateTap ~= nil then
+        if self.animateTap ~= nil and self.shouldAnimateTap then
             -- print("-- animateTap!", getName(self))
             self:animateTap()
             triggered = true
