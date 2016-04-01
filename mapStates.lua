@@ -50,3 +50,5 @@ mapState3 = MapState:new({
     getEndingAnimation = fadeRight,
     begginingAnimation = fadeInRight
     })
+
+mapStates = {mapState1, mapState2, mapState3}

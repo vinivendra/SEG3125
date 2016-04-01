@@ -5,6 +5,10 @@ nextMapView = nil
 
 
 function animateNextMap()
+    if nextMapState == nil then
+        return
+    end
+
     nextMapView = ImageView:new({
         name = "map view",
         width = 1920,
@@ -29,10 +33,18 @@ function animateNextMap()
 end
 
 function completeMapAnimation()
+    if mapStateIndex >= getSize(mapStates) then
+        return
+    end
+
     mapView:removeFromSuperview()
-    mapView = nextMapView
-    nextMapView = nil
+
+    mapStateIndex = mapStateIndex + 1
+
     currentMapState = nextMapState
+    nextMapState = mapStates[mapStateIndex + 1]
+
+    mapView = nextMapView
     --
     player.x = currentMapState.playerOffset[1]
     player.y = currentMapState.playerOffset[2]
@@ -55,7 +67,7 @@ function completeMapAnimation()
         loopMenuAction.onTap = nil
     end
 
-    startAnimation(nextMapState:begginingAnimation())
+    currentMapState:begginingAnimation()
 end
 
 
@@ -99,12 +111,18 @@ function fadeInRight(self)
         willStart = moveRightSpriteFunction
         })
 
-    animation2 = AlphaAnimation:new({
+    animation21 = DelayAnimation:new({
+        duration = 0.5
+        })
+
+    animation22 = AlphaAnimation:new({
         subject = player,
         duration = 0.5
         })
-    animation1.with = animation2
-    return animation1
+    animation21:chain(animation22)
+    
+    startAnimation(animation21)
+    startAnimation(animation1)
 end
 
 

@@ -1,4 +1,6 @@
 
+-- TODO: Stop fors in fors
+
 screenWidth = 0
 screenHeight = 0
 
@@ -40,6 +42,7 @@ commandState = commandStateAdd
 
 --
 nextMapState = nil
+mapStateIndex = 1
 
 ----------------------------------------------------------------
 
@@ -57,6 +60,8 @@ require 'mapState'
 require 'mapStates'
 
 ----------------------------------------------------------------
+
+
 
 function love.update(dt)
     runAnimations(dt)
@@ -82,23 +87,6 @@ function love.load()
     nextMapState = mapState2
 
     ----------------------------------
-
-    -- wallWidth = 180
-    -- wallHeight = 125
-    -- wallView = SquareView:new({
-    --     name = "map container",
-    --     color = {18, 117, 92},
-    --     width = 1560 + 2 * wallWidth,
-    --     height = 650 + 2 * wallHeight
-    --     })
-
-    -- mapView = MapView:new({
-    --     x = wallWidth,
-    --     y = wallHeight
-    --     })
-
-    -- wallView: addSubview(mapView)
-    -- view:addSubview(wallView)
 
     mapView = ImageView:new({
         name = "map view",
