@@ -16,11 +16,12 @@ mapState1 = MapState:new({
     })
 
 mapState2 = MapState:new({
-    map = {"________",
+    map = {"##______",
+           "##______",
            "_____###",
-           "________"},
+           "##______"},
     imageName = "stages/stage1-2.png",
-    startingPosition = {2, 2},
+    startingPosition = {3, 1},
     goalPosition = {2, 7},
     playerPosition = nil,
     playerOffset = {540, 360}, --{545, 340},
@@ -30,12 +31,12 @@ mapState2 = MapState:new({
     })
 
 mapState3 = MapState:new({
-    map = {"##########",
-           "__________",
-           "__________"},
+    map = {"__#_____",
+           "________",
+           "________"},
     imageName = "stages/stage1-3.png",
-    startingPosition = {2, 2},
-    goalPosition = {2, 15},
+    startingPosition = {2, 1},
+    goalPosition = {3, 8},
     playerPosition = nil,
     playerOffset = {180, 180},
     attackEnabled = false,

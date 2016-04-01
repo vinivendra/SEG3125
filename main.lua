@@ -76,7 +76,7 @@ function love.load()
 
     ----------------------------------
 
-    currentMapState = mapState2
+    currentMapState = mapState3
 
     ----------------------------------
 
