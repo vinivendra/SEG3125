@@ -251,6 +251,26 @@ function love.load()
 
     ----------------------------------
 
+    if currentMapState.attackEnabled then
+        attackMenuAction.color = {255, 255, 255, 255}
+        attackMenuAction.onTap = commandAttackAction
+    else
+        attackMenuAction.color = {0, 0, 0, 0}
+        attackMenuAction.onTap = nil
+    end
+
+    if currentMapState.loopEnabled then
+        loopMenuAction.color = {255, 255, 255, 255}
+        loopMenuAction.onTap = commandLoopAction
+    else
+        loopMenuAction.color = {0, 0, 0, 0}
+        loopMenuAction.onTap = nil
+    end
+
+    ----------------------------------
+
+
+
     -- temp
     -- startActions()
 end
