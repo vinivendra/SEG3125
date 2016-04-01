@@ -56,8 +56,14 @@ function LoopAction:layoutSubviews()
 
     for i=1,getSize(self.subactions) do
         local action = self.subactions[i]
+        action.view.hidden = false
         self.view:addSubview(action.view)
         action.view.x = self.backgroundView.x + 20 + (i-1) * actionSize
+    end
+
+    if getSize(self.subactions) > self.size then
+        local overflowAddAction = self.subactions[getSize(self.subactions)]
+        overflowAddAction.view.hidden = true
     end
 end
 

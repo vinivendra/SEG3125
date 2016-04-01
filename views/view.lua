@@ -19,7 +19,8 @@ View = {
     name = "",
     onTap = nil,
     isAnimatingTap = false,
-    shouldAnimateTap = true
+    shouldAnimateTap = true,
+    hidden = false
 }
 
 function View:init()
@@ -66,7 +67,9 @@ function View:draw()
 
     for i=1,getSize(self.subviews) do
         subview = self.subviews[i]
-        subview:draw()
+        if subview.hidden == false then
+            subview:draw()
+        end
     end
 end
 

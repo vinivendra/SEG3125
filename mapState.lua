@@ -20,9 +20,9 @@ MapState = {
     goalPosition = {2, 7},
     playerPosition = nil,
     playerOffset = {515, 340},
-    attackEnabled = false,
-    loopEnabled = false,
-    conditionEnabled = false
+    attackEnabled = true,
+    loopEnabled = true,
+    conditionEnabled = true
 }
 
 function MapState:new(o)
