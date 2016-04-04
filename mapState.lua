@@ -51,4 +51,21 @@ function MapState:move(direction)
     return canMove
 end
 
+function MapState:createView()
+    local view = ImageView:new({
+        name = "map view",
+        width = 1920,
+        height = 900,
+        imageName = currentMapState.imageName,
+        shouldAnimateTap = false
+        })
+
+    for index,entity in ipairs(self.entities) do
+        view:addSubview(entity)
+    end
+
+    return view
+end
+
+
 

@@ -15,7 +15,8 @@ mapState1 = MapState:new({
     loopEnabled = false,
     conditionEnabled = false,
     getEndingAnimation = fadeRight,
-    begginingAnimation = fadeInRight
+    begginingAnimation = fadeInRight,
+    entities = {}
     })
 
 mapState2 = MapState:new({
@@ -32,7 +33,8 @@ mapState2 = MapState:new({
     loopEnabled = false,
     conditionEnabled = false,
     getEndingAnimation = fadeRight,
-    begginingAnimation = fadeInRight
+    begginingAnimation = fadeInRight,
+    entities = {}
     })
 
 mapState3 = MapState:new({
@@ -47,8 +49,17 @@ mapState3 = MapState:new({
     attackEnabled = false,
     loopEnabled = false,
     conditionEnabled = false,
-    getEndingAnimation = fadeRight,
-    begginingAnimation = fadeInRight
+    getEndingAnimation = masterSword,
+    begginingAnimation = fadeInRight,
+    entities = {
+        ImageView:new({
+            x = 1720,
+            y = 355,
+            imageName = "individuals/masterSword.png",
+            width = 100,
+            height = 100
+            })
+    }
     })
 
 mapStates = {mapState1, mapState2, mapState3}

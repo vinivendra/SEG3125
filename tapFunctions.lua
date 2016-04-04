@@ -185,15 +185,7 @@ end
 
 function goButtonPressed(sender)
     if appState == stateEditing then
-        appState = stateRunning
-
-        startActions()
-
-        goButton.imageName = "interface/stop.png"
-        goButton:updateImage()
-
-        dismissCommandMenu()
-        dismissSuperCommandMenu()
+        beginRunningActions()
     else
         finishActions()
 
@@ -201,3 +193,14 @@ function goButtonPressed(sender)
     end
 end
 
+function beginRunningActions()
+    appState = stateRunning
+
+    startActions()
+
+    goButton.imageName = "interface/stop.png"
+    goButton:updateImage()
+
+    dismissCommandMenu()
+    dismissSuperCommandMenu()
+end

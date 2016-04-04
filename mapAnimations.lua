@@ -75,12 +75,12 @@ function fadeRight(self)
     local displacementX = moveRight[1] * tileSize
     local displacementY = moveRight[2] * tileSize
 
-    animation0 = StopAnimation:new({
+    local animation0 = StopAnimation:new({
         subject = player,
         imageName = "individuals/linkSuccess.png"
         })
 
-    animation1 = MoveAnimation:new({
+    local animation1 = MoveAnimation:new({
         subject = player,
         displacementX = displacementX,
         displacementY = displacementY,
@@ -88,7 +88,7 @@ function fadeRight(self)
         })
     animation0:chain(animation1)
 
-    animation2 = AlphaAnimation:new({
+    local animation2 = AlphaAnimation:new({
         subject = player,
         duration = 0.5,
         completion = animateNextMap
@@ -104,27 +104,79 @@ function fadeInRight(self)
     local displacementX = moveRight[1] * tileSize
     local displacementY = moveRight[2] * tileSize
 
-    animation1 = MoveAnimation:new({
+    local animation1 = MoveAnimation:new({
         subject = player,
         displacementX = displacementX,
         displacementY = displacementY,
-        willStart = moveRightSpriteFunction
+        willStart = moveRightSpriteFunction,
+        completion = beginRunningActions
         })
 
-    animation21 = DelayAnimation:new({
+    local animation21 = DelayAnimation:new({
         duration = 0.5
         })
 
-    animation22 = AlphaAnimation:new({
+    local animation22 = AlphaAnimation:new({
         subject = player,
         duration = 0.5
         })
     animation21:chain(animation22)
-    
+
     startAnimation(animation21)
     startAnimation(animation1)
 end
 
+function masterSword(self)
+    local sword = currentMapState.entities[1]
+
+    local animationS1 = MoveAnimation:new({
+        subject = sword,
+        displacementX = 0,
+        displacementY = -100,
+        duration = 0.5
+        }) 
+    local animationS2 = AlphaAnimation:new({
+        subject = sword,
+        duration = 0.5
+        })
+
+    --
+    local animation0 = MoveAnimation:new({
+        subject = player,
+        displacementX = 130,
+        displacementY = -10,
+        duration = 1
+        }) 
+
+    local animation01 = DelayAnimation:new({
+        subject = player,
+        duration = 1,
+        willStart = successSpriteFunction
+        })
+
+    local animation1 = DelayAnimation:new({
+        subject = player,
+        duration = 0.5,
+        willStart = moveRightSpriteFunction
+        })
+
+    local animation2 = DelayAnimation:new({
+        subject = player,
+        duration = 2,
+        willStart = swordSpriteFunction
+        })
+
+    local endAnimation = fadeRight()
+
+    animation0:chain(animation01) 
+    animation01:chain(animation1) 
+    animation1.with = animationS1
+    animationS1.with = animationS2
+    animation1:chain(animation2)
+    animation2:chain(endAnimation)
+
+    return animation0
+end
 
 
 

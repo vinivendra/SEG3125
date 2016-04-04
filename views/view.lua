@@ -86,6 +86,7 @@ end
 
 function View:addSubview(subview)
     if subview.superview ~= self then
+        subview:removeFromSuperview()
         push(self.subviews, subview)
         subview.superview = self
     end

@@ -42,7 +42,7 @@ commandState = commandStateAdd
 
 --
 nextMapState = nil
-mapStateIndex = 1
+mapStateIndex = 3
 
 ----------------------------------------------------------------
 
@@ -83,18 +83,12 @@ function love.load()
 
     ----------------------------------
 
-    currentMapState = mapState1
-    nextMapState = mapState2
+    currentMapState = mapState3
+    nextMapState = nil
 
     ----------------------------------
 
-    mapView = ImageView:new({
-        name = "map view",
-        width = 1920,
-        height = 900,
-        imageName = currentMapState.imageName,
-        shouldAnimateTap = false
-        })
+    mapView = currentMapState:createView()
     view:addSubview(mapView)
 
     --

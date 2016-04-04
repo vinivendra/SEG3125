@@ -31,3 +31,7 @@ function successSpriteFunction(animation)
     animation.subject:updateImage()
 end
 
+function swordSpriteFunction(animation)
+    animation.subject.imageName = "individuals/linkMasterSword.png"
+    animation.subject:updateImage()
+end
