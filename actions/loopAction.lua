@@ -5,8 +5,8 @@ require 'actions/action'
 
 LoopAction = Action:new({
     name = "loopAction",
-    iterations = 2,
-    size = 2,
+    iterations = 3,
+    size = 1,
     view = nil,
     head = nil,
     backgroundView = nil,
