@@ -19,7 +19,7 @@ function xForCommandAtIndex(index)
         sum = sum + width + spacing
     end
 
-    return 20 + sum
+    return 30 + sum
 end
 
 function layoutCommandViews()
@@ -48,10 +48,12 @@ function addAction(action)
         local addCommandView = addCommandAction.view
 
         if currentActionsSize == maxCommandSize - 1 then
-            addCommandView.color = {255, 255, 255, 0}
+            addCommandView.onTap = nil
             dismissCommandMenu()
         elseif currentActionsSize == maxCommandSize then
             return
+        else
+            addCommandView.onTap = toggleAddCommandMenu
         end
 
         commandBar:addSubview(newView)

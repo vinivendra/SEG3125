@@ -78,6 +78,7 @@ mapState4 = MapState:new({
     conditionEnabled = false,
     getEndingAnimation = fadeUp,
     begginingAnimation = fadeInUp,
+    shouldRestart = true,
     entities = {
         ImageView:new({
             name = "monster",

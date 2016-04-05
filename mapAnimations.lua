@@ -81,6 +81,18 @@ function completeMapAnimation()
         loopMenuAction.onTap = nil
     end
 
+    if currentMapState.shouldRestart then
+        while getSize(actions) > 1 do
+            local action = actions[1]
+            action.view:removeFromSuperview()
+            removeAtIndex(actions, 1)
+        end
+
+        actionAnimations = {}
+        appState = stateEditing
+        layoutCommandViews()
+    end
+
     currentMapState:begginingAnimation()
 end
 
