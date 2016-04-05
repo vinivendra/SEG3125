@@ -9,14 +9,8 @@ function animateNextMap()
         return
     end
 
-    nextMapView = ImageView:new({
-        name = "map view",
-        width = 1920,
-        height = 900,
-        x = 1920,
-        imageName = nextMapState.imageName,
-        shouldAnimateTap = false
-        })
+    nextMapView = nextMapState:createView()
+    print("next map:", nextMapView.imageName)
     view:addSubview(nextMapView)
 
     local animation1 = OriginAnimation:new({
@@ -71,6 +65,32 @@ function completeMapAnimation()
 end
 
 
+function fadeUp(self)
+    local displacementX = moveUp[1] * tileSize
+    local displacementY = moveUp[2] * tileSize
+
+    local animation0 = StopAnimation:new({
+        subject = player,
+        imageName = "individuals/linkSuccess.png"
+        })
+
+    local animation1 = MoveAnimation:new({
+        subject = player,
+        displacementX = displacementX,
+        displacementY = displacementY,
+        willStart = moveUpSpriteFunction
+        })
+    animation0:chain(animation1)
+
+    local animation2 = AlphaAnimation:new({
+        subject = player,
+        duration = 0.5,
+        completion = animateNextMap
+        })
+    animation1.with = animation2
+    return animation0
+end
+
 function fadeRight(self)
     local displacementX = moveRight[1] * tileSize
     local displacementY = moveRight[2] * tileSize
@@ -109,6 +129,35 @@ function fadeInRight(self)
         displacementX = displacementX,
         displacementY = displacementY,
         willStart = moveRightSpriteFunction,
+        completion = beginRunningActions
+        })
+
+    local animation21 = DelayAnimation:new({
+        duration = 0.5
+        })
+
+    local animation22 = AlphaAnimation:new({
+        subject = player,
+        duration = 0.5
+        })
+    animation21:chain(animation22)
+
+    startAnimation(animation21)
+    startAnimation(animation1)
+end
+
+function fadeInUp(self)
+    player.x = player.x - moveUp[1] * tileSize
+    player.y = player.y - moveUp[2] * tileSize
+
+    local displacementX = moveUp[1] * tileSize
+    local displacementY = moveUp[2] * tileSize
+
+    local animation1 = MoveAnimation:new({
+        subject = player,
+        displacementX = displacementX,
+        displacementY = displacementY,
+        willStart = moveUpSpriteFunction,
         completion = beginRunningActions
         })
 

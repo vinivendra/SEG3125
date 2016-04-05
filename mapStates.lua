@@ -46,7 +46,7 @@ mapState3 = MapState:new({
     goalPosition = {3, 8},
     playerPosition = nil,
     playerOffset = {180, 180},
-    attackEnabled = true,
+    attackEnabled = false,
     loopEnabled = false,
     conditionEnabled = false,
     getEndingAnimation = masterSword,
@@ -59,16 +59,6 @@ mapState3 = MapState:new({
             imageName = "individuals/masterSword.png",
             width = 100,
             height = 100
-            }),
-        ImageView:new({
-            name = "monster",
-            x = 3*180,
-            y = 180 + 30,
-            imageName = "individuals/enemyFoxFacingLeft.png",
-            width = 100,
-            height = 100,
-            monsterPosition = {2, 3},
-            isAlive = true
             })
     }
     })
@@ -86,8 +76,8 @@ mapState4 = MapState:new({
     attackEnabled = true,
     loopEnabled = false,
     conditionEnabled = false,
-    getEndingAnimation = fadeRight,
-    begginingAnimation = fadeInRight,
+    getEndingAnimation = fadeUp,
+    begginingAnimation = fadeInUp,
     entities = {
         ImageView:new({
             name = "monster",

@@ -55,16 +55,16 @@ function MapState:createView()
     local width = 1920
     local height = 900
 
-    if currentMapState.mapSize ~= nil then
-        width = currentMapState.mapSize[1]
-        height = currentMapState.mapSize[2]
+    if self.mapSize ~= nil then
+        width = self.mapSize[1]
+        height = self.mapSize[2]
     end
 
     local view = ImageView:new({
         name = "map view",
         width = width,
         height = height,
-        imageName = currentMapState.imageName,
+        imageName = self.imageName,
         shouldAnimateTap = false
         })
 
