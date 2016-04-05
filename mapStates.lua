@@ -73,4 +73,34 @@ mapState3 = MapState:new({
     }
     })
 
-mapStates = {mapState1, mapState2, mapState3}
+mapState4 = MapState:new({
+    map = {"_###___",
+           "_______",
+           "_###___"},
+    imageName = "stages/stage2-1.png",
+    mapSize = {2460, 900},
+    startingPosition = {3, 1},
+    goalPosition = {1, 6},
+    playerPosition = nil,
+    playerOffset = {3*180, 4*180},
+    attackEnabled = true,
+    loopEnabled = false,
+    conditionEnabled = false,
+    getEndingAnimation = fadeRight,
+    begginingAnimation = fadeInRight,
+    entities = {
+        ImageView:new({
+            name = "monster",
+            x = 8*180,
+            y = 3*180 + 30,
+            imageName = "individuals/enemyFoxFacingLeft.png",
+            width = 100,
+            height = 100,
+            monsterPosition = {2, 6},
+            isAlive = true
+            })
+    }
+    })
+
+
+mapStates = {mapState1, mapState2, mapState3, mapState4}

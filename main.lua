@@ -42,7 +42,7 @@ commandState = commandStateAdd
 
 --
 nextMapState = nil
-mapStateIndex = 3
+mapStateIndex = 4
 
 ----------------------------------------------------------------
 
@@ -83,7 +83,7 @@ function love.load()
 
     ----------------------------------
 
-    currentMapState = mapState3
+    currentMapState = mapState4
     nextMapState = nil
 
     ----------------------------------

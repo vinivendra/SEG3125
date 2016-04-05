@@ -52,10 +52,18 @@ function MapState:move(direction)
 end
 
 function MapState:createView()
+    local width = 1920
+    local height = 900
+
+    if currentMapState.mapSize ~= nil then
+        width = currentMapState.mapSize[1]
+        height = currentMapState.mapSize[2]
+    end
+
     local view = ImageView:new({
         name = "map view",
-        width = 1920,
-        height = 900,
+        width = width,
+        height = height,
         imageName = currentMapState.imageName,
         shouldAnimateTap = false
         })
