@@ -29,15 +29,10 @@ function animateNextMap()
         startAnimation(animation1)
         startAnimation(animation2)
     else
-        print("original animation")
-
         nextMapView = nextMapState:createView()
         view:addSubview(nextMapView)
         nextMapView.x = 1920
-        print("nextMapView", nextMapView)
-        print("mapView", mapView)
-        print("nextMapView.x", nextMapView.x)
-
+    
         local animation1 = OriginAnimation:new({
             destinationX = -1920,
             subject = mapView
