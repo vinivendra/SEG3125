@@ -9,6 +9,8 @@ LoopAction = Action:new({
     size = 1,
     view = nil,
     head = nil,
+    icon = nil,
+    timesIcon = nil,
     backgroundView = nil,
     backgroundEnd = nil,
     commandAddView = nil,
@@ -87,6 +89,30 @@ function LoopAction:createView()
         })
     self.view:addSubview(self.head)
 
+    self.icon = ImageView:new({
+        name = "loop head",
+        x = 10,
+        y = 20,
+        width = 50,
+        height = 50,
+        imageName = "interface/repeatSmall.png",
+        action = self,
+        onTap = toggleSuperactionMenu
+        })
+    self.head:addSubview(self.icon)
+
+    self.timesIcon = ImageView:new({
+        name = "loop head",
+        x = 10,
+        y = 105,
+        width = 50,
+        height = 50,
+        imageName = "interface/repeatX3.png",
+        action = self,
+        onTap = toggleSuperactionMenu
+        })
+    self.head:addSubview(self.timesIcon)
+    
     self.backgroundView = SquareView:new({
         name = "loop background",
         color = {194, 226, 228},
@@ -127,6 +153,9 @@ end
 function LoopAction:colorView()
     self.head.imageName = "interface/commandHeadBG.png"
     self.head:updateImage()
+    self.icon.imageName = "interface/repeatSmall.png"
+    self.icon:updateImage()
+    self.timesIcon.color = {255, 255, 255, 255}
     self.backgroundView.color = {194, 226, 228}
     self.backgroundEnd.imageName = "interface/commandTailBG.png"
     self.backgroundEnd:updateImage()
@@ -141,6 +170,9 @@ end
 function LoopAction:backgroundColorView()
     self.head.imageName = "interface/commandHeadBG.png"
     self.head:updateImage()
+    self.icon.imageName = "interface/repeatSmall.png"
+    self.icon:updateImage()
+    self.timesIcon.color = {255, 255, 255, 255}
     self.backgroundView.color = {194, 226, 228}
     self.backgroundEnd.imageName = "interface/commandTailBG.png"
     self.backgroundEnd:updateImage()
@@ -150,6 +182,9 @@ end
 function LoopAction:bwView()
     self.head.imageName = "interface/commandHeadBGBW.png"
     self.head:updateImage()
+    self.icon.imageName = "interface/repeatSmallBW.png"
+    self.icon:updateImage()
+    self.timesIcon.color = {10, 10, 10, 255}
     self.backgroundView.color = {210, 210, 210}
     self.backgroundEnd.imageName = "interface/commandTailBGBW.png"
     self.backgroundEnd:updateImage()
@@ -164,6 +199,9 @@ end
 function LoopAction:backgroundBwView()
     self.head.imageName = "interface/commandHeadBGBW.png"
     self.head:updateImage()
+    self.icon.imageName = "interface/repeatSmallBW.png"
+    self.icon:updateImage()
+    self.timesIcon.color = {10, 10, 10, 255}
     self.backgroundView.color = {225, 225, 225}
     self.backgroundEnd.imageName = "interface/commandTailBGBW.png"
     self.backgroundEnd:updateImage()
