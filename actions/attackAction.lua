@@ -52,10 +52,36 @@ function AttackAction:bwView()
 end
 
 function AttackAction:getAnimation()
-    animation = StopAnimation:new({
+    local animation = StopAnimation:new({
         imageName = "individuals/linkRightAttack.png",
         subject = player,
         action = self
     })
+
+    for index,entity in ipairs(currentMapState.entities) do
+        if entity.monsterPosition ~= nil then
+            print("found monster!", getName(entity))
+            if entity.monsterPosition[1] <= currentMapState.playerPosition[1] + 1 or
+               entity.monsterPosition[1] >= currentMapState.playerPosition[1] - 1 or
+               entity.monsterPosition[2] <= currentMapState.playerPosition[1] + 1 or
+               entity.monsterPosition[2] >= currentMapState.playerPosition[1] - 1 and
+               entity.isAlive == true then
+               print("This monster is close")
+               entity.isAlive = false
+               local animation2 = AlphaAnimation:new({
+                subject = entity,
+                duration = 0.5
+                })
+               animation.with = animation2
+               break
+           end
+        end
+    end
+
+
+
     return animation
 end
+
+
+
