@@ -9,21 +9,41 @@ function animateNextMap()
         return
     end
 
-    nextMapView = nextMapState:createView()
-    print("next map:", nextMapView.imageName)
-    view:addSubview(nextMapView)
+    if nextMapState == mapState5 then
+        nextMapView = nextMapState:createView()
+        view:addSubview(nextMapView)
+        nextMapView.x = 0
+        nextMapView.y = -900
 
-    local animation1 = OriginAnimation:new({
-        destinationX = -1920,
-        subject = mapView
-        })
-    local animation2 = OriginAnimation:new({
-        destinationX = 0,
-        subject = nextMapView,
-        completion = completeMapAnimation
-        })
-    startAnimation(animation1)
-    startAnimation(animation2)
+        local animation1 = OriginAnimation:new({
+            destinationX = -540,
+            destinationY = 900,
+            subject = mapView
+            })
+        local animation2 = OriginAnimation:new({
+            destinationX = -540,
+            destinationY = 0,
+            subject = nextMapView,
+            completion = completeMapAnimation
+            })
+        startAnimation(animation1)
+        startAnimation(animation2)
+    else
+        nextMapView = nextMapState:createView()
+        view:addSubview(nextMapView)
+
+        local animation1 = OriginAnimation:new({
+            destinationX = -1920,
+            subject = mapView
+            })
+        local animation2 = OriginAnimation:new({
+            destinationX = 0,
+            subject = nextMapView,
+            completion = completeMapAnimation
+            })
+        startAnimation(animation1)
+        startAnimation(animation2)
+    end
 end
 
 function completeMapAnimation()
