@@ -111,6 +111,50 @@ function love.load()
         height = 524,
         y = 900 - 524
         })
+    local superactionMinus = ImageView:new({
+        name = "superaction Menu minus",
+        imageName = "interface/menuCommandBGMinus.png",
+        width = 181,
+        height = 151
+        })
+    superactionMenu:addSubview(superactionMinus)
+
+    local superactionPlus = ImageView:new({
+        name = "superaction Menu plus",
+        imageName = "interface/menuCommandBGPlus.png",
+        width = 182,
+        height = 151,
+        x = 182
+        })
+    superactionMenu:addSubview(superactionPlus)
+
+    local superactionLeft = ImageView:new({
+        name = "superaction Menu left",
+        imageName = "interface/menuCommandBGLeft.png",
+        width = 130,
+        height = 185,
+        y = 151
+        })
+    superactionMenu:addSubview(superactionLeft)
+
+    local superactionRight = ImageView:new({
+        name = "superaction Menu right",
+        imageName = "interface/menuCommandBGRight.png",
+        width = 130,
+        height = 185,
+        y = 151,
+        x = 233
+        })
+    superactionMenu:addSubview(superactionRight)
+
+    local superactionDelete = ImageView:new({
+        name = "superaction Menu Delete",
+        imageName = "interface/menuCommandBGDelete.png",
+        width = 363,
+        height = 159,
+        y = 336
+        })
+    superactionMenu:addSubview(superactionDelete)
 
     commandBar = SquareView:new({
         name = "command bar",
