@@ -124,16 +124,16 @@ function View:tap(x, y)
         end
     end
 
+    if triggered == false and self.shouldAnimateTap then
+        self:deAnimateTapAndSubviews()
+    end
+
     if triggered == false then
         if self.onTap ~= nil then
             -- print("-- onTap!", getName(self))
             self:onTap()
             triggered = true
         end
-    end
-
-    if self.deAnimateTap ~= nil then
-        self:deAnimateTap()
     end
 
     return triggered
@@ -152,25 +152,61 @@ function View:tapBegan(x, y)
                 local result = subview:tapBegan(x - subview.x, y - subview.y)
                 triggered = triggered or result
                 if result == true then
+                    -- print("Found tap on", getName(subview))
                     break
                 end
             end
         end
     end
 
-    if triggered == false then
-        if self.animateTap ~= nil and self.shouldAnimateTap then
-            -- print("-- animateTap!", getName(self))
-            self:animateTap()
-            triggered = true
+    if triggered == false and self.shouldAnimateTap then
+        triggered = self:animateTapAndSubviews()
+    end
+
+    return triggered
+end
+
+function View:animateTapAndSubviews()
+    local triggered = false
+
+    if self.animateTap ~= nil then
+        -- print("-- animateTap!", getName(self))
+        self:animateTap()
+        triggered = true
+    end
+
+    if self.shouldAnimateSubviews == true then
+        -- print("animating subviews")
+        for i=getSize(self.subviews),1,-1 do
+            local subview = self.subviews[i]
+
+            subview:animateTapAndSubviews()
         end
     end
 
     return triggered
 end
 
+function View:deAnimateTapAndSubviews()
+    local triggered = false
 
+    if self.deAnimateTap ~= nil then
+        -- print("-- deAnimateTap!", getName(self))
+        self:deAnimateTap()
+        triggered = true
+    end
 
+    if self.shouldAnimateSubviews == true then
+        -- print("animating subviews")
+        for i=getSize(self.subviews),1,-1 do
+            local subview = self.subviews[i]
+
+            subview:deAnimateTapAndSubviews()
+        end
+    end
+
+    return triggered
+end
 
 
 

@@ -85,31 +85,32 @@ function LoopAction:createView()
         height = 180,
         imageName = "interface/commandHeadBG.png",
         action = self,
-        onTap = toggleSuperactionMenu
+        onTap = toggleSuperactionMenu,
+        shouldAnimateSubviews = true
         })
     self.view:addSubview(self.head)
 
     self.icon = ImageView:new({
-        name = "loop head",
+        name = "loop icon",
         x = 10,
         y = 20,
         width = 50,
         height = 50,
         imageName = "interface/repeatSmall.png",
         action = self,
-        onTap = toggleSuperactionMenu
+        shouldAnimateTap = false
         })
     self.head:addSubview(self.icon)
 
     self.timesIcon = ImageView:new({
-        name = "loop head",
+        name = "loop number",
         x = 10,
         y = 105,
         width = 50,
         height = 50,
         imageName = "interface/repeatX3.png",
         action = self,
-        onTap = toggleSuperactionMenu
+        shouldAnimateTap = false
         })
     self.head:addSubview(self.timesIcon)
     
