@@ -21,7 +21,7 @@ end
 
 function AddCommandAction:createView()
     self.view = SquareView:new({
-        color = {237, 241, 242},
+        color = {237, 241, 242, 255},
         name = "add command bg",
         action = self,
         x = 20,
@@ -64,6 +64,8 @@ function AddCommandAction:hide()
     self.imageView.hidden = true
     self.view.onTap = nil
     self.imageView.onTap = nil
+    self.imageView.color = {255, 255, 255, 255}
+    self.view.color = {237, 241, 242, 255}
 end
 
 function AddCommandAction:show()
@@ -71,4 +73,6 @@ function AddCommandAction:show()
     self.imageView.hidden = false
     self.view.onTap = toggleAddCommandMenu
     self.imageView.onTap = toggleAddCommandMenu
+    self.imageView.color = {255, 255, 255, 255}
+    self.view.color = {237, 241, 242, 255}
 end

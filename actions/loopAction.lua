@@ -55,6 +55,7 @@ function LoopAction:layoutSubviews()
     self.backgroundView.width = 20 + actionSize * self.size
 
     self.backgroundEnd.x = self.backgroundView.x + self.backgroundView.width
+    self.view.width = self.backgroundEnd.x + self.backgroundEnd.width
 
     for i=1,getSize(self.subactions) do
         local action = self.subactions[i]
