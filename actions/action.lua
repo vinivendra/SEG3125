@@ -42,7 +42,6 @@ end
 maxCommandSize = 11
 
 function addAction(action) 
-
     if currentSuperaction == nil then
         local newView = action.view
 

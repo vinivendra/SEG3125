@@ -170,6 +170,7 @@ function commandLoopAction(commandView)
 
         local firstAction = loopAction.subactions[1] 
         selectedAction = firstAction
+
         moveIndicatorToView(firstAction.view)
 
         currentSuperaction = loopAction

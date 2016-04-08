@@ -77,6 +77,7 @@ end
 function LoopAction:createView()
 
     self.view = SquareView:new({
+        name = "loop action container",
         color = {0, 0, 0, 0},
         width = self:width(),
         height = 180
