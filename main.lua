@@ -115,7 +115,8 @@ function love.load()
         name = "superaction Menu minus",
         imageName = "interface/menuCommandBGMinus.png",
         width = 181,
-        height = 151
+        height = 151,
+        onTap = decreaseSuperaction
         })
     superactionMenu:addSubview(superactionMinus)
 
@@ -124,7 +125,8 @@ function love.load()
         imageName = "interface/menuCommandBGPlus.png",
         width = 182,
         height = 151,
-        x = 182
+        x = 182,
+        onTap = increaseSuperaction
         })
     superactionMenu:addSubview(superactionPlus)
 
@@ -133,7 +135,8 @@ function love.load()
         imageName = "interface/menuCommandBGLeft.png",
         width = 130,
         height = 185,
-        y = 151
+        y = 151,
+        onTap = leftSuperaction
         })
     superactionMenu:addSubview(superactionLeft)
 
@@ -143,7 +146,8 @@ function love.load()
         width = 130,
         height = 185,
         y = 151,
-        x = 233
+        x = 233,
+        onTap = rightSuperaction
         })
     superactionMenu:addSubview(superactionRight)
 
@@ -152,7 +156,8 @@ function love.load()
         imageName = "interface/menuCommandBGDelete.png",
         width = 363,
         height = 159,
-        y = 336
+        y = 336,
+        onTap = deleteMenuSuperaction
         })
     superactionMenu:addSubview(superactionDelete)
 

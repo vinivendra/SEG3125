@@ -78,20 +78,12 @@ function printArray(array, name)
 
     for i=1,size do
         -- Print element
-        if array[i].name ~= nil then
-            print("- ", array[i].name)
-        else
-            print("- ", array[i])
-        end
+        print("- ", getName(array[i]))
 
         -- Print sub-elements
         element = array[i].next
         while element ~= nil do
-            if element.name ~= nil then
-                print("        - ", element.name)
-            else
-                print("        - ", element)
-            end
+            print("        - ", getName(element))
             element = element.next
         end
 

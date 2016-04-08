@@ -22,6 +22,10 @@ function xForCommandAtIndex(index)
     return 30 + sum
 end
 
+function layoutFits()
+    return xForCommandAtIndex(getSize(actions)) + 180 + 20 < (1920 - 180 - 20)
+end
+
 function layoutCommandViews()
     for i = 1,getSize(actions) do
         local x = xForCommandAtIndex(i)
@@ -158,6 +162,21 @@ function deleteAction(action)
         removeElement(currentSuperaction.subactions, action)
         action.view:removeFromSuperview()
     end
+
+    layoutCommandViews()
+end
+
+function deleteSuperaction()
+    local currentActionsSize = getSize(currentSuperaction.subactions)
+    if currentActionsSize <= maxCommandSize then
+        local addCommandAction = currentSuperaction.subactions[currentActionsSize]
+        local addCommandView = addCommandAction.view
+        addCommandView.color = {255, 255, 255, 255}
+        addCommandView.onTap = toggleAddCommandMenu
+    end
+
+    removeElement(actions, currentSuperaction)
+    currentSuperaction.view:removeFromSuperview()
 
     layoutCommandViews()
 end

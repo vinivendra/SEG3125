@@ -20,7 +20,8 @@ View = {
     onTap = nil,
     isAnimatingTap = false,
     shouldAnimateTap = true,
-    hidden = false
+    hidden = false,
+    animated = false
 }
 
 function View:init()
@@ -111,8 +112,6 @@ end
 function View:tap(x, y)
     local triggered = false
 
-    -- print("tap", getName(self))
-
     for i=getSize(self.subviews),1,-1 do
         local subview = self.subviews[i]
 
@@ -124,7 +123,7 @@ function View:tap(x, y)
         end
     end
 
-    if triggered == false and self.shouldAnimateTap then
+    if self.shouldAnimateTap then
         self:deAnimateTapAndSubviews()
     end
 
@@ -172,6 +171,7 @@ function View:animateTapAndSubviews()
     if self.animateTap ~= nil then
         -- print("-- animateTap!", getName(self))
         self:animateTap()
+        self.animated = true
         triggered = true
     end
 
@@ -190,14 +190,16 @@ end
 function View:deAnimateTapAndSubviews()
     local triggered = false
 
-    if self.deAnimateTap ~= nil then
+    -- print("-- deAnimateTapAndSubviews", getName(self))
+    if self.deAnimateTap ~= nil and self.animated == true then
         -- print("-- deAnimateTap!", getName(self))
         self:deAnimateTap()
+        self.animated = false
         triggered = true
     end
 
     if self.shouldAnimateSubviews == true then
-        -- print("animating subviews")
+        -- print("-- deanimating subviews")
         for i=getSize(self.subviews),1,-1 do
             local subview = self.subviews[i]
 

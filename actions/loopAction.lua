@@ -63,9 +63,11 @@ function LoopAction:layoutSubviews()
         action.view.x = self.backgroundView.x + 20 + (i-1) * actionSize
     end
 
+    local addAction = self.subactions[getSize(self.subactions)]
     if getSize(self.subactions) > self.size then
-        local overflowAddAction = self.subactions[getSize(self.subactions)]
-        overflowAddAction.view.hidden = true
+        addAction:hide()
+    else
+        addAction:show()
     end
 end
 
@@ -139,7 +141,7 @@ function LoopAction:createView()
 
     local commandAddView = addCommandAction.view
     self.commandAddView = commandAddView
-    commandAddView.name = "loop add"
+    -- commandAddView.name = "loop add"
     commandAddView.onTap = toggleAddCommandMenu
     commandAddView.x = 110
     commandAddView.y = 20
@@ -222,3 +224,37 @@ function LoopAction:getAnimation()
 
     return firstAnimation
 end
+
+function LoopAction:increaseSize()
+    self.size = self.size + 1
+    if layoutFits() == false then
+        self.size = self.size - 1
+    else
+        layoutCommandViews()
+    end
+end
+
+function LoopAction:decreaseSize()
+    if self.size > 1 then
+        self.size = self.size - 1
+        layoutCommandViews()
+    end
+end
+
+function LoopAction:increaseIterations()
+    if self.iterations < 3 then
+        self.iterations = self.iterations + 1
+        self.timesIcon.imageName = "interface/repeatX" .. self.iterations .. ".png"
+        self.timesIcon:updateImage()
+    end
+end
+
+function LoopAction:decreaseIterations()
+    if self.iterations > 1 then
+        self.iterations = self.iterations - 1
+        self.timesIcon.imageName = "interface/repeatX" .. self.iterations .. ".png"
+        self.timesIcon:updateImage()
+    end
+end
+
+

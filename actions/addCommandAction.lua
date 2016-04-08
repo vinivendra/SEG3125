@@ -58,3 +58,17 @@ end
 function AddCommandAction:getAnimation()
     return Animation:new()
 end
+
+function AddCommandAction:hide()
+    self.view.hidden = true
+    self.imageView.hidden = true
+    self.view.onTap = nil
+    self.imageView.onTap = nil
+end
+
+function AddCommandAction:show()
+    self.view.hidden = false
+    self.imageView.hidden = false
+    self.view.onTap = toggleAddCommandMenu
+    self.imageView.onTap = toggleAddCommandMenu
+end

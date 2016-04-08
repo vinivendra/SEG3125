@@ -89,6 +89,7 @@ function toggleSuperactionMenu(commandView)
         commandState = commandStateEdit
 
         previousSuperMenuSender = commandView
+        currentSuperaction = commandView.action
     end
 
     return true
@@ -181,6 +182,11 @@ end
 
 function deleteCommand(deleteView)
     deleteAction(selectedAction)
+    local addAction = actions[getSize(actions)].view
+    moveIndicatorToView(addAction)
+    previousMenuSender = addAction
+    selectedAction = addAction
+    commandState = commandStateAdd
 end
 
 function goButtonPressed(sender)
@@ -204,3 +210,34 @@ function beginRunningActions()
     dismissCommandMenu()
     dismissSuperCommandMenu()
 end
+
+function increaseSuperaction()
+    currentSuperaction:increaseSize()
+end
+
+function decreaseSuperaction()
+    currentSuperaction:decreaseSize()
+end
+
+function leftSuperaction()
+    currentSuperaction:decreaseIterations()
+end
+
+function rightSuperaction()
+    currentSuperaction:increaseIterations()
+end
+
+function deleteMenuSuperaction()
+    deleteSuperaction()
+    dismissSuperCommandMenu()
+    currentSuperaction = nil
+
+    local addAction = actions[getSize(actions)].view
+    moveIndicatorToView(addAction)
+    previousMenuSender = addAction
+    selectedAction = addAction
+    commandState = commandStateAdd
+end
+
+
+
