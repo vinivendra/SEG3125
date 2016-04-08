@@ -161,6 +161,17 @@ function love.load()
         })
     superactionMenu:addSubview(superactionDelete)
 
+    superactionMenu.superactionNumber = ImageView:new({
+        name = "superaction Menu Number",
+        imageName = "interface/repeatX3.png",
+        width = 110,
+        height = 110,
+        x = 127,
+        y = 185,
+        onTap = deleteMenuSuperaction
+        })
+    superactionMenu:addSubview(superactionMenu.superactionNumber)
+
     commandBar = SquareView:new({
         name = "command bar",
         y = 900,

@@ -245,16 +245,22 @@ end
 function LoopAction:increaseIterations()
     if self.iterations < 3 then
         self.iterations = self.iterations + 1
-        self.timesIcon.imageName = "interface/repeatX" .. self.iterations .. ".png"
+        local numberImageName = "interface/repeatX" .. self.iterations .. ".png"
+        self.timesIcon.imageName = numberImageName
         self.timesIcon:updateImage()
+        superactionMenu.superactionNumber.imageName = numberImageName
+        superactionMenu.superactionNumber:updateImage()
     end
 end
 
 function LoopAction:decreaseIterations()
     if self.iterations > 1 then
         self.iterations = self.iterations - 1
-        self.timesIcon.imageName = "interface/repeatX" .. self.iterations .. ".png"
+        local numberImageName = "interface/repeatX" .. self.iterations .. ".png"
+        self.timesIcon.imageName = numberImageName
         self.timesIcon:updateImage()
+        superactionMenu.superactionNumber.imageName = numberImageName
+        superactionMenu.superactionNumber:updateImage()
     end
 end
 
