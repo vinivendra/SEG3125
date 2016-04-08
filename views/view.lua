@@ -112,8 +112,8 @@ end
 function View:tap(x, y)
     local triggered = false
 
-    print("==")
-    print("tap", getName(self))
+    -- print("==")
+    -- print("tap", getName(self))
 
     for i=getSize(self.subviews),1,-1 do
         local subview = self.subviews[i]
@@ -132,12 +132,12 @@ function View:tap(x, y)
 
     if triggered == false then
         if self.onTap ~= nil then
-            print("    onTap!", getName(self))
+            -- print("    onTap!", getName(self))
             self:onTap()
             triggered = true
         end
     end
-    print("--")
+    -- print("--")
     return triggered
 end
 

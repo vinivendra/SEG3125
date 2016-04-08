@@ -222,6 +222,10 @@ function LoopAction:getAnimation()
             local subAction = self.subactions[j]
             local animation = subAction:getAnimation()
             firstAnimation:chain(animation)
+
+            if currentMapState:hasFinished() then
+                return firstAnimation
+            end
         end
     end
 

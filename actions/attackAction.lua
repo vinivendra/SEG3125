@@ -66,8 +66,6 @@ function AttackAction:getAnimation()
                entity.monsterPosition[2] >= currentMapState.playerPosition[1] - 1 then
                 if entity.isAlive == true then
                     if entity.monsterPosition[2] == currentMapState.playerPosition[2] then
-                        print("monster", entity.monsterPosition[1], entity.monsterPosition[2])
-                        print("player", currentMapState.playerPosition[1], currentMapState.playerPosition[2])
                         animation.imageName = "individuals/linkUpAttack.png"
                     end
 
