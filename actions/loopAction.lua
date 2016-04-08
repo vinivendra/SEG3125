@@ -5,7 +5,7 @@ require 'actions/action'
 
 LoopAction = Action:new({
     name = "loopAction",
-    iterations = 3,
+    iterations = 2,
     size = 1,
     view = nil,
     head = nil,
@@ -56,6 +56,8 @@ function LoopAction:layoutSubviews()
 
     self.backgroundEnd.x = self.backgroundView.x + self.backgroundView.width
     self.view.width = self.backgroundEnd.x + self.backgroundEnd.width
+
+    self:updateIterationsImage()
 
     for i=1,getSize(self.subactions) do
         local action = self.subactions[i]
@@ -245,22 +247,22 @@ end
 function LoopAction:increaseIterations()
     if self.iterations < 3 then
         self.iterations = self.iterations + 1
-        local numberImageName = "interface/repeatX" .. self.iterations .. ".png"
-        self.timesIcon.imageName = numberImageName
-        self.timesIcon:updateImage()
-        superactionMenu.superactionNumber.imageName = numberImageName
-        superactionMenu.superactionNumber:updateImage()
+        self:updateIterationsImage()
     end
+end
+
+function LoopAction:updateIterationsImage()
+    local numberImageName = "interface/repeatX" .. self.iterations .. ".png"
+    self.timesIcon.imageName = numberImageName
+    self.timesIcon:updateImage()
+    superactionMenu.superactionNumber.imageName = numberImageName
+    superactionMenu.superactionNumber:updateImage()
 end
 
 function LoopAction:decreaseIterations()
     if self.iterations > 1 then
         self.iterations = self.iterations - 1
-        local numberImageName = "interface/repeatX" .. self.iterations .. ".png"
-        self.timesIcon.imageName = numberImageName
-        self.timesIcon:updateImage()
-        superactionMenu.superactionNumber.imageName = numberImageName
-        superactionMenu.superactionNumber:updateImage()
+        self:updateIterationsImage()
     end
 end
 
